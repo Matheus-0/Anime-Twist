@@ -18,5 +18,6 @@ module.exports = {
   ],
   rules: {
     'react/jsx-filename-extension': 0,
+    'react/style-prop-object': 0,
   },
 };
