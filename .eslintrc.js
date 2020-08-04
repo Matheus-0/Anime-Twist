@@ -18,6 +18,7 @@ module.exports = {
   ],
   rules: {
     'func-names': 0,
+    'no-undef': 0,
     'react/jsx-filename-extension': 0,
     'react/style-prop-object': 0,
   },

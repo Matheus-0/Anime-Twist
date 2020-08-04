@@ -32,7 +32,7 @@ export default class SecondSearchScreen extends React.Component {
   }
 
   render() {
-    const { downloadTextAnimation, fadeAnimation, searchInput } = this.state;
+    const { downloadTextAnimation, fadeAnimation } = this.state;
 
     return (
       <View style={styles.screen}>
@@ -78,6 +78,20 @@ export default class SecondSearchScreen extends React.Component {
           <Text style={styles.downloadText}>Download your favourite anime!</Text>
           <Text style={{ color: 'white', marginTop: 15 }}>Look for English or Japanese titles.</Text>
         </Animated.View>
+
+        {/* <FlatList
+          data={animeList}
+          keyExtractor={(item) => item.slug.id}
+          renderItem={
+            ({ item }) => (
+              <AnimeItem
+                alternative={item.alt_title}
+                title={item.title}
+              />
+            )
+          }
+          style={{ backgroundColor: '#282828', marginTop: 100 }}
+        /> */}
       </View>
     );
   }

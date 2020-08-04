@@ -17,8 +17,14 @@ function SearchStackScreen() {
       headerShown: false,
     })}
     >
-      <SearchStack.Screen component={SearchScreen} name="Search" />
-      <SearchStack.Screen component={SecondSearchScreen} name="SecondSearch" />
+      <SearchStack.Screen
+        component={SearchScreen}
+        name="Search"
+      />
+      <SearchStack.Screen
+        component={SecondSearchScreen}
+        name="SecondSearch"
+      />
     </SearchStack.Navigator>
   );
 }
