@@ -1,5 +1,7 @@
 import React, { useRef } from 'react';
-import { Animated, TextInput, View } from 'react-native';
+import {
+  Animated, Text, TextInput, View,
+} from 'react-native';
 
 import styles from './styles';
 
@@ -12,7 +14,7 @@ export default function SecondSearchScreen() {
   }).start();
 
   return (
-    <View style={styles.container}>
+    <View style={styles.screen}>
       <Animated.View
         style={[styles.animatedInput, {
           opacity: fadeAnimation,
@@ -38,6 +40,11 @@ export default function SecondSearchScreen() {
           }}
         />
       </Animated.View>
+
+      <View style={styles.container}>
+        <Text style={styles.downloadText}>Download your favourite anime!</Text>
+        <Text style={{ color: 'white', marginTop: 15 }}>Look for English or Japanese titles.</Text>
+      </View>
     </View>
   );
 }
