@@ -1,10 +1,27 @@
 import React from 'react';
-import { Feather } from '@expo/vector-icons';
+import { FontAwesome } from '@expo/vector-icons';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { NavigationContainer } from '@react-navigation/native';
+import { createStackNavigator } from '@react-navigation/stack';
 
-import DownloadScreen from './screens/DownloadScreen';
+import HistoryScreen from './screens/HistoryScreen';
 import SearchScreen from './screens/SearchScreen';
+import SecondSearchScreen from './screens/SecondSearchScreen';
+
+const SearchStack = createStackNavigator();
+
+function SearchStackScreen() {
+  return (
+    <SearchStack.Navigator screenOptions={() => ({
+      animationEnabled: false,
+      headerShown: false,
+    })}
+    >
+      <SearchStack.Screen component={SearchScreen} name="Search" />
+      <SearchStack.Screen component={SecondSearchScreen} name="SecondSearch" />
+    </SearchStack.Navigator>
+  );
+}
 
 const Tab = createBottomTabNavigator();
 
@@ -19,17 +36,24 @@ export default function Routes() {
 
             if (route.name === 'Search') {
               iconName = 'search';
-            } else if (route.name === 'Download') {
-              iconName = 'download';
+            } else if (route.name === 'History') {
+              iconName = 'history';
             }
 
-            return <Feather color={color} name={iconName} size={size + (focused ? 0 : 2)} />;
+            return (
+              <FontAwesome
+                color={color}
+                name={iconName}
+                size={size + (focused ? 0 : 2)}
+              />
+            );
           },
         })}
         tabBarOptions={{
           activeTintColor: 'white',
           style: {
             backgroundColor: '#191919',
+            borderTopColor: 'black',
             height: 60,
           },
           tabStyle: {
@@ -37,8 +61,8 @@ export default function Routes() {
           },
         }}
       >
-        <Tab.Screen component={SearchScreen} name="Search" />
-        <Tab.Screen component={DownloadScreen} name="Download" />
+        <Tab.Screen component={SearchStackScreen} name="Search" />
+        <Tab.Screen component={HistoryScreen} name="History" />
       </Tab.Navigator>
     </NavigationContainer>
   );
