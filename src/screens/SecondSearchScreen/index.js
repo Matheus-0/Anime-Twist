@@ -1,50 +1,79 @@
-import React, { useRef } from 'react';
+import React from 'react';
 import {
   Animated, Text, TextInput, View,
 } from 'react-native';
 
 import styles from './styles';
 
-export default function SecondSearchScreen() {
-  const fadeAnimation = useRef(new Animated.Value(0)).current;
+export default class SecondSearchScreen extends React.Component {
+  constructor(props) {
+    super(props);
 
-  Animated.spring(fadeAnimation, {
-    toValue: 1,
-    useNativeDriver: false, // Disabled so interpolation can be used on width
-  }).start();
+    this.state = {
+      downloadTextAnimation: new Animated.Value(-100),
+      fadeAnimation: new Animated.Value(0),
+    };
+  }
 
-  return (
-    <View style={styles.screen}>
-      <Animated.View
-        style={[styles.animatedInput, {
-          opacity: fadeAnimation,
-          transform: [{
-            translateY: fadeAnimation.interpolate({
+  componentDidMount() {
+    const { downloadTextAnimation, fadeAnimation } = this.state;
+
+    Animated.parallel([
+      Animated.spring(fadeAnimation, {
+        toValue: 1,
+        useNativeDriver: false, // Disabled so interpolation can be used on width
+      }),
+      Animated.spring(downloadTextAnimation, {
+        toValue: 0,
+        useNativeDriver: false,
+      }),
+    ]).start();
+  }
+
+  render() {
+    const { downloadTextAnimation, fadeAnimation } = this.state;
+
+    return (
+      <View style={styles.screen}>
+        <Animated.View
+          style={[styles.animatedInput, {
+            opacity: fadeAnimation,
+            transform: [{
+              translateY: fadeAnimation.interpolate({
+                inputRange: [0, 1],
+                outputRange: [150, 30],
+              }),
+            }],
+            width: fadeAnimation.interpolate({
               inputRange: [0, 1],
-              outputRange: [150, 30],
+              outputRange: ['0%', '90%'],
             }),
-          }],
-          width: fadeAnimation.interpolate({
-            inputRange: [0, 1],
-            outputRange: ['0%', '90%'],
-          }),
-        }]}
-      >
-        <TextInput
-          autoFocus
-          placeholder="Search"
-          returnKeyType="search"
-          style={{
-            color: 'white',
-            marginHorizontal: 15,
-          }}
-        />
-      </Animated.View>
+          }]}
+        >
+          <TextInput
+            autoFocus
+            placeholder="Search"
+            returnKeyType="search"
+            style={{
+              color: 'white',
+              marginHorizontal: 15,
+            }}
+          />
+        </Animated.View>
 
-      <View style={styles.container}>
-        <Text style={styles.downloadText}>Download your favourite anime!</Text>
-        <Text style={{ color: 'white', marginTop: 15 }}>Look for English or Japanese titles.</Text>
+        <Animated.View
+          style={[styles.container, {
+            left: downloadTextAnimation,
+            opacity: downloadTextAnimation.interpolate({
+              inputRange: [-100, 0],
+              outputRange: [0, 1],
+            }),
+          }]}
+        >
+          <Text style={styles.downloadText}>Download your favourite anime!</Text>
+          <Text style={{ color: 'white', marginTop: 15 }}>Look for English or Japanese titles.</Text>
+        </Animated.View>
       </View>
-    </View>
-  );
+    );
+  }
 }
