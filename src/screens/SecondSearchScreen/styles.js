@@ -5,8 +5,9 @@ const styles = StyleSheet.create({
     alignSelf: 'center',
     backgroundColor: '#e63232',
     borderRadius: 5,
-    paddingVertical: 10,
+    paddingVertical: 5,
     position: 'absolute',
+    zIndex: 5,
   },
   downloadText: {
     color: 'white',
