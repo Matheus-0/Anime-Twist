@@ -12,7 +12,7 @@ export default class SecondSearchScreen extends React.Component {
     this.state = {
       downloadTextAnimation: new Animated.Value(-100),
       fadeAnimation: new Animated.Value(0),
-      searchInput: '',
+      // searchInput: '',
     };
   }
 
@@ -53,9 +53,9 @@ export default class SecondSearchScreen extends React.Component {
         >
           <TextInput
             autoFocus
-            onChangeText={(input) => {
-              this.setState({ searchInput: input });
-            }}
+            // onChangeText={(input) => {
+            //   this.setState({ searchInput: input });
+            // }}
             placeholder="Search"
             returnKeyType="search"
             style={{

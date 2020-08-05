@@ -1,31 +1,19 @@
-/* eslint-disable react/no-unused-state */
 import { StatusBar } from 'expo-status-bar';
 import React from 'react';
-import { View } from 'react-native';
+import { Provider } from 'react-redux';
+import { createStore } from 'redux';
 
-import { getAnimeList } from './src/api/api';
+import reducer from './src/store/reducers';
 
 import Routes from './src/routes';
 
-export default class App extends React.Component {
-  constructor(props) {
-    super(props);
+const store = createStore(reducer);
 
-    this.state = {
-      animeList: [],
-    };
-  }
-
-  async componentDidMount() {
-    this.setState({ animeList: await getAnimeList() });
-  }
-
-  render() {
-    return (
-      <View style={{ flex: 1 }}>
-        <Routes />
-        <StatusBar style="light" />
-      </View>
-    );
-  }
+export default function App() {
+  return (
+    <Provider store={store}>
+      <Routes />
+      <StatusBar style="light" />
+    </Provider>
+  );
 }
