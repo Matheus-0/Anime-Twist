@@ -1,10 +1,14 @@
 {
   "expo": {
-    "name": "Twist-Downloader",
+    "name": "Twist Downloader",
     "slug": "Twist-Downloader",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
+    "androidStatusBar": {
+      "backgroundColor": "#191919",
+      "barStyle": "light-content"
+    },
     "splash": {
       "image": "./assets/splash.png",
       "resizeMode": "contain",
