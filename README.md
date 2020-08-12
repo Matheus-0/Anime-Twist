@@ -1,2 +1,2 @@
-# Twist-Downloader
-An app to download anime.
+# Anime Twist
+An app to watch anime.
