@@ -7,7 +7,7 @@ const styles = StyleSheet.create({
     borderRadius: 5,
     paddingVertical: 5,
     position: 'absolute',
-    zIndex: 5,
+    zIndex: 1,
   },
   downloadText: {
     color: 'white',

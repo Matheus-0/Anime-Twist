@@ -10,7 +10,7 @@ export default (state = initialState, action) => {
     case LOAD_ANIME_LIST:
       return {
         ...state,
-        animeList,
+        animeList: action.payload,
       };
     case REMOVE_ALL_HISTORY:
       return {
