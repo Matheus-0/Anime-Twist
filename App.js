@@ -2,16 +2,13 @@ import { AppLoading } from 'expo';
 import { StatusBar } from 'expo-status-bar';
 import React, { useState } from 'react';
 import { Provider } from 'react-redux';
-import { createStore } from 'redux';
 
+import store from './src/store';
 import { loadAnimeList } from './src/store/actions';
-import reducer from './src/store/reducers';
 
 import Routes from './src/routes';
 
 import { getAnimeList } from './src/services/api';
-
-const store = createStore(reducer);
 
 const loadResourcesAsync = async () => {
   const animeList = await getAnimeList();
@@ -36,7 +33,7 @@ export default function App() {
   return (
     <Provider store={store}>
       <Routes />
-      <StatusBar style="light" />
+      <StatusBar style="light" translucent={false} />
     </Provider>
   );
 }
