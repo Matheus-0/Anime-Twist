@@ -7,15 +7,19 @@ const styles = StyleSheet.create({
   },
   item: {
     alignItems: 'center',
+    backgroundColor: '#232323',
+    borderRadius: 10,
     flex: 1,
     flexDirection: 'row',
-    height: 60,
+    height: 55,
     justifyContent: 'center',
-    paddingLeft: 15,
+    marginBottom: 15,
+    marginHorizontal: 20,
+    paddingHorizontal: 20,
   },
   title: {
     color: 'white',
-    fontSize: 16,
+    fontSize: 14,
     fontWeight: 'bold',
   },
 });

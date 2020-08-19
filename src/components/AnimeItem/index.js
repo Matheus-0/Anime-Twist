@@ -1,39 +1,29 @@
-import { Ionicons } from '@expo/vector-icons';
 import PropTypes from 'prop-types';
 import React from 'react';
-import { Text, TouchableOpacity, View } from 'react-native';
+import { Text, View } from 'react-native';
+import { RectButton } from 'react-native-gesture-handler';
 
 import styles from './styles';
 
-export default function AnimeItem({ alternative, style, title }) {
-  return (
-    <TouchableOpacity
-      activeOpacity={0.7}
-      style={[style, styles.item]}
-    >
-      <View style={{ flex: 5 }}>
-        <Text style={styles.title}>{title}</Text>
-        {alternative && <Text style={styles.alternative}>{alternative}</Text>}
-      </View>
-
-      <View style={{ alignItems: 'center', flex: 1 }}>
-        <Ionicons
-          color="white"
-          name="ios-arrow-forward"
-          size={24}
-        />
-      </View>
-    </TouchableOpacity>
-  );
-}
+const AnimeItem = ({ alternative, title }) => (
+  <RectButton
+    onPress={() => {}}
+    style={styles.item}
+  >
+    <View style={{ flex: 1 }}>
+      <Text numberOfLines={1} style={styles.title}>{title}</Text>
+      {alternative && <Text numberOfLines={1} style={styles.alternative}>{alternative}</Text>}
+    </View>
+  </RectButton>
+);
 
 AnimeItem.defaultProps = {
   alternative: '',
-  style: {},
 };
 
 AnimeItem.propTypes = {
   alternative: PropTypes.string,
-  style: PropTypes.shape(),
   title: PropTypes.string.isRequired,
 };
+
+export default AnimeItem;
