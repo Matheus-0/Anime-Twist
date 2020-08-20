@@ -1,5 +1,6 @@
-/* eslint-disable import/prefer-default-export */
 /* eslint-disable no-unused-vars */
+
+import { getAnimeSlug } from '../utils/anime';
 
 const baseURL = 'https://twist.moe';
 const CDN = 'https://twistcdn.bunny.sh';
@@ -10,6 +11,21 @@ const userAgent = require('../../package.json').version;
 export const getAnimeList = async () => {
   try {
     const response = await fetch(`${baseURL}/api/anime`, {
+      headers: {
+        'user-agent': userAgent,
+        'x-access-token': accessToken,
+      },
+    });
+
+    return response.json();
+  } catch (error) {
+    return null;
+  }
+};
+
+export const getAnimeSources = async (anime) => {
+  try {
+    const response = await fetch(`${baseURL}/api/anime/${getAnimeSlug(anime)}/sources`, {
       headers: {
         'user-agent': userAgent,
         'x-access-token': accessToken,
