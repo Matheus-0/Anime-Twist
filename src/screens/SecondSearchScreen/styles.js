@@ -9,15 +9,20 @@ const styles = StyleSheet.create({
     position: 'absolute',
     zIndex: 1,
   },
-  downloadText: {
-    color: 'white',
-    fontSize: 18,
-    fontWeight: 'bold',
-  },
   container: {
     alignItems: 'center',
     flex: 1,
     justifyContent: 'center',
+  },
+  downloadText: {
+    color: 'white',
+    fontFamily: 'Quicksand_700Bold',
+    fontSize: 18,
+  },
+  lookForTitleText: {
+    color: 'white',
+    fontFamily: 'Quicksand_400Regular',
+    marginTop: 15,
   },
   screen: {
     alignItems: 'center',

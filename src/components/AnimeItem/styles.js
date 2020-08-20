@@ -3,6 +3,7 @@ import { StyleSheet } from 'react-native';
 const styles = StyleSheet.create({
   alternative: {
     color: 'white',
+    fontFamily: 'Quicksand_400Regular',
     fontSize: 12,
   },
   item: {
@@ -19,8 +20,8 @@ const styles = StyleSheet.create({
   },
   title: {
     color: 'white',
+    fontFamily: 'Quicksand_700Bold',
     fontSize: 14,
-    fontWeight: 'bold',
   },
 });
 

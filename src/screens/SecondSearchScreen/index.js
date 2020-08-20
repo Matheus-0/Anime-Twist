@@ -99,7 +99,7 @@ const SecondSearchScreen = ({ animeList }) => {
           }]}
         >
           <Text style={styles.downloadText}>Download your favourite anime!</Text>
-          <Text style={{ color: 'white', marginTop: 15 }}>Look for English or Japanese titles.</Text>
+          <Text style={styles.lookForTitleText}>Look for English or Japanese titles.</Text>
         </Animated.View>
       )}
 
@@ -115,6 +115,7 @@ const SecondSearchScreen = ({ animeList }) => {
             alignItems: 'center',
             paddingTop: 50,
           }}
+          keyboardDismissMode="on-drag"
           overScrollMode="never"
           style={{
             marginTop: 50,
@@ -123,9 +124,8 @@ const SecondSearchScreen = ({ animeList }) => {
         >
           {searchResults.map((result) => (
             <AnimeItem
-              alternative={result.alt_title}
+              anime={result}
               key={result.id}
-              title={result.title}
             />
           ))}
         </ScrollView>
