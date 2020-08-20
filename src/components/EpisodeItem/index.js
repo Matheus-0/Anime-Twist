@@ -5,17 +5,20 @@ import { RectButton } from 'react-native-gesture-handler';
 
 import styles from './styles';
 
-const EpisodeItem = ({ anime }) => (
+import { decryptSource } from '../../services/api';
+
+const EpisodeItem = ({ animeEpisode, setParentVideoSource }) => (
   <RectButton
-    onPress={() => {}}
+    onPress={() => setParentVideoSource(decryptSource(animeEpisode.source))}
     style={styles.item}
   >
-    <Text style={styles.episodeText}>{anime.number}</Text>
+    <Text style={styles.episodeText}>{animeEpisode.number}</Text>
   </RectButton>
 );
 
 EpisodeItem.propTypes = {
-  anime: PropTypes.shape().isRequired,
+  animeEpisode: PropTypes.shape().isRequired,
+  setParentVideoSource: PropTypes.func.isRequired,
 };
 
 export default EpisodeItem;
