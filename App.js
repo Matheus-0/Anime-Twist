@@ -1,7 +1,10 @@
+/* eslint-disable camelcase */
 import { AppLoading } from 'expo';
 import { StatusBar } from 'expo-status-bar';
 import React, { useState } from 'react';
 import { Provider } from 'react-redux';
+
+import { Quicksand_400Regular, Quicksand_700Bold, useFonts } from '@expo-google-fonts/quicksand';
 
 import store from './src/store';
 import { loadAnimeList } from './src/store/actions';
@@ -19,9 +22,14 @@ const loadResourcesAsync = async () => {
 };
 
 export default function App() {
+  const [fontsLoaded] = useFonts({
+    Quicksand_400Regular,
+    Quicksand_700Bold,
+  });
+
   const [isReady, setIsReady] = useState(false);
 
-  if (!isReady) {
+  if (!isReady && !fontsLoaded) {
     return (
       <AppLoading
         startAsync={loadResourcesAsync}
