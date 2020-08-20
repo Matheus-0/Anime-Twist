@@ -80,11 +80,7 @@ const SecondSearchScreen = ({ animeList }) => {
           onSubmitEditing={(event) => handleSearch(event.nativeEvent.text)}
           placeholder="Search"
           returnKeyType="search"
-          style={{
-            color: 'white',
-            height: 45,
-            marginHorizontal: 15,
-          }}
+          style={styles.searchInput}
         />
       </Animated.View>
 
@@ -98,7 +94,7 @@ const SecondSearchScreen = ({ animeList }) => {
             }),
           }]}
         >
-          <Text style={styles.downloadText}>Download your favourite anime!</Text>
+          <Text style={styles.downloadText}>Watch your favourite anime!</Text>
           <Text style={styles.lookForTitleText}>Look for English or Japanese titles.</Text>
         </Animated.View>
       )}

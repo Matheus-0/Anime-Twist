@@ -18,6 +18,7 @@ const styles = StyleSheet.create({
   },
   searchText: {
     color: 'white',
+    fontFamily: 'Quicksand_400Regular',
     fontSize: 16,
   },
 });

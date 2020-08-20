@@ -29,6 +29,12 @@ const styles = StyleSheet.create({
     backgroundColor: '#191919',
     flex: 1,
   },
+  searchInput: {
+    color: 'white',
+    fontFamily: 'Quicksand_400Regular',
+    height: 45,
+    marginHorizontal: 15,
+  },
 });
 
 export default styles;

@@ -7,10 +7,20 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: 'center',
   },
+  episodesContainer: {
+    flex: 2,
+    width: '100%',
+  },
   title: {
     color: 'white',
     fontFamily: 'Quicksand_400Regular',
     fontSize: 30,
+    textAlign: 'center',
+  },
+  titleContainer: {
+    alignItems: 'center',
+    flex: 1,
+    justifyContent: 'center',
   },
 });
 

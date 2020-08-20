@@ -59,6 +59,9 @@ export default () => (
       })}
       tabBarOptions={{
         activeTintColor: 'white',
+        labelStyle: {
+          fontFamily: 'Quicksand_400Regular',
+        },
         style: {
           backgroundColor: '#191919',
           borderTopColor: 'black',
