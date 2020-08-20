@@ -1,10 +1,22 @@
-import { LOAD_ANIME_LIST, REMOVE_ALL_HISTORY } from '../constants';
+import {
+  ADD_TO_HISTORY, LOAD_ANIME_LIST, REMOVE_ALL_HISTORY, REMOVE_FROM_HISTORY,
+} from '../constants';
+
+export const addToHistory = (anime) => ({
+  type: ADD_TO_HISTORY,
+  anime,
+});
 
 export const loadAnimeList = (animeList) => ({
   type: LOAD_ANIME_LIST,
-  payload: animeList,
+  animeList,
 });
 
 export const removeAllHistory = () => ({
   type: REMOVE_ALL_HISTORY,
+});
+
+export const removeFromHistory = (index) => ({
+  type: REMOVE_FROM_HISTORY,
+  index,
 });
