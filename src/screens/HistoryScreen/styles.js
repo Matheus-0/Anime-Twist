@@ -5,7 +5,6 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     backgroundColor: '#191919',
     flex: 1,
-    justifyContent: 'center',
   },
   historyDescription: {
     color: 'white',
@@ -27,6 +26,17 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     marginBottom: '10%',
     marginTop: '10%',
+  },
+  noHistoryContainer: {
+    alignItems: 'center',
+    marginTop: '30%',
+  },
+  noHistoryText: {
+    color: 'white',
+    fontFamily: 'Quicksand_400Regular',
+    fontSize: 20,
+    marginTop: '10%',
+    textAlign: 'center',
   },
 });
 

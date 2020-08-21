@@ -1,4 +1,5 @@
 /* eslint-disable no-unused-vars */
+import { Entypo } from '@expo/vector-icons';
 import PropTypes from 'prop-types';
 import React, { useEffect, useRef, useState } from 'react';
 import {
@@ -15,6 +16,7 @@ import { getAnimeAlternativeTitle, getAnimeSlug, getAnimeTitle } from '../../uti
 const SecondSearchScreen = ({ animeList }) => {
   const downloadTextAnimation = useRef(new Animated.Value(-100)).current;
   const fadeAnimation = useRef(new Animated.Value(0)).current;
+  const noResultsFadeAnimation = useRef(new Animated.Value(0)).current;
 
   const [firstSearchDone, setFirstSearchDone] = useState(false);
   const [searchResults, setSearchResults] = useState([]);
@@ -33,11 +35,11 @@ const SecondSearchScreen = ({ animeList }) => {
   }, []);
 
   const handleSearch = (text) => {
-    if (!firstSearchDone) setFirstSearchDone(true);
-
     const query = text.trim().toLowerCase();
 
     if (query) {
+      if (!firstSearchDone) setFirstSearchDone(true);
+
       const results = animeList.filter(
         (anime) => {
           let alternative = getAnimeAlternativeTitle(anime);
@@ -53,6 +55,13 @@ const SecondSearchScreen = ({ animeList }) => {
           return slug.includes(query) || title.includes(query);
         },
       );
+
+      if (results.length === 0) {
+        Animated.spring(noResultsFadeAnimation, {
+          toValue: 1,
+          useNativeDriver: false,
+        }).start();
+      }
 
       setSearchResults(results);
     }
@@ -96,9 +105,17 @@ const SecondSearchScreen = ({ animeList }) => {
       )}
 
       {firstSearchDone && searchResults.length === 0 && (
-        <View style={styles.container}>
-          <Text style={{ color: 'white' }}>No results.</Text>
-        </View>
+        <Animated.View style={[styles.container, {
+          bottom: noResultsFadeAnimation.interpolate({
+            inputRange: [0, 1],
+            outputRange: [-100, 0],
+          }),
+          opacity: noResultsFadeAnimation,
+        }]}
+        >
+          <Entypo color="white" name="emoji-sad" size={64} />
+          <Text style={styles.noResultsText}>Oops! No results.</Text>
+        </Animated.View>
       )}
 
       {firstSearchDone && searchResults.length !== 0 && (

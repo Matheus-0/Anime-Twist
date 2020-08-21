@@ -25,6 +25,12 @@ const styles = StyleSheet.create({
     fontFamily: 'Quicksand_400Regular',
     marginTop: 15,
   },
+  noResultsText: {
+    color: 'white',
+    fontFamily: 'Quicksand_400Regular',
+    fontSize: 20,
+    marginTop: 20,
+  },
   screen: {
     alignItems: 'center',
     backgroundColor: '#191919',

@@ -37,28 +37,8 @@ const Tab = createBottomTabNavigator();
 export default () => (
   <NavigationContainer>
     <Tab.Navigator
-      screenOptions={({ route }) => ({
-        // eslint-disable-next-line react/prop-types
-        tabBarIcon: ({ color, focused, size }) => {
-          let iconName;
-
-          if (route.name === 'Search') {
-            iconName = 'search';
-          } else if (route.name === 'History') {
-            iconName = 'history';
-          }
-
-          return (
-            <FontAwesome
-              color={color}
-              name={iconName}
-              size={size + (focused ? 0 : 2)}
-            />
-          );
-        },
-      })}
       tabBarOptions={{
-        activeTintColor: 'white',
+        activeTintColor: '#e66e6e',
         labelStyle: {
           fontFamily: 'Quicksand_400Regular',
         },
@@ -72,8 +52,34 @@ export default () => (
         },
       }}
     >
-      <Tab.Screen component={SearchStackScreen} name="Search" />
-      <Tab.Screen component={HistoryScreen} name="History" />
+      <Tab.Screen
+        component={SearchStackScreen}
+        name="Search"
+        options={{
+          // eslint-disable-next-line react/prop-types
+          tabBarIcon: ({ color, focused, size }) => (
+            <FontAwesome
+              color={focused ? '#e63232' : color}
+              name="search"
+              size={size}
+            />
+          ),
+        }}
+      />
+      <Tab.Screen
+        component={HistoryScreen}
+        name="History"
+        options={{
+          // eslint-disable-next-line react/prop-types
+          tabBarIcon: ({ color, focused, size }) => (
+            <FontAwesome
+              color={focused ? '#e63232' : color}
+              name="history"
+              size={size}
+            />
+          ),
+        }}
+      />
     </Tab.Navigator>
   </NavigationContainer>
 );
