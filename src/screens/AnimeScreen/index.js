@@ -67,14 +67,13 @@ const AnimeScreen = ({ route }) => {
 
       <View style={styles.episodesContainer}>
         <FlatList
-          contentContainerStyle={{ paddingHorizontal: 20 }}
+          contentContainerStyle={styles.flatListContent}
           data={animeSources}
           initialNumToRender={50}
           keyExtractor={(item) => String(item.number)}
           numColumns={4}
           overScrollMode="never"
           renderItem={renderItem}
-          style={{}}
         />
       </View>
     </View>

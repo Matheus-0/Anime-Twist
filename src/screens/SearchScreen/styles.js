@@ -7,6 +7,9 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: 'center',
   },
+  icon: {
+    marginRight: 10,
+  },
   search: {
     alignItems: 'center',
     backgroundColor: '#e63232',

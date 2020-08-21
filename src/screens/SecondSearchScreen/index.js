@@ -69,10 +69,6 @@ const SecondSearchScreen = ({ animeList }) => {
               outputRange: [150, 30],
             }),
           }],
-          width: fadeAnimation.interpolate({
-            inputRange: [0, 1],
-            outputRange: ['0%', '90%'],
-          }),
         }]}
       >
         <TextInput

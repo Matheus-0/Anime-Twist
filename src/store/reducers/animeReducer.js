@@ -9,11 +9,16 @@ const initialState = {
 
 export default (state = initialState, action) => {
   switch (action.type) {
-    case ADD_TO_HISTORY:
-      return {
-        ...state,
-        history: [...state.history, action.anime],
-      };
+    case ADD_TO_HISTORY: {
+      const isAnimeInHistory = state.history.some((item) => item.id === action.anime.id);
+
+      return isAnimeInHistory
+        ? state
+        : {
+          ...state,
+          history: [...state.history, action.anime],
+        };
+    }
     case LOAD_ANIME_LIST:
       return {
         ...state,

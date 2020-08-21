@@ -9,6 +9,9 @@ const styles = StyleSheet.create({
   episodesContainer: {
     width: '100%',
   },
+  flatListContent: {
+    paddingHorizontal: 20,
+  },
   title: {
     color: 'white',
     fontFamily: 'Quicksand_400Regular',

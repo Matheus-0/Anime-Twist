@@ -23,6 +23,9 @@ const styles = StyleSheet.create({
     fontFamily: 'Quicksand_700Bold',
     fontSize: 14,
   },
+  titlesContainer: {
+    flex: 1,
+  },
 });
 
 export default styles;

@@ -17,7 +17,7 @@ const SearchScreen = ({ navigation }) => (
         color="white"
         name="search"
         size={24}
-        style={{ marginRight: 10 }}
+        style={styles.icon}
       />
 
       <Text style={styles.searchText}>Search for an anime.</Text>
