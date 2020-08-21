@@ -16,14 +16,20 @@ const HistoryScreen = ({ history }) => (
     <View style={styles.historyDescriptionContainer}>
       <Text style={styles.historyDescription}>These are anime you&apos;ve visited recently.</Text>
     </View>
+
     <ScrollView
       contentContainerStyle={{ paddingHorizontal: 20 }}
       overScrollMode="never"
       style={{ width: '100%' }}
     >
-      {history.map((anime) => (
-        <AnimeItem anime={anime} key={anime.id} />
-      ))}
+      {history.map((_, index, array) => {
+        // Mapping array in reverse order so that the most recent anime are shown on top
+        const anime = array[array.length - 1 - index];
+
+        return (
+          <AnimeItem anime={anime} key={anime.id} />
+        );
+      })}
     </ScrollView>
   </View>
 );
