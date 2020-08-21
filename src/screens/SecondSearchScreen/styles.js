@@ -36,6 +36,15 @@ const styles = StyleSheet.create({
     height: 45,
     marginHorizontal: 15,
   },
+  searchScroll: {
+    marginTop: 50,
+    width: '100%',
+  },
+  searchScrollContent: {
+    alignItems: 'center',
+    paddingHorizontal: 20,
+    paddingTop: 50,
+  },
 });
 
 export default styles;

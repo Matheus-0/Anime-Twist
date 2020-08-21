@@ -50,7 +50,7 @@ const AnimeScreen = ({ route }) => {
 
               setOrientationIsLandscape(!orientationIsLandscape);
             }}
-            resizeMode="contain"
+            resizeMode={Video.RESIZE_MODE_CONTAIN}
             shouldPlay
             source={{
               headers: {
@@ -69,7 +69,6 @@ const AnimeScreen = ({ route }) => {
         <FlatList
           contentContainerStyle={styles.flatListContent}
           data={animeSources}
-          initialNumToRender={50}
           keyExtractor={(item) => String(item.number)}
           numColumns={4}
           overScrollMode="never"

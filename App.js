@@ -3,10 +3,11 @@ import { AppLoading } from 'expo';
 import { StatusBar } from 'expo-status-bar';
 import React, { useState } from 'react';
 import { Provider } from 'react-redux';
+import { PersistGate } from 'redux-persist/integration/react';
 
 import { Quicksand_400Regular, Quicksand_700Bold, useFonts } from '@expo-google-fonts/quicksand';
 
-import store from './src/store';
+import { persistor, store } from './src/store';
 import { loadAnimeList } from './src/store/actions';
 
 import Routes from './src/routes';
@@ -40,8 +41,10 @@ export default function App() {
 
   return (
     <Provider store={store}>
-      <Routes />
-      <StatusBar style="light" translucent={false} />
+      <PersistGate loading={<AppLoading />} persistor={persistor}>
+        <Routes />
+        <StatusBar style="light" translucent={false} />
+      </PersistGate>
     </Provider>
   );
 }

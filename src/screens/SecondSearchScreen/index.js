@@ -103,16 +103,10 @@ const SecondSearchScreen = ({ animeList }) => {
 
       {firstSearchDone && searchResults.length !== 0 && (
         <ScrollView
-          contentContainerStyle={{
-            alignItems: 'center',
-            paddingTop: 50,
-          }}
+          contentContainerStyle={styles.searchScrollContent}
           keyboardDismissMode="on-drag"
           overScrollMode="never"
-          style={{
-            marginTop: 50,
-            width: '100%',
-          }}
+          style={styles.searchScroll}
         >
           {searchResults.map((result) => (
             <AnimeItem

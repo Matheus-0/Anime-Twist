@@ -14,7 +14,7 @@ const styles = StyleSheet.create({
   },
   title: {
     color: 'white',
-    fontFamily: 'Quicksand_400Regular',
+    fontFamily: 'Quicksand_700Bold',
     fontSize: 30,
     textAlign: 'center',
   },
@@ -23,13 +23,17 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     marginBottom: '10%',
     marginTop: '10%',
+    paddingHorizontal: '10%',
   },
   video: {
-    height: 180,
-    width: 320,
+    aspectRatio: 16 / 9,
+    height: undefined,
+    width: '85%',
   },
   videoContainer: {
+    alignItems: 'center',
     marginBottom: '10%',
+    width: '100%',
   },
 });
 
