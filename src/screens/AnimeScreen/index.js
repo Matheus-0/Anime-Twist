@@ -1,4 +1,5 @@
 import { Video } from 'expo-av';
+import { lockAsync, OrientationLock } from 'expo-screen-orientation';
 import PropTypes from 'prop-types';
 import React, { useEffect, useState } from 'react';
 import { FlatList, Text, View } from 'react-native';
@@ -14,6 +15,7 @@ const AnimeScreen = ({ route }) => {
   const { anime } = route.params;
 
   const [animeSources, setAnimeSources] = useState([]);
+  const [orientationIsLandscape, setOrientationIsLandscape] = useState(false);
   const [videoSource, setVideoSource] = useState('');
 
   useEffect(() => {
@@ -39,6 +41,15 @@ const AnimeScreen = ({ route }) => {
       {videoSource.length !== 0 && (
         <View style={styles.videoContainer}>
           <Video
+            onFullscreenUpdate={async () => {
+              await lockAsync(
+                orientationIsLandscape
+                  ? OrientationLock.PORTRAIT
+                  : OrientationLock.LANDSCAPE_RIGHT,
+              );
+
+              setOrientationIsLandscape(!orientationIsLandscape);
+            }}
             resizeMode="contain"
             shouldPlay
             source={{
