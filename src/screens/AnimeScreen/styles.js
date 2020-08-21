@@ -7,6 +7,7 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   episodesContainer: {
+    flex: 1,
     width: '100%',
   },
   flatListContent: {
