@@ -33,26 +33,25 @@ const AnimeScreen = ({ route }) => {
   return (
     <View style={styles.container}>
       <View style={styles.titleContainer}>
-        <Text style={styles.title}>{anime.title}</Text>
+        <Text numberOfLines={3} style={styles.title}>{anime.title}</Text>
       </View>
 
       {videoSource.length !== 0 && (
-        <Video
-          resizeMode="contain"
-          shouldPlay
-          source={{
-            headers: {
-              referer: baseURL,
-              'user-agent': userAgent,
-            },
-            uri: videoSource,
-          }}
-          style={{
-            height: 180,
-            marginBottom: 40,
-            width: 320,
-          }}
-        />
+        <View style={styles.videoContainer}>
+          <Video
+            resizeMode="contain"
+            shouldPlay
+            source={{
+              headers: {
+                referer: baseURL,
+                'user-agent': userAgent,
+              },
+              uri: videoSource,
+            }}
+            style={styles.video}
+            useNativeControls
+          />
+        </View>
       )}
 
       <View style={styles.episodesContainer}>

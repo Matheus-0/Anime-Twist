@@ -5,10 +5,8 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     backgroundColor: '#191919',
     flex: 1,
-    justifyContent: 'center',
   },
   episodesContainer: {
-    flex: 2,
     width: '100%',
   },
   title: {
@@ -19,8 +17,16 @@ const styles = StyleSheet.create({
   },
   titleContainer: {
     alignItems: 'center',
-    flex: 1,
     justifyContent: 'center',
+    marginBottom: '10%',
+    marginTop: '10%',
+  },
+  video: {
+    height: 180,
+    width: 320,
+  },
+  videoContainer: {
+    marginBottom: '10%',
   },
 });
 
