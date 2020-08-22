@@ -31,7 +31,7 @@ export default (state = initialState, action) => {
       return {
         ...state,
         history: [
-          ...state.history.filter((item, index) => index !== action.index),
+          ...state.history.filter((item) => item.id !== action.anime.id),
         ],
       };
     default:

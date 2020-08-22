@@ -1,19 +1,15 @@
+import AES from 'crypto-js/aes';
+import CryptoJS from 'crypto-js';
+
 import { getAnimeSlug } from '../utils/anime';
 
 import {
   accessToken, baseURL, CDN, key, userAgent,
 } from '../constants';
 
-const AES = require('crypto-js/aes');
-const CryptoJS = require('crypto-js');
-
-export const decryptSource = (source) => {
-  const result = CDN + AES.decrypt(source, key).toString(CryptoJS.enc.Utf8).trim();
-
-  // console.log(result);
-
-  return result;
-};
+export const decryptSource = (source) => (
+  CDN + AES.decrypt(source, key).toString(CryptoJS.enc.Utf8).trim()
+);
 
 export const getAnimeList = async () => {
   try {
