@@ -1,5 +1,10 @@
 import {
-  ADD_TO_HISTORY, LOAD_ANIME_LIST, REMOVE_ALL_HISTORY, REMOVE_FROM_HISTORY,
+  ADD_TO_HISTORY,
+  LOAD_ANIME_LIST,
+  MARK_EPISODE_COMPLETE,
+  REMOVE_ALL_HISTORY,
+  REMOVE_FROM_HISTORY,
+  UNDO_MARK_EPISODE_COMPLETE,
 } from '../constants';
 
 export const addToHistory = (anime) => ({
@@ -12,6 +17,11 @@ export const loadAnimeList = (animeList) => ({
   animeList,
 });
 
+export const markEpisodeAsComplete = (episode) => ({
+  type: MARK_EPISODE_COMPLETE,
+  episode,
+});
+
 export const removeAllHistory = () => ({
   type: REMOVE_ALL_HISTORY,
 });
@@ -19,4 +29,9 @@ export const removeAllHistory = () => ({
 export const removeFromHistory = (anime) => ({
   type: REMOVE_FROM_HISTORY,
   anime,
+});
+
+export const undoMarkEpisodeAsComplete = (episode) => ({
+  type: UNDO_MARK_EPISODE_COMPLETE,
+  episode,
 });

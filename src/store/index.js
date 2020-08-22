@@ -4,10 +4,12 @@ import { createStore } from 'redux';
 
 import reducer from './reducers';
 
-const persistedReducer = persistReducer({
-  key: 'root',
+const persistConfig = {
+  key: 'store',
   storage: AsyncStorage,
-}, reducer);
+};
+
+const persistedReducer = persistReducer(persistConfig, reducer);
 
 const store = createStore(persistedReducer);
 const persistor = persistStore(store);
