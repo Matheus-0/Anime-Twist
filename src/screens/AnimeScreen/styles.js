@@ -36,6 +36,7 @@ const styles = StyleSheet.create({
   },
   videoContainer: {
     alignItems: 'center',
+    justifyContent: 'center',
     marginBottom: '10%',
     width: '100%',
   },

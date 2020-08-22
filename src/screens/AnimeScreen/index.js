@@ -19,6 +19,7 @@ const AnimeScreen = ({ route }) => {
   const [animeSources, setAnimeSources] = useState([]);
   const [episodePlaying, setEpisodePlaying] = useState(0);
   const [orientationIsLandscape, setOrientationIsLandscape] = useState(false);
+  const [videoCompletePosition, setVideoCompletePosition] = useState(0);
   const [videoSource, setVideoSource] = useState('');
 
   const fadeAnimation = useRef(new Animated.Value(0)).current;
@@ -46,6 +47,16 @@ const AnimeScreen = ({ route }) => {
     fetchData();
   }, []);
 
+  const handleOnLoad = (status) => {
+    setVideoCompletePosition(status.durationMillis * 0.9);
+  };
+
+  const handleOnPlaybackStatusUpdate = (status) => {
+    if (status.positionMillis > videoCompletePosition) {
+      // console.log("I'm finished.", status.positionMillis, videoCompletePosition);
+    }
+  };
+
   return (
     <View style={styles.container}>
       <Animated.View
@@ -72,6 +83,8 @@ const AnimeScreen = ({ route }) => {
 
               setOrientationIsLandscape(!orientationIsLandscape);
             }}
+            onLoad={handleOnLoad}
+            onPlaybackStatusUpdate={handleOnPlaybackStatusUpdate}
             resizeMode={Video.RESIZE_MODE_CONTAIN}
             shouldPlay
             source={{
@@ -84,6 +97,10 @@ const AnimeScreen = ({ route }) => {
             style={styles.video}
             useNativeControls
           />
+
+          <View style={{ position: 'absolute' }}>
+            {/* <Text style={{ color: 'white' }}>Loading...</Text> */}
+          </View>
         </View>
       )}
 
@@ -101,9 +118,10 @@ const AnimeScreen = ({ route }) => {
                   animeEpisode={item}
                   isPlaying={item.number === episodePlaying}
                   onPress={() => {
+                    setEpisodePlaying(item.number);
+
                     LayoutAnimation.configureNext(LayoutAnimation.Presets.spring);
 
-                    setEpisodePlaying(item.number);
                     setVideoSource(decryptSource(item.source));
                   }}
                 />
