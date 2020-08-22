@@ -14,6 +14,7 @@ const styles = StyleSheet.create({
   },
   historyDescriptionContainer: {
     marginBottom: '10%',
+    marginTop: '5%',
   },
   historyTitle: {
     color: 'white',
@@ -24,7 +25,6 @@ const styles = StyleSheet.create({
   historyTitleContainer: {
     alignItems: 'center',
     justifyContent: 'center',
-    marginBottom: '10%',
     marginTop: '10%',
   },
   noHistoryContainer: {

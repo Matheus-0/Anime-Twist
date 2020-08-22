@@ -10,12 +10,13 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     backgroundColor: '#232323',
     borderRadius: 10,
-    flex: 1,
     flexDirection: 'row',
     height: 55,
     justifyContent: 'center',
     marginBottom: 15,
-    paddingHorizontal: 20,
+  },
+  removeContainer: {
+    padding: 10,
   },
   title: {
     color: 'white',
@@ -24,6 +25,7 @@ const styles = StyleSheet.create({
   },
   titlesContainer: {
     flex: 1,
+    marginHorizontal: 20,
   },
 });
 

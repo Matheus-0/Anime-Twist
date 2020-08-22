@@ -2,6 +2,7 @@
 import { AppLoading } from 'expo';
 import { StatusBar } from 'expo-status-bar';
 import React, { useState } from 'react';
+import { Platform, UIManager } from 'react-native';
 import { Provider } from 'react-redux';
 import { PersistGate } from 'redux-persist/integration/react';
 
@@ -21,6 +22,10 @@ const loadResourcesAsync = async () => {
 
   return Promise.all(animeList);
 };
+
+if (Platform.OS === 'android' && UIManager.setLayoutAnimationEnabledExperimental) {
+  UIManager.setLayoutAnimationEnabledExperimental(true);
+}
 
 export default function App() {
   const [fontsLoaded] = useFonts({

@@ -13,6 +13,9 @@ const styles = StyleSheet.create({
   flatListContent: {
     paddingHorizontal: 20,
   },
+  loading: {
+    flex: 1,
+  },
   title: {
     color: 'white',
     fontFamily: 'Quicksand_700Bold',

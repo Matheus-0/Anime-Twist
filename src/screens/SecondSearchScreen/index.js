@@ -3,7 +3,7 @@ import { Entypo } from '@expo/vector-icons';
 import PropTypes from 'prop-types';
 import React, { useEffect, useRef, useState } from 'react';
 import {
-  Animated, ScrollView, Text, TextInput, View,
+  Animated, Text, TextInput, View,
 } from 'react-native';
 import { connect } from 'react-redux';
 
@@ -14,12 +14,15 @@ import AnimeItem from '../../components/AnimeItem';
 import { getAnimeAlternativeTitle, getAnimeSlug, getAnimeTitle } from '../../utils/anime';
 
 const SecondSearchScreen = ({ animeList }) => {
+  const scrollFadeAnimation = useRef(new Animated.Value(0)).current;
   const downloadTextAnimation = useRef(new Animated.Value(-100)).current;
   const fadeAnimation = useRef(new Animated.Value(0)).current;
   const noResultsFadeAnimation = useRef(new Animated.Value(0)).current;
 
   const [firstSearchDone, setFirstSearchDone] = useState(false);
   const [searchResults, setSearchResults] = useState([]);
+
+  const AnimatedAnimeItem = Animated.createAnimatedComponent(AnimeItem);
 
   useEffect(() => {
     Animated.sequence([
@@ -38,6 +41,8 @@ const SecondSearchScreen = ({ animeList }) => {
     const query = text.trim().toLowerCase();
 
     if (query) {
+      scrollFadeAnimation.setValue(0);
+
       if (!firstSearchDone) setFirstSearchDone(true);
 
       const results = animeList.filter(
@@ -58,6 +63,12 @@ const SecondSearchScreen = ({ animeList }) => {
 
       if (results.length === 0) {
         Animated.spring(noResultsFadeAnimation, {
+          toValue: 1,
+          useNativeDriver: false,
+        }).start();
+      } else {
+        Animated.spring(scrollFadeAnimation, {
+          tension: 10,
           toValue: 1,
           useNativeDriver: false,
         }).start();
@@ -92,7 +103,7 @@ const SecondSearchScreen = ({ animeList }) => {
       {!firstSearchDone && (
         <Animated.View
           style={[styles.container, {
-            left: downloadTextAnimation,
+            bottom: downloadTextAnimation,
             opacity: downloadTextAnimation.interpolate({
               inputRange: [-100, 0],
               outputRange: [0, 1],
@@ -119,19 +130,25 @@ const SecondSearchScreen = ({ animeList }) => {
       )}
 
       {firstSearchDone && searchResults.length !== 0 && (
-        <ScrollView
+        <Animated.ScrollView
           contentContainerStyle={styles.searchScrollContent}
           keyboardDismissMode="on-drag"
           overScrollMode="never"
-          style={styles.searchScroll}
+          style={[styles.searchScroll, {
+            bottom: scrollFadeAnimation.interpolate({
+              inputRange: [0, 1],
+              outputRange: [-100, 0],
+            }),
+            opacity: scrollFadeAnimation,
+          }]}
         >
           {searchResults.map((result) => (
-            <AnimeItem
+            <AnimatedAnimeItem
               anime={result}
               key={result.id}
             />
           ))}
-        </ScrollView>
+        </Animated.ScrollView>
       )}
     </View>
   );

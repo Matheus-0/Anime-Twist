@@ -1,42 +1,64 @@
 import { Video } from 'expo-av';
 import { lockAsync, OrientationLock } from 'expo-screen-orientation';
 import PropTypes from 'prop-types';
-import React, { useEffect, useState } from 'react';
-import { FlatList, Text, View } from 'react-native';
+import React, { useEffect, useState, useRef } from 'react';
+import {
+  ActivityIndicator, Animated, LayoutAnimation, Text, View,
+} from 'react-native';
 
 import styles from './styles';
 
 import EpisodeItem from '../../components/EpisodeItem';
 
-import { getAnimeSources } from '../../services/api';
+import { getAnimeSources, decryptSource } from '../../services/api';
 import { userAgent, baseURL } from '../../constants';
 
 const AnimeScreen = ({ route }) => {
   const { anime } = route.params;
 
   const [animeSources, setAnimeSources] = useState([]);
+  const [episodePlaying, setEpisodePlaying] = useState(0);
   const [orientationIsLandscape, setOrientationIsLandscape] = useState(false);
   const [videoSource, setVideoSource] = useState('');
+
+  const fadeAnimation = useRef(new Animated.Value(0)).current;
+  const flatListFadeAnimation = useRef(new Animated.Value(0)).current;
 
   useEffect(() => {
     async function fetchData() {
       const response = await getAnimeSources(anime);
 
       setAnimeSources(response);
+
+      Animated.spring(flatListFadeAnimation, {
+        tension: 10,
+        toValue: 1,
+        useNativeDriver: false,
+      }).start();
     }
+
+    Animated.spring(fadeAnimation, {
+      tension: 10,
+      toValue: 1,
+      useNativeDriver: false,
+    }).start();
 
     fetchData();
   }, []);
 
-  const renderItem = ({ item }) => (
-    <EpisodeItem animeEpisode={item} setParentVideoSource={setVideoSource} />
-  );
-
   return (
     <View style={styles.container}>
-      <View style={styles.titleContainer}>
+      <Animated.View
+        style={[styles.titleContainer, {
+          opacity: fadeAnimation,
+          top: fadeAnimation.interpolate({
+            inputRange: [0, 1],
+            outputRange: [-100, 0],
+          }),
+        }]}
+      >
         <Text numberOfLines={3} style={styles.title}>{anime.title}</Text>
-      </View>
+      </Animated.View>
 
       {videoSource.length !== 0 && (
         <View style={styles.videoContainer}>
@@ -65,16 +87,39 @@ const AnimeScreen = ({ route }) => {
         </View>
       )}
 
-      <View style={styles.episodesContainer}>
-        <FlatList
-          contentContainerStyle={styles.flatListContent}
-          data={animeSources}
-          keyExtractor={(item) => String(item.number)}
-          numColumns={4}
-          overScrollMode="never"
-          renderItem={renderItem}
-        />
-      </View>
+      {animeSources.length !== 0
+        ? (
+          <View style={styles.episodesContainer}>
+            <Animated.FlatList
+              contentContainerStyle={styles.flatListContent}
+              data={animeSources}
+              keyExtractor={(item) => String(item.number)}
+              numColumns={4}
+              overScrollMode="never"
+              renderItem={({ item }) => (
+                <EpisodeItem
+                  animeEpisode={item}
+                  isPlaying={item.number === episodePlaying}
+                  onPress={() => {
+                    LayoutAnimation.configureNext(LayoutAnimation.Presets.spring);
+
+                    setEpisodePlaying(item.number);
+                    setVideoSource(decryptSource(item.source));
+                  }}
+                />
+              )}
+              style={{
+                bottom: flatListFadeAnimation.interpolate({
+                  inputRange: [0, 1],
+                  outputRange: [-100, 0],
+                }),
+                opacity: flatListFadeAnimation,
+              }}
+            />
+          </View>
+        ) : (
+          <ActivityIndicator color="#e63232" size="large" style={styles.loading} />
+        )}
     </View>
   );
 };

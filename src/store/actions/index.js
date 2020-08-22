@@ -16,7 +16,7 @@ export const removeAllHistory = () => ({
   type: REMOVE_ALL_HISTORY,
 });
 
-export const removeFromHistory = (index) => ({
+export const removeFromHistory = (anime) => ({
   type: REMOVE_FROM_HISTORY,
-  index,
+  anime,
 });
