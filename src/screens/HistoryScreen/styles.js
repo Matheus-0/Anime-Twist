@@ -13,7 +13,6 @@ const styles = StyleSheet.create({
     textAlign: 'center',
   },
   historyDescriptionContainer: {
-    marginBottom: '10%',
     marginTop: '5%',
   },
   historyTitle: {
@@ -37,6 +36,29 @@ const styles = StyleSheet.create({
     fontSize: 20,
     marginTop: '10%',
     textAlign: 'center',
+  },
+  removeAllHistoryContainer: {
+    alignSelf: 'flex-end',
+    backgroundColor: '#e63232',
+    borderRadius: 5,
+    marginRight: 20,
+    marginTop: '5%',
+  },
+  removeAllHistoryButton: {
+    paddingVertical: 5,
+    paddingHorizontal: 15,
+  },
+  removeAllHistoryText: {
+    color: 'white',
+    fontFamily: 'Quicksand_400Regular',
+    fontSize: 12,
+  },
+  scrollView: {
+    marginTop: '5%',
+    width: '100%',
+  },
+  scrollViewContainer: {
+    paddingHorizontal: 20,
   },
 });
 
