@@ -3,10 +3,12 @@ import { useFocusEffect } from '@react-navigation/native';
 import PropTypes from 'prop-types';
 import React, { useEffect, useState } from 'react';
 import {
-  Animated, Text, TouchableOpacity, View,
+  Animated, Image, Text, TouchableOpacity, View,
 } from 'react-native';
 
 import styles from './styles';
+
+import logo from '../../assets/images/logo.png';
 
 const SearchScreen = ({ navigation }) => {
   const [fadeAnimation] = useState(new Animated.Value(0));
@@ -28,6 +30,10 @@ const SearchScreen = ({ navigation }) => {
 
   return (
     <View style={styles.container}>
+      <Image
+        source={logo}
+        style={styles.image}
+      />
       <AnimatedTouchableOpacity
         activeOpacity={1}
         onPress={() => navigation.navigate('SecondSearch')}

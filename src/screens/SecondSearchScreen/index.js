@@ -22,8 +22,6 @@ const SecondSearchScreen = ({ animeList }) => {
   const [firstSearchDone, setFirstSearchDone] = useState(false);
   const [searchResults, setSearchResults] = useState([]);
 
-  const AnimatedAnimeItem = Animated.createAnimatedComponent(AnimeItem);
-
   useEffect(() => {
     Animated.sequence([
       Animated.spring(fadeAnimation, {
@@ -149,7 +147,7 @@ const SecondSearchScreen = ({ animeList }) => {
           }]}
         >
           {searchResults.map((result) => (
-            <AnimatedAnimeItem
+            <AnimeItem
               anime={result}
               key={result.id}
             />

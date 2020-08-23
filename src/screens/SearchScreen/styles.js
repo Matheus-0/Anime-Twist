@@ -5,10 +5,14 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     backgroundColor: '#191919',
     flex: 1,
-    justifyContent: 'center',
   },
   icon: {
     marginRight: 10,
+  },
+  image: {
+    height: 100,
+    marginTop: '10%',
+    width: 100,
   },
   search: {
     alignItems: 'center',
@@ -16,6 +20,7 @@ const styles = StyleSheet.create({
     borderRadius: 5,
     flexDirection: 'row',
     justifyContent: 'center',
+    marginTop: '35%',
     paddingVertical: 15,
     width: '90%',
   },

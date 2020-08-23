@@ -124,10 +124,9 @@ const AnimeScreen = ({ route }) => {
                   isPlaying={item.number === episodePlaying}
                   onPress={() => {
                     setEpisodePlaying(item.number);
-
-                    LayoutAnimation.configureNext(LayoutAnimation.Presets.spring);
-
                     setVideoSource(decryptSource(item.source));
+
+                    LayoutAnimation.configureNext(LayoutAnimation.Presets.easeInEaseOut);
                   }}
                 />
               )}
