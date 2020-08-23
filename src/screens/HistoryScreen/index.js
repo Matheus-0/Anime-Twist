@@ -1,7 +1,7 @@
 import { AntDesign } from '@expo/vector-icons';
 import { useFocusEffect } from '@react-navigation/native';
 import PropTypes from 'prop-types';
-import React, { useRef, useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import {
   Animated, LayoutAnimation, Text, View,
 } from 'react-native';
@@ -12,7 +12,7 @@ import styles from './styles';
 import AnimeItem from '../../components/AnimeItem';
 
 const HistoryScreen = ({ history, navigation }) => {
-  const fadeAnimation = useRef(new Animated.Value(0)).current;
+  const [fadeAnimation] = useState(new Animated.Value(0));
 
   useEffect(() => {
     const unsubscribe = navigation.addListener('blur', () => fadeAnimation.setValue(0));
@@ -24,7 +24,7 @@ const HistoryScreen = ({ history, navigation }) => {
     Animated.spring(fadeAnimation, {
       tension: 10,
       toValue: 1,
-      useNativeDriver: false,
+      useNativeDriver: true,
     }).start();
   });
 
@@ -33,10 +33,12 @@ const HistoryScreen = ({ history, navigation }) => {
       <Animated.View
         style={[styles.historyTitleContainer, {
           opacity: fadeAnimation,
-          top: fadeAnimation.interpolate({
-            inputRange: [0, 1],
-            outputRange: [-100, 0],
-          }),
+          transform: [{
+            translateY: fadeAnimation.interpolate({
+              inputRange: [0, 1],
+              outputRange: [-100, 0],
+            }),
+          }],
         }]}
       >
         <Text style={styles.historyTitle}>History</Text>
@@ -59,11 +61,13 @@ const HistoryScreen = ({ history, navigation }) => {
               contentContainerStyle={{ paddingHorizontal: 20 }}
               overScrollMode="never"
               style={{
-                bottom: fadeAnimation.interpolate({
-                  inputRange: [0, 1],
-                  outputRange: [-100, 0],
-                }),
                 opacity: fadeAnimation,
+                transform: [{
+                  translateY: fadeAnimation.interpolate({
+                    inputRange: [0, 1],
+                    outputRange: [100, 0],
+                  }),
+                }],
                 width: '100%',
               }}
             >
@@ -88,11 +92,13 @@ const HistoryScreen = ({ history, navigation }) => {
         : (
           <Animated.View
             style={[styles.noHistoryContainer, {
-              bottom: fadeAnimation.interpolate({
-                inputRange: [0, 1],
-                outputRange: [-100, 0],
-              }),
               opacity: fadeAnimation,
+              transform: [{
+                translateY: fadeAnimation.interpolate({
+                  inputRange: [0, 1],
+                  outputRange: [100, 0],
+                }),
+              }],
             }]}
           >
             <AntDesign name="questioncircleo" size={80} color="white" />

@@ -1,7 +1,7 @@
 import { Feather } from '@expo/vector-icons';
 import { useFocusEffect } from '@react-navigation/native';
 import PropTypes from 'prop-types';
-import React, { useRef, useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import {
   Animated, Text, TouchableOpacity, View,
 } from 'react-native';
@@ -9,7 +9,7 @@ import {
 import styles from './styles';
 
 const SearchScreen = ({ navigation }) => {
-  const fadeAnimation = useRef(new Animated.Value(0)).current;
+  const [fadeAnimation] = useState(new Animated.Value(0));
 
   const AnimatedTouchableOpacity = Animated.createAnimatedComponent(TouchableOpacity);
 
@@ -22,7 +22,7 @@ const SearchScreen = ({ navigation }) => {
   useFocusEffect(() => {
     Animated.spring(fadeAnimation, {
       toValue: 1,
-      useNativeDriver: false,
+      useNativeDriver: true,
     }).start();
   }, []);
 

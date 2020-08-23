@@ -1,7 +1,7 @@
 import { AntDesign } from '@expo/vector-icons';
 import { useNavigation } from '@react-navigation/native';
 import PropTypes from 'prop-types';
-import React, { useRef } from 'react';
+import React, { useState } from 'react';
 import {
   Animated, Text, TouchableOpacity,
 } from 'react-native';
@@ -25,13 +25,14 @@ const AnimeItem = ({
 }) => {
   const { navigate } = useNavigation();
 
-  const defaultHeight = 55;
-  const defaultMargin = 15;
+  const [removeFadeAnimation] = useState(new Animated.Value(1));
+  const [removePositionAnimation] = useState(new Animated.Value(0));
 
-  const removeFadeAnimation = useRef(new Animated.Value(1)).current;
-  const removeHeightAnimation = useRef(new Animated.Value(defaultHeight)).current;
-  const removeMarginAnimation = useRef(new Animated.Value(defaultMargin)).current;
-  const removePositionAnimation = useRef(new Animated.Value(0)).current;
+  const handleAnimeItemPress = () => {
+    addToHistory(anime);
+
+    navigate('Anime', { anime });
+  };
 
   const handleRemoveAnime = () => {
     removeFromParentAnimation();
@@ -40,35 +41,29 @@ const AnimeItem = ({
   };
 
   const handleRemoveAnimation = () => {
-    Animated.sequence([
-      Animated.parallel([
-        Animated.spring(removeFadeAnimation, {
-          toValue: 0,
-          useNativeDriver: false,
-        }),
-        Animated.spring(removePositionAnimation, {
-          toValue: -100,
-          useNativeDriver: false,
-        }),
-      ]),
+    Animated.parallel([
+      Animated.spring(removeFadeAnimation, {
+        toValue: 0,
+        useNativeDriver: true,
+      }),
+      Animated.spring(removePositionAnimation, {
+        toValue: -100,
+        useNativeDriver: true,
+      }),
     ]).start(handleRemoveAnime);
   };
 
   return (
     <Animated.View
       style={[styles.item, style, {
-        height: removeHeightAnimation,
-        left: removePositionAnimation,
-        marginBottom: removeMarginAnimation,
+        transform: [{
+          translateX: removePositionAnimation,
+        }],
         opacity: removeFadeAnimation,
       }]}
     >
       <RectButton
-        onPress={() => {
-          addToHistory(anime);
-
-          navigate('Anime', { anime });
-        }}
+        onPress={handleAnimeItemPress}
         style={styles.titlesContainer}
       >
         <Text numberOfLines={1} style={styles.title}>{anime.title}</Text>
@@ -76,6 +71,7 @@ const AnimeItem = ({
           <Text numberOfLines={1} style={styles.alternative}>{anime.alt_title}</Text>
         )}
       </RectButton>
+
       {toRemove && (
         <TouchableOpacity
           onPress={handleRemoveAnimation}

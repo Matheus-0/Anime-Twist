@@ -14,10 +14,10 @@ import AnimeItem from '../../components/AnimeItem';
 import { getAnimeAlternativeTitle, getAnimeSlug, getAnimeTitle } from '../../utils/anime';
 
 const SecondSearchScreen = ({ animeList }) => {
-  const scrollFadeAnimation = useRef(new Animated.Value(0)).current;
-  const downloadTextAnimation = useRef(new Animated.Value(-100)).current;
-  const fadeAnimation = useRef(new Animated.Value(0)).current;
-  const noResultsFadeAnimation = useRef(new Animated.Value(0)).current;
+  const [scrollFadeAnimation] = useState(new Animated.Value(0));
+  const [downloadTextAnimation] = useState(new Animated.Value(-100));
+  const [fadeAnimation] = useState(new Animated.Value(0));
+  const [noResultsFadeAnimation] = useState(new Animated.Value(0));
 
   const [firstSearchDone, setFirstSearchDone] = useState(false);
   const [searchResults, setSearchResults] = useState([]);
@@ -28,11 +28,11 @@ const SecondSearchScreen = ({ animeList }) => {
     Animated.sequence([
       Animated.spring(fadeAnimation, {
         toValue: 1,
-        useNativeDriver: false, // Disabled so interpolation can be used on width
+        useNativeDriver: true,
       }),
       Animated.spring(downloadTextAnimation, {
         toValue: 0,
-        useNativeDriver: false,
+        useNativeDriver: true,
       }),
     ]).start();
   }, []);
@@ -64,13 +64,13 @@ const SecondSearchScreen = ({ animeList }) => {
       if (results.length === 0) {
         Animated.spring(noResultsFadeAnimation, {
           toValue: 1,
-          useNativeDriver: false,
+          useNativeDriver: true,
         }).start();
       } else {
         Animated.spring(scrollFadeAnimation, {
           tension: 10,
           toValue: 1,
-          useNativeDriver: false,
+          useNativeDriver: true,
         }).start();
       }
 
@@ -103,11 +103,13 @@ const SecondSearchScreen = ({ animeList }) => {
       {!firstSearchDone && (
         <Animated.View
           style={[styles.container, {
-            bottom: downloadTextAnimation,
             opacity: downloadTextAnimation.interpolate({
               inputRange: [-100, 0],
               outputRange: [0, 1],
             }),
+            transform: [{
+              translateY: downloadTextAnimation,
+            }],
           }]}
         >
           <Text style={styles.downloadText}>Watch your favourite anime!</Text>
@@ -117,11 +119,13 @@ const SecondSearchScreen = ({ animeList }) => {
 
       {firstSearchDone && searchResults.length === 0 && (
         <Animated.View style={[styles.container, {
-          bottom: noResultsFadeAnimation.interpolate({
-            inputRange: [0, 1],
-            outputRange: [-100, 0],
-          }),
           opacity: noResultsFadeAnimation,
+          transform: [{
+            translateY: noResultsFadeAnimation.interpolate({
+              inputRange: [0, 1],
+              outputRange: [-100, 0],
+            }),
+          }],
         }]}
         >
           <Entypo color="white" name="emoji-sad" size={64} />
@@ -135,11 +139,13 @@ const SecondSearchScreen = ({ animeList }) => {
           keyboardDismissMode="on-drag"
           overScrollMode="never"
           style={[styles.searchScroll, {
-            bottom: scrollFadeAnimation.interpolate({
-              inputRange: [0, 1],
-              outputRange: [-100, 0],
-            }),
             opacity: scrollFadeAnimation,
+            transform: [{
+              translateY: scrollFadeAnimation.interpolate({
+                inputRange: [0, 1],
+                outputRange: [-100, 0],
+              }),
+            }],
           }]}
         >
           {searchResults.map((result) => (
