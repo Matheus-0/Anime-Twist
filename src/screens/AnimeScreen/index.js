@@ -63,6 +63,15 @@ const AnimeScreen = ({ route }) => {
   };
 
   const handleOnPlaybackStatusUpdate = (status) => {
+    if (status.didJustFinish) {
+      if (episodePlaying < animeSources.length) {
+        const nextEpisode = animeSources.find((item) => item.number === episodePlaying + 1);
+
+        setEpisodePlaying(episodePlaying + 1);
+        setVideoSource(decryptSource(nextEpisode.source));
+      }
+    }
+
     if (status.positionMillis > videoCompletePosition) {
       // console.log("I'm finished.", status.positionMillis, videoCompletePosition);
     }
