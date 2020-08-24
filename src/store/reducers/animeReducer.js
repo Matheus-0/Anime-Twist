@@ -32,15 +32,20 @@ export default (state = initialState, action) => {
       const animeID = action.episode.anime_id;
       const episodeNumber = action.episode.number;
 
-      let arrayOfEpisodes = state.animeObjectForEpisodes[animeID] || [];
+      const arrayOfEpisodes = state.animeObjectForEpisodes[animeID] || [];
 
-      arrayOfEpisodes = [...arrayOfEpisodes, episodeNumber];
+      if (arrayOfEpisodes.includes(episodeNumber)) {
+        return state;
+      }
 
       return {
         ...state,
         animeObjectForEpisodes: {
           ...state.animeObjectForEpisodes,
-          [animeID]: arrayOfEpisodes,
+          [animeID]: [
+            ...arrayOfEpisodes,
+            episodeNumber,
+          ],
         },
       };
     }
@@ -60,17 +65,23 @@ export default (state = initialState, action) => {
       const animeID = action.episode.anime_id;
       const episodeNumber = action.episode.number;
 
-      return {
-        ...state,
-        animeObjectForEpisodes: {
-          ...state.animeObjectForEpisodes,
-          animeID: [
-            ...state.animeObjectForEpisodes[animeID].filter(
-              (item) => item.number !== episodeNumber,
-            ),
-          ],
-        },
-      };
+      const arrayOfEpisodes = state.animeObjectForEpisodes[animeID];
+
+      if (arrayOfEpisodes.includes(episodeNumber)) {
+        return {
+          ...state,
+          animeObjectForEpisodes: {
+            ...state.animeObjectForEpisodes,
+            [animeID]: [
+              ...arrayOfEpisodes.filter(
+                (item) => item !== episodeNumber,
+              ),
+            ],
+          },
+        };
+      }
+
+      return state;
     }
     default:
       return state;
