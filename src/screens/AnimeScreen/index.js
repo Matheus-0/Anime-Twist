@@ -6,6 +6,7 @@ import React, { useEffect, useState } from 'react';
 import {
   ActivityIndicator, Animated, LayoutAnimation, Text, View,
 } from 'react-native';
+import { RectButton } from 'react-native-gesture-handler';
 import { connect } from 'react-redux';
 
 // Styles
@@ -36,30 +37,32 @@ const AnimeScreen = ({
 
   const EPISODE_ITEM_HEIGHT = 55;
 
-  const [animeSources, setAnimeSources] = useState([]);
+  const [animeSources, setAnimeSources] = useState(null);
   const [toggleCheckBox, setToggleCheckBox] = useState(false);
   const [episodePlaying, setEpisodePlaying] = useState({});
+  const [networkAvailable, setNetworkAvailable] = useState(true);
   const [orientationIsLandscape, setOrientationIsLandscape] = useState(false);
   const [showSourceError, setShowSourceError] = useState(false);
-  const [videoCompletePosition, setVideoCompletePosition] = useState(0);
+  const [videoCompletePosition, setVideoCompletePosition] = useState(null);
   const [videoSource, setVideoSource] = useState('');
 
   const [fadeAnimation] = useState(new Animated.Value(0));
   const [flatListFadeAnimation] = useState(new Animated.Value(0));
 
+  const fetchData = async () => {
+    const response = await getAnimeSources(anime);
+
+    if (response) setAnimeSources(response);
+    else setNetworkAvailable(false);
+
+    Animated.spring(flatListFadeAnimation, {
+      tension: 10,
+      toValue: 1,
+      useNativeDriver: true,
+    }).start();
+  };
+
   useEffect(() => {
-    async function fetchData() {
-      const response = await getAnimeSources(anime);
-
-      setAnimeSources(response);
-
-      Animated.spring(flatListFadeAnimation, {
-        tension: 10,
-        toValue: 1,
-        useNativeDriver: true,
-      }).start();
-    }
-
     Animated.spring(fadeAnimation, {
       tension: 10,
       toValue: 1,
@@ -67,7 +70,7 @@ const AnimeScreen = ({
     }).start();
 
     fetchData();
-  }, []);
+  }, [networkAvailable]);
 
   const isEpisodeComplete = (episode) => {
     const arrayOfEpisodes = completeEpisodes[episode.anime_id];
@@ -109,7 +112,10 @@ const AnimeScreen = ({
   };
 
   const handleOnPlaybackStatusUpdate = (status) => {
-    if (status.positionMillis > videoCompletePosition && !isEpisodeComplete(episodePlaying)) {
+    if (videoCompletePosition
+      && status.positionMillis > videoCompletePosition
+      && !isEpisodeComplete(episodePlaying)
+    ) {
       markEpisodeAsComplete(episodePlaying);
 
       setToggleCheckBox(true);
@@ -171,6 +177,7 @@ const AnimeScreen = ({
         <View style={styles.videoContainer}>
           <Video
             onError={() => {
+              // console.log(error);
               setVideoSource('');
               setShowSourceError(true);
             }}
@@ -212,30 +219,60 @@ const AnimeScreen = ({
         </View>
       )}
 
-      {animeSources.length !== 0
+      {animeSources
         ? (
-          <View style={styles.episodesContainer}>
-            <Animated.FlatList
-              contentContainerStyle={styles.flatListContent}
-              data={animeSources}
-              getItemLayout={handleGetItemLayout}
-              keyExtractor={(item) => String(item.number)}
-              numColumns={4}
-              overScrollMode="never"
-              renderItem={handleRenderItem}
-              style={{
-                opacity: flatListFadeAnimation,
-                transform: [{
-                  translateY: flatListFadeAnimation.interpolate({
-                    inputRange: [0, 1],
-                    outputRange: [200, 0],
-                  }),
-                }],
-              }}
-            />
-          </View>
+          <>
+            {animeSources.length !== 0 ? (
+              <View style={styles.episodesContainer}>
+                <Animated.FlatList
+                  contentContainerStyle={styles.flatListContent}
+                  data={animeSources}
+                  getItemLayout={handleGetItemLayout}
+                  keyExtractor={(item) => String(item.number)}
+                  numColumns={4}
+                  overScrollMode="never"
+                  renderItem={handleRenderItem}
+                  style={{
+                    opacity: flatListFadeAnimation,
+                    transform: [{
+                      translateY: flatListFadeAnimation.interpolate({
+                        inputRange: [0, 1],
+                        outputRange: [200, 0],
+                      }),
+                    }],
+                  }}
+                />
+              </View>
+            ) : (
+              <View style={styles.episodesNotFoundContainer}>
+                <Text style={styles.episodesNotFoundText}>
+                  No episodes found.
+                </Text>
+              </View>
+            )}
+          </>
         ) : (
-          <ActivityIndicator color="#e63232" size="large" style={styles.loading} />
+          <>
+            {networkAvailable ? (
+              <ActivityIndicator color="#e63232" size="large" style={styles.loading} />
+            ) : (
+              <View style={styles.noConnectionContainer}>
+                <Text style={styles.noConnectionText}>
+                  Connection error.
+                </Text>
+                <RectButton
+                  onPress={() => {
+                    setNetworkAvailable(true);
+                  }}
+                  style={styles.noConnectionButton}
+                >
+                  <Text style={styles.noConnectionButtonText}>
+                    Retry
+                  </Text>
+                </RectButton>
+              </View>
+            )}
+          </>
         )}
     </View>
   );

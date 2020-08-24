@@ -20,11 +20,44 @@ const styles = StyleSheet.create({
     flex: 1,
     width: '100%',
   },
+  episodesNotFoundContainer: {
+    justifyContent: 'center',
+    flex: 1,
+  },
+  episodesNotFoundText: {
+    color: 'white',
+    fontFamily: 'Quicksand_400Regular',
+    fontSize: 18,
+    textAlign: 'center',
+  },
   flatListContent: {
     paddingHorizontal: 20,
   },
   loading: {
     flex: 1,
+  },
+  noConnectionButton: {
+    backgroundColor: '#e63232',
+    borderRadius: 10,
+    marginTop: '5%',
+    paddingHorizontal: 40,
+    paddingVertical: 10,
+  },
+  noConnectionButtonText: {
+    color: 'white',
+    fontFamily: 'Quicksand_400Regular',
+    textAlign: 'center',
+  },
+  noConnectionContainer: {
+    alignItems: 'center',
+    flex: 1,
+    justifyContent: 'center',
+  },
+  noConnectionText: {
+    color: 'white',
+    fontFamily: 'Quicksand_400Regular',
+    fontSize: 18,
+    textAlign: 'center',
   },
   sourceErrorText: {
     color: 'white',
