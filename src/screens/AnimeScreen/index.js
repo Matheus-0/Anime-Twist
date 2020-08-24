@@ -38,6 +38,7 @@ const AnimeScreen = ({
   const EPISODE_ITEM_HEIGHT = 55;
 
   const [animeSources, setAnimeSources] = useState(null);
+  const [autoCheckBox, setAutoCheckBox] = useState(true);
   const [toggleCheckBox, setToggleCheckBox] = useState(false);
   const [episodePlaying, setEpisodePlaying] = useState({});
   const [networkAvailable, setNetworkAvailable] = useState(true);
@@ -113,19 +114,24 @@ const AnimeScreen = ({
 
   const handleOnPlaybackStatusUpdate = (status) => {
     if (videoCompletePosition
+      && autoCheckBox
       && status.positionMillis > videoCompletePosition
       && !isEpisodeComplete(episodePlaying)
     ) {
       markEpisodeAsComplete(episodePlaying);
 
+      setAutoCheckBox(false);
       setToggleCheckBox(true);
     }
 
     if (status.didJustFinish) {
-      if (episodePlaying < animeSources.length) {
-        const nextEpisode = animeSources.find((item) => item.number === episodePlaying + 1);
+      if (episodePlaying.number < animeSources.length) {
+        const nextEpisode = animeSources.find((item) => item.number === episodePlaying.number + 1);
 
+        setAutoCheckBox(true);
+        setVideoCompletePosition(null);
         setEpisodePlaying(nextEpisode);
+        setToggleCheckBox(isEpisodeComplete(nextEpisode));
         setVideoSource(decryptSource(nextEpisode.source));
       }
     }
@@ -140,6 +146,8 @@ const AnimeScreen = ({
         isComplete={isComplete}
         isPlaying={item.number === episodePlaying.number}
         onPress={() => {
+          setAutoCheckBox(true);
+          setVideoCompletePosition(null);
           setShowSourceError(false);
           setEpisodePlaying(item);
           setToggleCheckBox(isComplete);
