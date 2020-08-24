@@ -5,20 +5,30 @@ import React, { useEffect, useState } from 'react';
 import {
   ActivityIndicator, Animated, LayoutAnimation, Text, View,
 } from 'react-native';
+import { connect } from 'react-redux';
 
+// Styles
 import styles from './styles';
 
+// Actions
+import { markEpisodeAsComplete as markEpisodeAsCompleteAction } from '../../store/actions';
+
+// Components
 import EpisodeItem from '../../components/EpisodeItem';
 
+// API
 import { getAnimeSources, decryptSource } from '../../services/api';
 
+// Constants
 import { userAgent, baseURL } from '../../constants';
 
-const AnimeScreen = ({ route }) => {
+const AnimeScreen = ({ completeEpisodes, markEpisodeAsComplete, route }) => {
   const { anime } = route.params;
 
+  const EPISODE_ITEM_HEIGHT = 55;
+
   const [animeSources, setAnimeSources] = useState([]);
-  const [episodePlaying, setEpisodePlaying] = useState(0);
+  const [episodePlaying, setEpisodePlaying] = useState({});
   const [orientationIsLandscape, setOrientationIsLandscape] = useState(false);
   const [videoCompletePosition, setVideoCompletePosition] = useState(0);
   const [videoSource, setVideoSource] = useState('');
@@ -48,6 +58,24 @@ const AnimeScreen = ({ route }) => {
     fetchData();
   }, []);
 
+  const isEpisodeComplete = (episode) => {
+    const arrayOfEpisodes = completeEpisodes[episode.anime_id];
+
+    if (arrayOfEpisodes) {
+      return (
+        completeEpisodes[episode.anime_id].includes(episode.number)
+      );
+    }
+
+    return false;
+  };
+
+  const handleGetItemLayout = (data, index) => ({
+    length: EPISODE_ITEM_HEIGHT,
+    offset: EPISODE_ITEM_HEIGHT * index,
+    index,
+  });
+
   const handleOnFullscreenUpdate = async () => {
     await lockAsync(
       orientationIsLandscape
@@ -63,19 +91,35 @@ const AnimeScreen = ({ route }) => {
   };
 
   const handleOnPlaybackStatusUpdate = (status) => {
+    if (status.positionMillis > videoCompletePosition && !isEpisodeComplete(episodePlaying)) {
+      markEpisodeAsComplete(episodePlaying);
+
+      // console.log("I'm finished.", status.positionMillis, videoCompletePosition);
+    }
+
     if (status.didJustFinish) {
       if (episodePlaying < animeSources.length) {
         const nextEpisode = animeSources.find((item) => item.number === episodePlaying + 1);
 
-        setEpisodePlaying(episodePlaying + 1);
+        setEpisodePlaying(nextEpisode);
         setVideoSource(decryptSource(nextEpisode.source));
       }
     }
-
-    if (status.positionMillis > videoCompletePosition) {
-      // console.log("I'm finished.", status.positionMillis, videoCompletePosition);
-    }
   };
+
+  const handleRenderItem = ({ item }) => (
+    <EpisodeItem
+      animeEpisode={item}
+      isComplete={isEpisodeComplete(item)}
+      isPlaying={item.number === episodePlaying.number}
+      onPress={() => {
+        setEpisodePlaying(item);
+        setVideoSource(decryptSource(item.source));
+
+        LayoutAnimation.configureNext(LayoutAnimation.Presets.easeInEaseOut);
+      }}
+    />
+  );
 
   return (
     <View style={styles.container}>
@@ -124,21 +168,11 @@ const AnimeScreen = ({ route }) => {
             <Animated.FlatList
               contentContainerStyle={styles.flatListContent}
               data={animeSources}
+              getItemLayout={handleGetItemLayout}
               keyExtractor={(item) => String(item.number)}
               numColumns={4}
               overScrollMode="never"
-              renderItem={({ item }) => (
-                <EpisodeItem
-                  animeEpisode={item}
-                  isPlaying={item.number === episodePlaying}
-                  onPress={() => {
-                    setEpisodePlaying(item.number);
-                    setVideoSource(decryptSource(item.source));
-
-                    LayoutAnimation.configureNext(LayoutAnimation.Presets.easeInEaseOut);
-                  }}
-                />
-              )}
+              renderItem={handleRenderItem}
               style={{
                 opacity: flatListFadeAnimation,
                 transform: [{
@@ -158,7 +192,17 @@ const AnimeScreen = ({ route }) => {
 };
 
 AnimeScreen.propTypes = {
+  completeEpisodes: PropTypes.shape().isRequired,
+  markEpisodeAsComplete: PropTypes.func.isRequired,
   route: PropTypes.shape().isRequired,
 };
 
-export default AnimeScreen;
+const mapDispatchToProps = {
+  markEpisodeAsComplete: markEpisodeAsCompleteAction,
+};
+
+const mapStateToProps = (state) => ({
+  completeEpisodes: state.animeReducer.animeObjectForEpisodes,
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(AnimeScreen);

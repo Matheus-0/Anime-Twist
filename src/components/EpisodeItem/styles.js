@@ -1,6 +1,10 @@
 import { StyleSheet } from 'react-native';
 
 const styles = StyleSheet.create({
+  completeItem: {
+    borderColor: '#e63232',
+    borderWidth: 1,
+  },
   episodeText: {
     color: 'white',
     fontFamily: 'Quicksand_400Regular',
@@ -19,7 +23,7 @@ const styles = StyleSheet.create({
   },
   playingItem: {
     borderColor: '#646464',
-    borderWidth: 0.4,
+    borderWidth: 1,
   },
 });
 

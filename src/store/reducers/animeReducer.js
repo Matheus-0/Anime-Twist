@@ -32,14 +32,15 @@ export default (state = initialState, action) => {
       const animeID = action.episode.anime_id;
       const episodeNumber = action.episode.number;
 
+      let arrayOfEpisodes = state.animeObjectForEpisodes[animeID] || [];
+
+      arrayOfEpisodes = [...arrayOfEpisodes, episodeNumber];
+
       return {
         ...state,
         animeObjectForEpisodes: {
           ...state.animeObjectForEpisodes,
-          animeID: [
-            ...state.animeObjectForEpisodes[animeID],
-            episodeNumber,
-          ],
+          [animeID]: arrayOfEpisodes,
         },
       };
     }

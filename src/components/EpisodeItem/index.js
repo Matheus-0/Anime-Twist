@@ -2,31 +2,30 @@ import { SimpleLineIcons } from '@expo/vector-icons';
 import PropTypes from 'prop-types';
 import React from 'react';
 import { Text, TouchableOpacity } from 'react-native';
-import { connect } from 'react-redux';
 
 import styles from './styles';
 
 const EpisodeItem = ({
   animeEpisode,
-  animeObjectForEpisodes,
+  isComplete,
   isPlaying,
   onPress,
 }) => {
-  const isComplete = () => {
-    const episodesArray = animeObjectForEpisodes[animeEpisode.anime_id] || [];
+  let extraStyles = {};
 
-    return episodesArray.includes(animeEpisode.number);
-  };
+  if (isComplete) {
+    extraStyles = styles.completeItem;
+  } else if (isPlaying) {
+    extraStyles = styles.playingItem;
+  }
 
   return (
     <TouchableOpacity
       activeOpacity={0.7}
       onPress={() => {
-        // console.log(isComplete());
-        // console.log(animeObjectForEpisodes);
         onPress();
       }}
-      style={[styles.item, isPlaying ? styles.playingItem : {}]}
+      style={[styles.item, extraStyles]}
     >
       {isPlaying ? (
         <SimpleLineIcons name="control-play" size={16} color="grey" />
@@ -39,13 +38,9 @@ const EpisodeItem = ({
 
 EpisodeItem.propTypes = {
   animeEpisode: PropTypes.shape().isRequired,
-  animeObjectForEpisodes: PropTypes.shape().isRequired,
+  isComplete: PropTypes.bool.isRequired,
   isPlaying: PropTypes.bool.isRequired,
   onPress: PropTypes.func.isRequired,
 };
 
-const mapStateToProps = (state) => ({
-  animeObjectForEpisodes: state.animeReducer.animeObjectForEpisodes,
-});
-
-export default connect(mapStateToProps)(EpisodeItem);
+export default EpisodeItem;
