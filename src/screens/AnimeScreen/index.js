@@ -177,7 +177,7 @@ const AnimeScreen = ({
 
       {showSourceError && (
         <Text style={styles.sourceErrorText}>
-          There was a problem on the server, could not load video.
+          Could not load video.
         </Text>
       )}
 

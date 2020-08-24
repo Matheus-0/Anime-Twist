@@ -1,7 +1,7 @@
 /* eslint-disable camelcase */
 import { AppLoading } from 'expo';
 import { StatusBar } from 'expo-status-bar';
-import React, { useState } from 'react';
+import React from 'react';
 import { Platform, UIManager } from 'react-native';
 import { Provider } from 'react-redux';
 import { PersistGate } from 'redux-persist/integration/react';
@@ -9,11 +9,8 @@ import { PersistGate } from 'redux-persist/integration/react';
 import { Quicksand_400Regular, Quicksand_700Bold, useFonts } from '@expo-google-fonts/quicksand';
 
 import { persistor, store } from './src/store';
-import { loadAnimeList } from './src/store/actions';
 
 import Routes from './src/routes';
-
-import { getAnimeList } from './src/services/api';
 
 import NetworkStatus from './src/components/NetworkStatus';
 
@@ -26,25 +23,6 @@ export default function App() {
     Quicksand_400Regular,
     Quicksand_700Bold,
   });
-
-  const [isReady, setIsReady] = useState(false);
-
-  const loadResourcesAsync = async () => {
-    const animeList = await getAnimeList();
-
-    store.dispatch(loadAnimeList(animeList));
-
-    return Promise.all(animeList);
-  };
-
-  if (!isReady) {
-    return (
-      <AppLoading
-        startAsync={loadResourcesAsync}
-        onFinish={() => setIsReady(true)}
-      />
-    );
-  }
 
   if (!fontsLoaded) return <AppLoading />;
 

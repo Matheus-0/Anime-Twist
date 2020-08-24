@@ -43,21 +43,25 @@ const SecondSearchScreen = ({ animeList }) => {
 
       if (!firstSearchDone) setFirstSearchDone(true);
 
-      const results = animeList.filter(
-        (anime) => {
-          let alternative = getAnimeAlternativeTitle(anime);
-          const slug = getAnimeSlug(anime);
-          const title = getAnimeTitle(anime).toLowerCase();
+      let results = [];
 
-          if (alternative) {
-            alternative = alternative.toLowerCase();
+      if (animeList) {
+        results = animeList.filter(
+          (anime) => {
+            let alternative = getAnimeAlternativeTitle(anime);
+            const slug = getAnimeSlug(anime);
+            const title = getAnimeTitle(anime).toLowerCase();
 
-            return slug.includes(query) || alternative.includes(query) || title.includes(query);
-          }
+            if (alternative) {
+              alternative = alternative.toLowerCase();
 
-          return slug.includes(query) || title.includes(query);
-        },
-      );
+              return slug.includes(query) || alternative.includes(query) || title.includes(query);
+            }
+
+            return slug.includes(query) || title.includes(query);
+          },
+        );
+      }
 
       if (results.length === 0) {
         Animated.spring(noResultsFadeAnimation, {

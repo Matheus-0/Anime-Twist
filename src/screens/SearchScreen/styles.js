@@ -14,6 +14,36 @@ const styles = StyleSheet.create({
     marginTop: '10%',
     width: 100,
   },
+  loading: {
+    marginTop: '35%',
+  },
+  loadingText: {
+    color: 'white',
+    fontFamily: 'Quicksand_400Regular',
+    fontSize: 14,
+    marginTop: '5%',
+    textAlign: 'center',
+  },
+  requestFailedButton: {
+    backgroundColor: '#e63232',
+    borderRadius: 10,
+    marginTop: '5%',
+    paddingHorizontal: 40,
+    paddingVertical: 10,
+  },
+  requestFailedButtonText: {
+    color: 'white',
+    fontFamily: 'Quicksand_400Regular',
+    textAlign: 'center',
+  },
+  requestFailedContainer: {
+    marginTop: '35%',
+  },
+  requestFailedText: {
+    color: 'white',
+    fontFamily: 'Quicksand_400Regular',
+    fontSize: 18,
+  },
   search: {
     alignItems: 'center',
     backgroundColor: '#e63232',
