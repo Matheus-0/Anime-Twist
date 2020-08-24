@@ -37,7 +37,7 @@ export default function App() {
     return Promise.all(animeList);
   };
 
-  if (!isReady && !fontsLoaded) {
+  if (!isReady) {
     return (
       <AppLoading
         startAsync={loadResourcesAsync}
@@ -45,6 +45,8 @@ export default function App() {
       />
     );
   }
+
+  if (!fontsLoaded) return <AppLoading />;
 
   return (
     <Provider store={store}>
