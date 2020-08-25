@@ -35,8 +35,6 @@ const AnimeScreen = ({
 }) => {
   const { anime } = route.params;
 
-  const EPISODE_ITEM_HEIGHT = 55;
-
   const [animeSources, setAnimeSources] = useState(null);
   const [autoCheckBox, setAutoCheckBox] = useState(true);
   const [toggleCheckBox, setToggleCheckBox] = useState(false);
@@ -50,25 +48,23 @@ const AnimeScreen = ({
   const [fadeAnimation] = useState(new Animated.Value(0));
   const [flatListFadeAnimation] = useState(new Animated.Value(0));
 
+  const playFadeAnimation = (animation) => Animated.spring(animation, {
+    tension: 10,
+    toValue: 1,
+    useNativeDriver: true,
+  }).start();
+
   const fetchData = async () => {
     const response = await getAnimeSources(anime);
 
     if (response) setAnimeSources(response);
     else setNetworkAvailable(false);
 
-    Animated.spring(flatListFadeAnimation, {
-      tension: 10,
-      toValue: 1,
-      useNativeDriver: true,
-    }).start();
+    playFadeAnimation(flatListFadeAnimation);
   };
 
   useEffect(() => {
-    Animated.spring(fadeAnimation, {
-      tension: 10,
-      toValue: 1,
-      useNativeDriver: true,
-    }).start();
+    playFadeAnimation(fadeAnimation);
 
     fetchData();
   }, [networkAvailable]);
@@ -76,11 +72,7 @@ const AnimeScreen = ({
   const isEpisodeComplete = (episode) => {
     const arrayOfEpisodes = completeEpisodes[episode.anime_id];
 
-    if (arrayOfEpisodes) {
-      return (
-        arrayOfEpisodes.includes(episode.number)
-      );
-    }
+    if (arrayOfEpisodes) return arrayOfEpisodes.includes(episode.number);
 
     return false;
   };
@@ -92,17 +84,9 @@ const AnimeScreen = ({
     setToggleCheckBox(newValue);
   };
 
-  const handleGetItemLayout = (data, index) => ({
-    length: EPISODE_ITEM_HEIGHT,
-    offset: EPISODE_ITEM_HEIGHT * index,
-    index,
-  });
-
   const handleOnFullscreenUpdate = async () => {
     await lockAsync(
-      orientationIsLandscape
-        ? OrientationLock.PORTRAIT
-        : OrientationLock.LANDSCAPE_RIGHT,
+      orientationIsLandscape ? OrientationLock.PORTRAIT : OrientationLock.LANDSCAPE_RIGHT,
     );
 
     setOrientationIsLandscape(!orientationIsLandscape);
@@ -113,6 +97,11 @@ const AnimeScreen = ({
   };
 
   const handleOnPlaybackStatusUpdate = (status) => {
+    if (status.error) {
+      setVideoSource('');
+      setShowSourceError(true);
+    }
+
     if (videoCompletePosition
       && autoCheckBox
       && status.positionMillis > videoCompletePosition
@@ -137,7 +126,7 @@ const AnimeScreen = ({
     }
   };
 
-  const handleRenderItem = ({ item }) => {
+  const handleRenderItem = (item) => {
     const isComplete = isEpisodeComplete(item);
 
     return (
@@ -145,6 +134,7 @@ const AnimeScreen = ({
         animeEpisode={item}
         isComplete={isComplete}
         isPlaying={item.number === episodePlaying.number}
+        key={String(item.number)}
         onPress={() => {
           setAutoCheckBox(true);
           setVideoCompletePosition(null);
@@ -175,20 +165,11 @@ const AnimeScreen = ({
         <Text numberOfLines={3} style={styles.title}>{anime.title}</Text>
       </Animated.View>
 
-      {showSourceError && (
-        <Text style={styles.sourceErrorText}>
-          Could not load video.
-        </Text>
-      )}
+      {showSourceError && <Text style={styles.sourceErrorText}>Could not load video.</Text>}
 
       {videoSource.length !== 0 && (
         <View style={styles.videoContainer}>
           <Video
-            onError={() => {
-              // console.log(error);
-              setVideoSource('');
-              setShowSourceError(true);
-            }}
             onFullscreenUpdate={handleOnFullscreenUpdate}
             onLoad={handleOnLoad}
             onPlaybackStatusUpdate={handleOnPlaybackStatusUpdate}
@@ -205,9 +186,7 @@ const AnimeScreen = ({
             useNativeControls
           />
 
-          <View
-            style={styles.checkboxContainer}
-          >
+          <View style={styles.checkboxContainer}>
             <Text style={styles.checkboxText}>Mark episode as complete!</Text>
 
             <CheckBox
@@ -220,68 +199,53 @@ const AnimeScreen = ({
               }}
             />
           </View>
-
-          <View style={{ position: 'absolute' }}>
-            {/* <Text style={{ color: 'white' }}>Loading...</Text> */}
-          </View>
         </View>
       )}
 
-      {animeSources
-        ? (
-          <>
-            {animeSources.length !== 0 ? (
-              <View style={styles.episodesContainer}>
-                <Animated.FlatList
-                  contentContainerStyle={styles.flatListContent}
-                  data={animeSources}
-                  getItemLayout={handleGetItemLayout}
-                  keyExtractor={(item) => String(item.number)}
-                  numColumns={4}
-                  overScrollMode="never"
-                  renderItem={handleRenderItem}
-                  style={{
-                    opacity: flatListFadeAnimation,
-                    transform: [{
-                      translateY: flatListFadeAnimation.interpolate({
-                        inputRange: [0, 1],
-                        outputRange: [200, 0],
-                      }),
-                    }],
-                  }}
-                />
-              </View>
-            ) : (
-              <View style={styles.episodesNotFoundContainer}>
-                <Text style={styles.episodesNotFoundText}>
-                  No episodes found.
-                </Text>
-              </View>
-            )}
-          </>
-        ) : (
-          <>
-            {networkAvailable ? (
-              <ActivityIndicator color="#e63232" size="large" style={styles.loading} />
-            ) : (
-              <View style={styles.noConnectionContainer}>
-                <Text style={styles.noConnectionText}>
-                  Connection error.
-                </Text>
-                <RectButton
-                  onPress={() => {
-                    setNetworkAvailable(true);
-                  }}
-                  style={styles.noConnectionButton}
-                >
-                  <Text style={styles.noConnectionButtonText}>
-                    Retry
-                  </Text>
-                </RectButton>
-              </View>
-            )}
-          </>
-        )}
+      {animeSources ? (
+        <>
+          {animeSources.length !== 0 ? (
+            <View style={styles.episodesContainer}>
+              <Animated.ScrollView
+                contentContainerStyle={styles.listContent}
+                overScrollMode="never"
+                style={{
+                  opacity: flatListFadeAnimation,
+                  transform: [{
+                    translateY: flatListFadeAnimation.interpolate({
+                      inputRange: [0, 1],
+                      outputRange: [200, 0],
+                    }),
+                  }],
+                }}
+              >
+                {animeSources.map((item) => handleRenderItem(item))}
+              </Animated.ScrollView>
+            </View>
+          ) : (
+            <View style={styles.episodesNotFoundContainer}>
+              <Text style={styles.episodesNotFoundText}>No episodes found.</Text>
+            </View>
+          )}
+        </>
+      ) : (
+        <>
+          {networkAvailable ? (
+            <ActivityIndicator color="#e63232" size="large" style={styles.loading} />
+          ) : (
+            <View style={styles.noConnectionContainer}>
+              <Text style={styles.noConnectionText}>Connection error.</Text>
+
+              <RectButton
+                onPress={() => setNetworkAvailable(true)}
+                style={styles.noConnectionButton}
+              >
+                <Text style={styles.noConnectionButtonText}>Retry</Text>
+              </RectButton>
+            </View>
+          )}
+        </>
+      )}
     </View>
   );
 };

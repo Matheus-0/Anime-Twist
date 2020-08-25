@@ -1,11 +1,4 @@
-import {
-  ADD_TO_HISTORY,
-  LOAD_ANIME_LIST,
-  MARK_EPISODE_COMPLETE,
-  REMOVE_ALL_HISTORY,
-  REMOVE_FROM_HISTORY,
-  UNDO_MARK_EPISODE_COMPLETE,
-} from '../constants';
+import * as Constants from '../constants';
 
 const initialState = {
   animeList: [],
@@ -15,7 +8,7 @@ const initialState = {
 
 export default (state = initialState, action) => {
   switch (action.type) {
-    case ADD_TO_HISTORY:
+    case Constants.ADD_TO_HISTORY:
       return {
         ...state,
         history: [
@@ -23,45 +16,38 @@ export default (state = initialState, action) => {
           action.anime,
         ],
       };
-    case LOAD_ANIME_LIST:
+    case Constants.LOAD_ANIME_LIST:
       return {
         ...state,
         animeList: action.animeList,
       };
-    case MARK_EPISODE_COMPLETE: {
+    case Constants.MARK_EPISODE_COMPLETE: {
       const animeID = action.episode.anime_id;
       const episodeNumber = action.episode.number;
 
       const arrayOfEpisodes = state.animeObjectForEpisodes[animeID] || [];
 
-      if (arrayOfEpisodes.includes(episodeNumber)) {
-        return state;
-      }
+      if (arrayOfEpisodes.includes(episodeNumber)) return state;
 
       return {
         ...state,
         animeObjectForEpisodes: {
           ...state.animeObjectForEpisodes,
-          [animeID]: [
-            ...arrayOfEpisodes,
-            episodeNumber,
-          ],
+          [animeID]: [...arrayOfEpisodes, episodeNumber],
         },
       };
     }
-    case REMOVE_ALL_HISTORY:
+    case Constants.REMOVE_ALL_HISTORY:
       return {
         ...state,
         history: [],
       };
-    case REMOVE_FROM_HISTORY:
+    case Constants.REMOVE_FROM_HISTORY:
       return {
         ...state,
-        history: [
-          ...state.history.filter((item) => item.id !== action.anime.id),
-        ],
+        history: [...state.history.filter((item) => item.id !== action.anime.id)],
       };
-    case UNDO_MARK_EPISODE_COMPLETE: {
+    case Constants.UNDO_MARK_EPISODE_COMPLETE: {
       const animeID = action.episode.anime_id;
       const episodeNumber = action.episode.number;
 
@@ -72,11 +58,7 @@ export default (state = initialState, action) => {
           ...state,
           animeObjectForEpisodes: {
             ...state.animeObjectForEpisodes,
-            [animeID]: [
-              ...arrayOfEpisodes.filter(
-                (item) => item !== episodeNumber,
-              ),
-            ],
+            [animeID]: [...arrayOfEpisodes.filter((item) => item !== episodeNumber)],
           },
         };
       }

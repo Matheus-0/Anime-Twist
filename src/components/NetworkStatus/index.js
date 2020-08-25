@@ -26,13 +26,8 @@ const NetworkStatus = ({ style }) => {
       timer = setTimeout(() => {
         setConnected(state.isConnected);
 
-        if (!state.isConnected) {
-          playAlertAnimation(0);
-        } else {
-          setTimeout(() => {
-            playAlertAnimation(100);
-          }, 2000);
-        }
+        if (!state.isConnected) playAlertAnimation(0);
+        else setTimeout(() => playAlertAnimation(100), 2000);
       }, 2000);
     });
   }, []);
@@ -54,11 +49,7 @@ const NetworkStatus = ({ style }) => {
         }],
       }]}
     >
-      <Text
-        style={styles.text}
-      >
-        {connected ? 'Connected!' : 'No connection.'}
-      </Text>
+      <Text style={styles.text}>{connected ? 'Connected!' : 'No connection.'}</Text>
     </Animated.View>
   );
 };

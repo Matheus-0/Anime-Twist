@@ -78,87 +78,79 @@ const HistoryScreen = ({ history, navigation, removeAllHistory }) => {
         <Text style={styles.historyTitle}>History</Text>
       </Animated.View>
 
-      {history.length !== 0
-        ? (
-          <>
-            <Animated.View
-              style={[styles.historyDescriptionContainer, {
-                opacity: fadeAnimation,
-              }]}
-            >
-              <Text style={styles.historyDescription}>
-                These are anime you&apos;ve visited recently.
-              </Text>
-            </Animated.View>
-
-            <Animated.View
-              style={[styles.removeAllHistoryContainer, {
-                opacity: fadeAnimation,
-                transform: [{
-                  translateX: fadeAnimation.interpolate({
-                    inputRange: [0, 1],
-                    outputRange: [100, 0],
-                  }),
-                }],
-              }]}
-            >
-              <RectButton
-                onPress={handleRemoveAllHistory}
-                style={styles.removeAllHistoryButton}
-              >
-                <Text
-                  style={styles.removeAllHistoryText}
-                >
-                  Clear all history
-                </Text>
-              </RectButton>
-            </Animated.View>
-
-            <Animated.ScrollView
-              contentContainerStyle={styles.scrollViewContainer}
-              overScrollMode="never"
-              style={[styles.scrollView, {
-                opacity: scrollViewAnimation.interpolate({
-                  inputRange: [0, 100],
-                  outputRange: [1, 0],
-                }),
-                transform: [{
-                  translateY: scrollViewAnimation,
-                }],
-              }]}
-            >
-              {history.map((_, index, array) => {
-                // Mapping array in reverse order so that the most recent anime are shown on top
-                const anime = array[array.length - 1 - index];
-
-                return (
-                  <AnimeItem
-                    anime={anime}
-                    key={anime.id}
-                    removeFromParentAnimation={() => playLayoutAnimation(200)}
-                    toRemove
-                  />
-                );
-              })}
-            </Animated.ScrollView>
-          </>
-        )
-        : (
+      {history.length !== 0 ? (
+        <>
           <Animated.View
-            style={[styles.noHistoryContainer, {
+            style={[styles.historyDescriptionContainer, {
+              opacity: fadeAnimation,
+            }]}
+          >
+            <Text style={styles.historyDescription}>These are anime you&apos;ve visited.</Text>
+          </Animated.View>
+
+          <Animated.View
+            style={[styles.removeAllHistoryContainer, {
               opacity: fadeAnimation,
               transform: [{
-                translateY: fadeAnimation.interpolate({
+                translateX: fadeAnimation.interpolate({
                   inputRange: [0, 1],
                   outputRange: [100, 0],
                 }),
               }],
             }]}
           >
-            <AntDesign name="questioncircleo" size={80} color="white" />
-            <Text style={styles.noHistoryText}>No history found. Go watch some anime!</Text>
+            <RectButton
+              onPress={handleRemoveAllHistory}
+              style={styles.removeAllHistoryButton}
+            >
+              <Text style={styles.removeAllHistoryText}>Clear all history</Text>
+            </RectButton>
           </Animated.View>
-        )}
+
+          <Animated.ScrollView
+            contentContainerStyle={styles.scrollViewContainer}
+            overScrollMode="never"
+            style={[styles.scrollView, {
+              opacity: scrollViewAnimation.interpolate({
+                inputRange: [0, 100],
+                outputRange: [1, 0],
+              }),
+              transform: [{
+                translateY: scrollViewAnimation,
+              }],
+            }]}
+          >
+            {history.map((_, index, array) => {
+              // Mapping array in reverse order so that the most recent anime are shown on top
+              const anime = array[array.length - 1 - index];
+
+              return (
+                <AnimeItem
+                  anime={anime}
+                  key={anime.id}
+                  removeFromParentAnimation={() => playLayoutAnimation(200)}
+                  toRemove
+                />
+              );
+            })}
+          </Animated.ScrollView>
+        </>
+      ) : (
+        <Animated.View
+          style={[styles.noHistoryContainer, {
+            opacity: fadeAnimation,
+            transform: [{
+              translateY: fadeAnimation.interpolate({
+                inputRange: [0, 1],
+                outputRange: [100, 0],
+              }),
+            }],
+          }]}
+        >
+          <AntDesign name="questioncircleo" size={80} color="white" />
+          <Text style={styles.noHistoryText}>No history found. Go watch some anime!</Text>
+        </Animated.View>
+      )}
     </View>
   );
 };

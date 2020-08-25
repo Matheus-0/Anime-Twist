@@ -24,6 +24,12 @@ const SearchScreen = ({ loadAnimeList, navigation }) => {
 
   const AnimatedTouchableOpacity = Animated.createAnimatedComponent(TouchableOpacity);
 
+  const playFadeAnimation = (animation) => Animated.spring(animation, {
+    tension: 10,
+    toValue: 1,
+    useNativeDriver: true,
+  }).start();
+
   const loadResourcesAsync = async () => {
     const animeList = await getAnimeList();
 
@@ -32,13 +38,8 @@ const SearchScreen = ({ loadAnimeList, navigation }) => {
 
       setIsReady(true);
 
-      Animated.spring(fadeAnimation, {
-        toValue: 1,
-        useNativeDriver: true,
-      }).start();
-    } else {
-      setFailedRequest(true);
-    }
+      playFadeAnimation(fadeAnimation);
+    } else setFailedRequest(true);
   };
 
   useEffect(() => {
@@ -52,18 +53,24 @@ const SearchScreen = ({ loadAnimeList, navigation }) => {
   }, [navigation]);
 
   useFocusEffect(() => {
-    Animated.spring(fadeAnimation, {
-      toValue: 1,
-      useNativeDriver: true,
-    }).start();
+    playFadeAnimation(fadeAnimation);
   });
 
   return (
     <View style={styles.container}>
-      <Image
+      <Animated.Image
         source={logo}
-        style={styles.image}
+        style={[styles.image, {
+          opacity: fadeAnimation,
+          transform: [{
+            translateY: fadeAnimation.interpolate({
+              inputRange: [0, 1],
+              outputRange: [-100, 0],
+            }),
+          }],
+        }]}
       />
+
       {isReady ? (
         <AnimatedTouchableOpacity
           activeOpacity={1}
@@ -89,14 +96,10 @@ const SearchScreen = ({ loadAnimeList, navigation }) => {
                 <Text style={styles.requestFailedText}>Connection error.</Text>
               </View>
               <RectButton
-                onPress={() => {
-                  setFailedRequest(false);
-                }}
+                onPress={() => setFailedRequest(false)}
                 style={styles.requestFailedButton}
               >
-                <Text style={styles.requestFailedButtonText}>
-                  Retry
-                </Text>
+                <Text style={styles.requestFailedButtonText}>Retry</Text>
               </RectButton>
             </>
           ) : (

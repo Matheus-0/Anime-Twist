@@ -18,13 +18,13 @@ const styles = StyleSheet.create({
   historyTitle: {
     color: 'white',
     fontFamily: 'Quicksand_700Bold',
-    fontSize: 30,
+    fontSize: 25,
     textAlign: 'center',
   },
   historyTitleContainer: {
     alignItems: 'center',
     justifyContent: 'center',
-    marginTop: '10%',
+    marginTop: '7.5%',
   },
   noHistoryContainer: {
     alignItems: 'center',

@@ -30,8 +30,10 @@ const styles = StyleSheet.create({
     fontSize: 18,
     textAlign: 'center',
   },
-  flatListContent: {
-    paddingHorizontal: 20,
+  listContent: {
+    flexDirection: 'row',
+    flexWrap: 'wrap',
+    paddingHorizontal: '5%',
   },
   loading: {
     flex: 1,
@@ -69,26 +71,26 @@ const styles = StyleSheet.create({
   title: {
     color: 'white',
     fontFamily: 'Quicksand_700Bold',
-    fontSize: 30,
+    fontSize: 25,
     textAlign: 'center',
   },
   titleContainer: {
     alignItems: 'center',
     justifyContent: 'center',
-    marginBottom: '10%',
-    marginTop: '10%',
+    marginBottom: '7.5%',
+    marginTop: '7.5%',
     paddingHorizontal: '10%',
   },
   video: {
     aspectRatio: 16 / 9,
     height: undefined,
-    marginBottom: '5%',
-    width: '85%',
+    marginBottom: '2.5%',
+    width: '90%',
   },
   videoContainer: {
     alignItems: 'center',
     justifyContent: 'center',
-    marginBottom: '5%',
+    marginBottom: '2.5%',
     width: '100%',
   },
 });

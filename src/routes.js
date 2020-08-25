@@ -18,18 +18,9 @@ const SearchStackScreen = () => (
     headerShown: false,
   })}
   >
-    <SearchStack.Screen
-      component={SearchScreen}
-      name="Search"
-    />
-    <SearchStack.Screen
-      component={SecondSearchScreen}
-      name="SecondSearch"
-    />
-    <SearchStack.Screen
-      component={AnimeScreen}
-      name="Anime"
-    />
+    <SearchStack.Screen component={SearchScreen} name="Search" />
+    <SearchStack.Screen component={SecondSearchScreen} name="SecondSearch" />
+    <SearchStack.Screen component={AnimeScreen} name="Anime" />
   </SearchStack.Navigator>
 );
 
@@ -41,14 +32,8 @@ const HistoryStackScreen = () => (
     headerShown: false,
   })}
   >
-    <HistoryStack.Screen
-      component={HistoryScreen}
-      name="History"
-    />
-    <HistoryStack.Screen
-      component={AnimeScreen}
-      name="Anime"
-    />
+    <HistoryStack.Screen component={HistoryScreen} name="History" />
+    <HistoryStack.Screen component={AnimeScreen} name="Anime" />
   </HistoryStack.Navigator>
 );
 
@@ -78,11 +63,7 @@ export default () => (
         options={{
           // eslint-disable-next-line react/prop-types
           tabBarIcon: ({ color, focused, size }) => (
-            <FontAwesome
-              color={focused ? '#e63232' : color}
-              name="search"
-              size={size}
-            />
+            <FontAwesome color={focused ? '#e63232' : color} name="search" size={size} />
           ),
         }}
       />
@@ -92,11 +73,7 @@ export default () => (
         options={{
           // eslint-disable-next-line react/prop-types
           tabBarIcon: ({ color, focused, size }) => (
-            <FontAwesome
-              color={focused ? '#e63232' : color}
-              name="history"
-              size={size}
-            />
+            <FontAwesome color={focused ? '#e63232' : color} name="history" size={size} />
           ),
         }}
       />

@@ -10,9 +10,9 @@ const styles = StyleSheet.create({
     marginRight: 10,
   },
   image: {
-    height: 100,
+    height: 75,
     marginTop: '10%',
-    width: 100,
+    width: 75,
   },
   loading: {
     marginTop: '35%',

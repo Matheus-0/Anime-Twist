@@ -13,18 +13,13 @@ const EpisodeItem = ({
 }) => {
   let extraStyles = {};
 
-  if (isComplete) {
-    extraStyles = styles.completeItem;
-  } else if (isPlaying) {
-    extraStyles = styles.playingItem;
-  }
+  if (isComplete) extraStyles = styles.completeItem;
+  else if (isPlaying) extraStyles = styles.playingItem;
 
   return (
     <TouchableOpacity
       activeOpacity={0.7}
-      onPress={() => {
-        onPress();
-      }}
+      onPress={onPress}
       style={[styles.item, extraStyles]}
     >
       {isPlaying ? (

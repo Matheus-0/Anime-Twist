@@ -1,6 +1,6 @@
-import AES from 'crypto-js/aes';
 import axios from 'axios';
 import CryptoJS from 'crypto-js';
+import AES from 'crypto-js/aes';
 
 import { getAnimeSlug } from '../utils/anime';
 

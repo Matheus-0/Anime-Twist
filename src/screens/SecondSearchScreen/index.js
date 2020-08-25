@@ -1,9 +1,8 @@
-/* eslint-disable no-unused-vars */
 import { Entypo } from '@expo/vector-icons';
 import PropTypes from 'prop-types';
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import {
-  Animated, Text, TextInput, View,
+  ActivityIndicator, Animated, Text, TextInput, View,
 } from 'react-native';
 import { connect } from 'react-redux';
 
@@ -14,13 +13,17 @@ import AnimeItem from '../../components/AnimeItem';
 import { getAnimeAlternativeTitle, getAnimeSlug, getAnimeTitle } from '../../utils/anime';
 
 const SecondSearchScreen = ({ animeList }) => {
-  const [scrollFadeAnimation] = useState(new Animated.Value(0));
   const [downloadTextAnimation] = useState(new Animated.Value(-100));
   const [fadeAnimation] = useState(new Animated.Value(0));
   const [noResultsFadeAnimation] = useState(new Animated.Value(0));
+  const [scrollFadeAnimation] = useState(new Animated.Value(0));
 
   const [firstSearchDone, setFirstSearchDone] = useState(false);
+  const [isSearching, setIsSearching] = useState(false);
   const [searchResults, setSearchResults] = useState([]);
+  const [searchText, setSearchText] = useState('');
+
+  const SEARCH_RESULTS_LIMIT = 100;
 
   useEffect(() => {
     Animated.sequence([
@@ -43,22 +46,35 @@ const SecondSearchScreen = ({ animeList }) => {
 
       if (!firstSearchDone) setFirstSearchDone(true);
 
+      let count = 0;
       let results = [];
 
       if (animeList) {
         results = animeList.filter(
           (anime) => {
-            let alternative = getAnimeAlternativeTitle(anime);
-            const slug = getAnimeSlug(anime);
-            const title = getAnimeTitle(anime).toLowerCase();
+            if (count < SEARCH_RESULTS_LIMIT) {
+              let alternative = getAnimeAlternativeTitle(anime);
+              const slug = getAnimeSlug(anime);
+              const title = getAnimeTitle(anime).toLowerCase();
 
-            if (alternative) {
-              alternative = alternative.toLowerCase();
+              if (alternative) {
+                alternative = alternative.toLowerCase();
 
-              return slug.includes(query) || alternative.includes(query) || title.includes(query);
+                if (alternative.includes(query)) {
+                  count += 1;
+
+                  return true;
+                }
+              }
+
+              if (slug.includes(query) || title.includes(query)) {
+                count += 1;
+
+                return true;
+              }
             }
 
-            return slug.includes(query) || title.includes(query);
+            return false;
           },
         );
       }
@@ -80,6 +96,13 @@ const SecondSearchScreen = ({ animeList }) => {
     }
   };
 
+  useEffect(() => {
+    if (isSearching) {
+      handleSearch(searchText, 100);
+      setIsSearching(false);
+    }
+  }, [isSearching]);
+
   return (
     <View style={styles.screen}>
       <Animated.View
@@ -95,68 +118,70 @@ const SecondSearchScreen = ({ animeList }) => {
       >
         <TextInput
           autoFocus
-          onSubmitEditing={(event) => handleSearch(event.nativeEvent.text)}
+          onChangeText={(text) => setSearchText(text)}
+          onSubmitEditing={() => setIsSearching(true)}
           placeholder="Search"
           returnKeyType="search"
           style={styles.searchInput}
         />
       </Animated.View>
 
-      {!firstSearchDone && (
-        <Animated.View
-          style={[styles.container, {
-            opacity: downloadTextAnimation.interpolate({
-              inputRange: [-100, 0],
-              outputRange: [0, 1],
-            }),
-            transform: [{
-              translateY: downloadTextAnimation,
-            }],
-          }]}
-        >
-          <Text style={styles.downloadText}>Watch your favourite anime!</Text>
-          <Text style={styles.lookForTitleText}>Look for English or Japanese titles.</Text>
-        </Animated.View>
-      )}
-
-      {firstSearchDone && searchResults.length === 0 && (
-        <Animated.View style={[styles.container, {
-          opacity: noResultsFadeAnimation,
-          transform: [{
-            translateY: noResultsFadeAnimation.interpolate({
-              inputRange: [0, 1],
-              outputRange: [-100, 0],
-            }),
-          }],
-        }]}
-        >
-          <Entypo color="white" name="emoji-sad" size={64} />
-          <Text style={styles.noResultsText}>Oops! No results.</Text>
-        </Animated.View>
-      )}
-
-      {firstSearchDone && searchResults.length !== 0 && (
-        <Animated.ScrollView
-          contentContainerStyle={styles.searchScrollContent}
-          keyboardDismissMode="on-drag"
-          overScrollMode="never"
-          style={[styles.searchScroll, {
-            opacity: scrollFadeAnimation,
-            transform: [{
-              translateY: scrollFadeAnimation.interpolate({
-                inputRange: [0, 1],
-                outputRange: [-100, 0],
-              }),
-            }],
-          }]}
-        >
-          {searchResults.map((result) => (
-            <AnimeItem
-              anime={result}
-              key={result.id}
-            />
-          ))}
-        </Animated.ScrollView>
+      {isSearching ? (
+        <ActivityIndicator color="#e63232" size="large" style={{ flex: 1 }} />
+      ) : (
+        <>
+          {firstSearchDone ? (
+            <>
+              {searchResults.length === 0 ? (
+                <Animated.View style={[styles.container, {
+                  opacity: noResultsFadeAnimation,
+                  transform: [{
+                    translateY: noResultsFadeAnimation.interpolate({
+                      inputRange: [0, 1],
+                      outputRange: [-100, 0],
+                    }),
+                  }],
+                }]}
+                >
+                  <Entypo color="white" name="emoji-sad" size={64} />
+                  <Text style={styles.noResultsText}>Oops! No results.</Text>
+                </Animated.View>
+              ) : (
+                <Animated.ScrollView
+                  contentContainerStyle={styles.searchScrollContent}
+                  keyboardDismissMode="on-drag"
+                  overScrollMode="never"
+                  style={[styles.searchScroll, {
+                    opacity: scrollFadeAnimation,
+                    transform: [{
+                      translateY: scrollFadeAnimation.interpolate({
+                        inputRange: [0, 1],
+                        outputRange: [-100, 0],
+                      }),
+                    }],
+                  }]}
+                >
+                  {searchResults.map((result) => <AnimeItem anime={result} key={result.id} />)}
+                </Animated.ScrollView>
+              )}
+            </>
+          ) : (
+            <Animated.View
+              style={[styles.container, {
+                opacity: downloadTextAnimation.interpolate({
+                  inputRange: [-100, 0],
+                  outputRange: [0, 1],
+                }),
+                transform: [{
+                  translateY: downloadTextAnimation,
+                }],
+              }]}
+            >
+              <Text style={styles.downloadText}>Watch your favourite anime!</Text>
+              <Text style={styles.lookForTitleText}>Look for English or Japanese titles.</Text>
+            </Animated.View>
+          )}
+        </>
       )}
     </View>
   );
