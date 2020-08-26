@@ -9,6 +9,7 @@
       "backgroundColor": "#191919",
       "barStyle": "light-content"
     },
+    "primaryColor": "#191919",
     "splash": {
       "image": "./assets/splash.png",
       "resizeMode": "contain",
@@ -20,7 +21,18 @@
     "assetBundlePatterns": [
       "**/*"
     ],
+    "android": {
+      "adaptiveIcon": {
+        "backgroundColor": "#191919",
+        "foregroundImage": "./assets/iconAndroid.png"
+      },
+      "icon": "./assets/icon.png",
+      "package": "com.twist.anime",
+      "versionCode": 1
+    },
     "ios": {
+      "bundleIdentifier": "com.twist.anime",
+      "buildNumber": "1.0.0",
       "supportsTablet": true
     },
     "web": {

@@ -1,3 +1,4 @@
+/* eslint-disable no-shadow */
 import CheckBox from '@react-native-community/checkbox';
 import { Video } from 'expo-av';
 import { lockAsync, OrientationLock } from 'expo-screen-orientation';
@@ -9,22 +10,14 @@ import {
 import { RectButton } from 'react-native-gesture-handler';
 import { connect } from 'react-redux';
 
-// Styles
 import styles from './styles';
 
-// Actions
-import {
-  markEpisodeAsComplete as markEpisodeAsCompleteAction,
-  undoMarkEpisodeAsComplete as undoMarkEpisodeAsCompleteAction,
-} from '../../store/actions';
+import { markEpisodeAsComplete, undoMarkEpisodeAsComplete } from '../../store/actions';
 
-// Components
 import EpisodeItem from '../../components/EpisodeItem';
 
-// API
 import { decryptSource, getAnimeSources } from '../../services/api';
 
-// Constants
 import { baseURL, userAgent } from '../../constants';
 
 const AnimeScreen = ({
@@ -92,9 +85,7 @@ const AnimeScreen = ({
     setOrientationIsLandscape(!orientationIsLandscape);
   };
 
-  const handleOnLoad = (status) => {
-    setVideoCompletePosition(status.durationMillis * 0.9);
-  };
+  const handleOnLoad = (status) => setVideoCompletePosition(status.durationMillis * 0.9);
 
   const handleOnPlaybackStatusUpdate = (status) => {
     if (status.error) {
@@ -136,14 +127,16 @@ const AnimeScreen = ({
         isPlaying={item.number === episodePlaying.number}
         key={String(item.number)}
         onPress={() => {
-          setAutoCheckBox(true);
-          setVideoCompletePosition(null);
-          setShowSourceError(false);
-          setEpisodePlaying(item);
-          setToggleCheckBox(isComplete);
-          setVideoSource(decryptSource(item.source));
+          if (episodePlaying.number !== item.number) {
+            setAutoCheckBox(true);
+            setVideoCompletePosition(null);
+            setShowSourceError(false);
+            setEpisodePlaying(item);
+            setToggleCheckBox(isComplete);
+            setVideoSource(decryptSource(item.source));
 
-          LayoutAnimation.configureNext(LayoutAnimation.Presets.easeInEaseOut);
+            LayoutAnimation.configureNext(LayoutAnimation.Presets.easeInEaseOut);
+          }
         }}
       />
     );
@@ -258,8 +251,8 @@ AnimeScreen.propTypes = {
 };
 
 const mapDispatchToProps = {
-  markEpisodeAsComplete: markEpisodeAsCompleteAction,
-  undoMarkEpisodeAsComplete: undoMarkEpisodeAsCompleteAction,
+  markEpisodeAsComplete,
+  undoMarkEpisodeAsComplete,
 };
 
 const mapStateToProps = (state) => ({

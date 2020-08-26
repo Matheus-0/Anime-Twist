@@ -111,7 +111,7 @@ const SecondSearchScreen = ({ animeList }) => {
           transform: [{
             translateY: fadeAnimation.interpolate({
               inputRange: [0, 1],
-              outputRange: [150, 30],
+              outputRange: [150, 0],
             }),
           }],
         }]}

@@ -1,3 +1,4 @@
+/* eslint-disable react/prop-types */
 import React from 'react';
 import { FontAwesome } from '@expo/vector-icons';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
@@ -61,7 +62,6 @@ export default () => (
         component={SearchStackScreen}
         name="Search"
         options={{
-          // eslint-disable-next-line react/prop-types
           tabBarIcon: ({ color, focused, size }) => (
             <FontAwesome color={focused ? '#e63232' : color} name="search" size={size} />
           ),
@@ -71,7 +71,6 @@ export default () => (
         component={HistoryStackScreen}
         name="History"
         options={{
-          // eslint-disable-next-line react/prop-types
           tabBarIcon: ({ color, focused, size }) => (
             <FontAwesome color={focused ? '#e63232' : color} name="history" size={size} />
           ),

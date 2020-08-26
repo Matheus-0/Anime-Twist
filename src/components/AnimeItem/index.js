@@ -1,19 +1,15 @@
+/* eslint-disable no-shadow */
 import { AntDesign } from '@expo/vector-icons';
 import { useNavigation } from '@react-navigation/native';
 import PropTypes from 'prop-types';
 import React, { useState } from 'react';
-import {
-  Animated, Text, TouchableOpacity,
-} from 'react-native';
+import { Animated, Text, TouchableOpacity } from 'react-native';
 import { RectButton } from 'react-native-gesture-handler';
 import { connect } from 'react-redux';
 
 import styles from './styles';
 
-import {
-  addToHistory as addToHistoryAction,
-  removeFromHistory as removeFromHistoryAction,
-} from '../../store/actions';
+import { addToHistory, removeFromHistory } from '../../store/actions';
 
 const AnimeItem = ({
   addToHistory,
@@ -100,8 +96,8 @@ AnimeItem.propTypes = {
 };
 
 const mapDispatchToProps = {
-  addToHistory: addToHistoryAction,
-  removeFromHistory: removeFromHistoryAction,
+  addToHistory,
+  removeFromHistory,
 };
 
 export default connect(null, mapDispatchToProps)(AnimeItem);

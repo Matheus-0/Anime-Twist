@@ -1,3 +1,4 @@
+/* eslint-disable no-shadow */
 import { AntDesign } from '@expo/vector-icons';
 import { useFocusEffect } from '@react-navigation/native';
 import PropTypes from 'prop-types';
@@ -10,7 +11,7 @@ import { connect } from 'react-redux';
 
 import styles from './styles';
 
-import { removeAllHistory as removeAllHistoryAction } from '../../store/actions';
+import { removeAllHistory } from '../../store/actions';
 
 import AnimeItem from '../../components/AnimeItem';
 
@@ -164,7 +165,7 @@ HistoryScreen.propTypes = {
 };
 
 const mapDispatchToProps = {
-  removeAllHistory: removeAllHistoryAction,
+  removeAllHistory,
 };
 
 const mapStateToProps = (state) => ({ history: state.animeReducer.history });
