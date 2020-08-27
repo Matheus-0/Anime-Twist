@@ -144,7 +144,7 @@ const AnimeScreen = ({
 
   return (
     <View style={styles.container}>
-      <Animated.View
+      {/* <Animated.View
         style={[styles.titleContainer, {
           opacity: fadeAnimation,
           transform: [{
@@ -156,7 +156,7 @@ const AnimeScreen = ({
         }]}
       >
         <Text numberOfLines={3} style={styles.title}>{anime.title}</Text>
-      </Animated.View>
+      </Animated.View> */}
 
       {showSourceError && <Text style={styles.sourceErrorText}>Could not load video.</Text>}
 
