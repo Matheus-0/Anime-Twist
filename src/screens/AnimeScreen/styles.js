@@ -15,6 +15,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     backgroundColor: '#191919',
     flex: 1,
+    paddingTop: 15,
   },
   episodesContainer: {
     flex: 1,
