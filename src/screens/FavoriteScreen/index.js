@@ -2,7 +2,9 @@ import React, { useState, useEffect } from 'react';
 import { useFocusEffect } from '@react-navigation/native';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import { Animated, View, Text } from 'react-native';
+import {
+  Animated, View, Text, LayoutAnimation,
+} from 'react-native';
 import { RectButton } from 'react-native-gesture-handler';
 import { MaterialIcons } from '@expo/vector-icons';
 
@@ -10,7 +12,7 @@ import styles from './styles';
 
 import AnimeItem from '../../components/AnimeItem';
 
-import { removeAllFavorite, removeFromFavorite } from '../../store/actions';
+import { removeAllFavorite } from '../../store/actions';
 
 const FavoriteScreen = ({ navigation, removeAllFavorite, favorite }) => {
   const [fadeAnimation] = useState(new Animated.Value(0));
@@ -77,11 +79,11 @@ const FavoriteScreen = ({ navigation, removeAllFavorite, favorite }) => {
       {favorite.length !== 0 ? (
         <>
           <Animated.View
-            style={[styles.FavoriteDescriptionContainer, {
+            style={[styles.favoriteDescriptionContainer, {
               opacity: fadeAnimation,
             }]}
           >
-            <Text style={styles.FavoriteDescription}>These are anime you&apos;ve favorited.</Text>
+            <Text style={styles.favoriteDescription}>These are anime you&apos;ve favorited.</Text>
           </Animated.View>
 
           <Animated.View
@@ -117,7 +119,6 @@ const FavoriteScreen = ({ navigation, removeAllFavorite, favorite }) => {
             }]}
           >
             {favorite.map((_, index, array) => {
-            // Mapping array in reverse order so that the most recent anime are shown on top
               const anime = array[array.length - 1 - index];
 
               return (
@@ -126,6 +127,7 @@ const FavoriteScreen = ({ navigation, removeAllFavorite, favorite }) => {
                   key={anime.id}
                   removeFromParentAnimation={() => playLayoutAnimation(200)}
                   toRemove
+                  favoriteRemove
                 />
               );
             })}
