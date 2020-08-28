@@ -3,10 +3,16 @@ import { useFocusEffect } from '@react-navigation/native';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { Animated, View, Text } from 'react-native';
+import { RectButton } from 'react-native-gesture-handler';
+import { MaterialIcons } from '@expo/vector-icons';
 
 import styles from './styles';
 
-const FavoriteScreen = ({ navigation }) => {
+import AnimeItem from '../../components/AnimeItem';
+
+import { removeAllFavorite, removeFromFavorite } from '../../store/actions';
+
+const FavoriteScreen = ({ navigation, removeAllFavorite, favorite }) => {
   const [fadeAnimation] = useState(new Animated.Value(0));
   const [scrollViewAnimation] = useState(new Animated.Value(100));
 
@@ -34,6 +40,25 @@ const FavoriteScreen = ({ navigation }) => {
     ]).start();
   });
 
+  const playLayoutAnimation = (duration) => {
+    LayoutAnimation.configureNext(
+      LayoutAnimation.create(
+        duration, LayoutAnimation.Types.easeOut, LayoutAnimation.Properties.opacity,
+      ),
+    );
+  };
+
+  const handleRemoveAllFavorite = () => {
+    Animated.spring(scrollViewAnimation, {
+      tension: 10,
+      toValue: 100,
+      useNativeDriver: true,
+    }).start(() => {
+      removeAllFavorite();
+
+      playLayoutAnimation(400);
+    });
+  };
   return (
     <View style={styles.container}>
       <Animated.View
@@ -47,20 +72,20 @@ const FavoriteScreen = ({ navigation }) => {
           }],
         }]}
       >
-        <Text style={styles.favoriteTitle}>Favorite</Text>
+        <Text style={styles.favoriteTitle}>Favorites</Text>
       </Animated.View>
-      {/* {history.length !== 0 ? (
+      {favorite.length !== 0 ? (
         <>
           <Animated.View
-            style={[styles.historyDescriptionContainer, {
+            style={[styles.FavoriteDescriptionContainer, {
               opacity: fadeAnimation,
             }]}
           >
-            <Text style={styles.historyDescription}>These are anime you&apos;ve visited.</Text>
+            <Text style={styles.FavoriteDescription}>These are anime you&apos;ve favorited.</Text>
           </Animated.View>
 
           <Animated.View
-            style={[styles.removeAllHistoryContainer, {
+            style={[styles.removeAllFavoriteContainer, {
               opacity: fadeAnimation,
               transform: [{
                 translateX: fadeAnimation.interpolate({
@@ -71,10 +96,10 @@ const FavoriteScreen = ({ navigation }) => {
             }]}
           >
             <RectButton
-              onPress={handleRemoveAllHistory}
-              style={styles.removeAllHistoryButton}
+              onPress={handleRemoveAllFavorite}
+              style={styles.removeAllFavoriteButton}
             >
-              <Text style={styles.removeAllHistoryText}>Clear all history</Text>
+              <Text style={styles.removeAllFavoriteText}>Clear all favorite list</Text>
             </RectButton>
           </Animated.View>
 
@@ -91,7 +116,7 @@ const FavoriteScreen = ({ navigation }) => {
               }],
             }]}
           >
-            {history.map((_, index, array) => {
+            {favorite.map((_, index, array) => {
             // Mapping array in reverse order so that the most recent anime are shown on top
               const anime = array[array.length - 1 - index];
 
@@ -108,7 +133,7 @@ const FavoriteScreen = ({ navigation }) => {
         </>
       ) : (
         <Animated.View
-          style={[styles.noHistoryContainer, {
+          style={[styles.noFavoriteContainer, {
             opacity: fadeAnimation,
             transform: [{
               translateY: fadeAnimation.interpolate({
@@ -118,26 +143,28 @@ const FavoriteScreen = ({ navigation }) => {
             }],
           }]}
         >
-          <AntDesign name="questioncircleo" size={80} color="white" />
-          <Text style={styles.noHistoryText}>No history found. Go watch some anime!</Text>
+          <MaterialIcons name="favorite-border" size={80} color="white" />
+          <Text style={styles.noFavoriteText}>
+            No favorite anime found. Go watch your favorites animes!
+          </Text>
         </Animated.View>
-      )} */}
+      )}
     </View>
   );
 };
 
-// FavoriteScreen.propTypes = {
-//   Favorite: PropTypes.arrayOf(PropTypes.object).isRequired,
-//   navigation: PropTypes.shape({
-//     addListener: PropTypes.func.isRequired,
-//   }).isRequired,
-//   removeAllFavorite: PropTypes.func.isRequired,
-// };
+FavoriteScreen.propTypes = {
+  favorite: PropTypes.arrayOf(PropTypes.object).isRequired,
+  navigation: PropTypes.shape({
+    addListener: PropTypes.func.isRequired,
+  }).isRequired,
+  removeAllFavorite: PropTypes.func.isRequired,
+};
 
-// const mapDispatchToProps = {
-//   removeAllFavorite,
-// };
+const mapDispatchToProps = {
+  removeAllFavorite,
+};
 
-const mapStateToProps = (state) => ({ favorite: state.animeReducer.history });
+const mapStateToProps = (state) => ({ favorite: state.animeReducer.favorites });
 
-export default connect()(FavoriteScreen);
+export default connect(mapStateToProps, mapDispatchToProps)(FavoriteScreen);
