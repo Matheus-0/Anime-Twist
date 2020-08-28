@@ -83,20 +83,20 @@ export default () => (
         }}
       />
       <Tab.Screen
-        component={HistoryStackScreen}
-        name="History"
-        options={{
-          tabBarIcon: ({ color, focused, size }) => (
-            <FontAwesome color={focused ? '#e63232' : color} name="history" size={size} />
-          ),
-        }}
-      />
-      <Tab.Screen
         component={FavoriteStackScreen}
         name="Favorite"
         options={{
           tabBarIcon: ({ color, focused, size }) => (
             <FontAwesome color={focused ? '#e63232' : color} name="heart" size={size} />
+          ),
+        }}
+      />
+      <Tab.Screen
+        component={HistoryStackScreen}
+        name="History"
+        options={{
+          tabBarIcon: ({ color, focused, size }) => (
+            <FontAwesome color={focused ? '#e63232' : color} name="history" size={size} />
           ),
         }}
       />

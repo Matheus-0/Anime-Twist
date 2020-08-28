@@ -31,10 +31,23 @@ const styles = StyleSheet.create({
     fontSize: 18,
     textAlign: 'center',
   },
+  favoriteButton: {
+    alignSelf: 'flex-end',
+    alignItems: 'center',
+    justifyContent: 'center',
+    borderRadius: 30,
+    backgroundColor: '#070707',
+    width: 70,
+    height: 70,
+    position: 'absolute',
+    bottom: 15,
+    right: 20,
+  },
   listContent: {
     flexDirection: 'row',
     flexWrap: 'wrap',
     paddingHorizontal: '5%',
+    paddingBottom: '5%',
   },
   loading: {
     flex: 1,
