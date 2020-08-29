@@ -48,7 +48,7 @@ const styles = StyleSheet.create({
     width: '100%',
   },
   searchScrollContent: {
-    alignItems: 'center',
+    alignItems: 'stretch',
     paddingHorizontal: 25,
     paddingTop: 70,
   },

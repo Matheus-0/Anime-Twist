@@ -1,5 +1,5 @@
 /* eslint-disable no-shadow */
-import { Feather } from '@expo/vector-icons';
+import { AntDesign } from '@expo/vector-icons';
 import { useFocusEffect } from '@react-navigation/native';
 import PropTypes from 'prop-types';
 import React, { useEffect, useState } from 'react';
@@ -80,7 +80,7 @@ const SearchScreen = ({ loadAnimeList, navigation }) => {
             opacity: fadeAnimation,
           }]}
         >
-          <Feather color="white" name="search" size={24} style={styles.icon} />
+          <AntDesign color="white" name="search1" size={24} style={styles.icon} />
 
           <Text style={styles.searchText}>Search for an anime.</Text>
         </AnimatedTouchableOpacity>

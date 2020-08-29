@@ -1,20 +1,5 @@
 import * as Constants from '../constants';
 
-// History actions
-export const addToHistory = (anime) => ({
-  type: Constants.ADD_TO_HISTORY,
-  anime,
-});
-
-export const removeAllHistory = () => ({
-  type: Constants.REMOVE_ALL_HISTORY,
-});
-
-export const removeFromHistory = (anime) => ({
-  type: Constants.REMOVE_FROM_HISTORY,
-  anime,
-});
-
 // Anime and episode actions
 export const loadAnimeList = (animeList) => ({
   type: Constants.LOAD_ANIME_LIST,

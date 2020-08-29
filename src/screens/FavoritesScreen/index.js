@@ -102,7 +102,7 @@ const FavoritesScreen = ({ navigation, removeAllFavorites, favorites }) => {
               onPress={handleRemoveAllFavorite}
               style={styles.removeAllFavoriteButton}
             >
-              <Text style={styles.removeAllFavoriteText}>Clear all favorites</Text>
+              <Text style={styles.removeAllFavoriteText}>Clear all</Text>
             </RectButton>
           </Animated.View>
 

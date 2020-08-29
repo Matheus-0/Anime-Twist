@@ -1,9 +1,9 @@
 /* eslint-disable no-shadow */
-import { FontAwesome } from '@expo/vector-icons';
+import { AntDesign } from '@expo/vector-icons';
 import CheckBox from '@react-native-community/checkbox';
 import { useFocusEffect } from '@react-navigation/native';
 import { Video } from 'expo-av';
-import { lockAsync, OrientationLock } from 'expo-screen-orientation';
+import { lockAsync, OrientationLock, getOrientationLockAsync } from 'expo-screen-orientation';
 import PropTypes from 'prop-types';
 import React, { useEffect, useState } from 'react';
 import {
@@ -29,6 +29,7 @@ const AnimeScreen = ({
   completeEpisodes,
   favorites,
   markEpisodeAsComplete,
+  navigation,
   removeFromFavorites,
   route,
   undoMarkEpisodeAsComplete,
@@ -41,7 +42,6 @@ const AnimeScreen = ({
   const [episodePlaying, setEpisodePlaying] = useState({});
   const [isFavorite, setIsFavorite] = useState(false);
   const [networkAvailable, setNetworkAvailable] = useState(true);
-  const [orientationIsLandscape, setOrientationIsLandscape] = useState(false);
   const [showSourceError, setShowSourceError] = useState(false);
   const [videoCompletePosition, setVideoCompletePosition] = useState(null);
   const [videoSource, setVideoSource] = useState('');
@@ -67,6 +67,18 @@ const AnimeScreen = ({
   };
 
   useFocusEffect(() => setIsFavorite(isAnimeFavorite(anime)));
+
+  useEffect(() => {
+    const unsubscribe = navigation.addListener('blur', async () => {
+      const orientation = await getOrientationLockAsync();
+
+      if (orientation === OrientationLock.LANDSCAPE_RIGHT) {
+        await lockAsync(OrientationLock.PORTRAIT);
+      }
+    });
+
+    return unsubscribe;
+  }, [navigation]);
 
   useEffect(() => {
     playFadeAnimation(fadeAnimation);
@@ -98,12 +110,27 @@ const AnimeScreen = ({
     else removeFromFavorites(anime);
   };
 
-  const handleOnFullscreenUpdate = async () => {
-    await lockAsync(
-      orientationIsLandscape ? OrientationLock.PORTRAIT : OrientationLock.LANDSCAPE_RIGHT,
-    );
+  const handleOnFullscreenUpdate = async ({ fullscreenUpdate }) => {
+    const orientation = await getOrientationLockAsync();
 
-    setOrientationIsLandscape(!orientationIsLandscape);
+    switch (fullscreenUpdate) {
+      case Video.FULLSCREEN_UPDATE_PLAYER_DID_PRESENT: {
+        if (orientation === OrientationLock.PORTRAIT) {
+          await lockAsync(OrientationLock.LANDSCAPE_RIGHT);
+        }
+
+        break;
+      }
+      case Video.FULLSCREEN_UPDATE_PLAYER_DID_DISMISS: {
+        if (orientation === OrientationLock.LANDSCAPE_RIGHT) {
+          await lockAsync(OrientationLock.PORTRAIT);
+        }
+
+        break;
+      }
+      default:
+        // console.error('Error.');
+    }
   };
 
   const handleOnLoad = (status) => setVideoCompletePosition(status.durationMillis * 0.9);
@@ -276,8 +303,8 @@ const AnimeScreen = ({
           style={styles.favoriteButton}
           onPress={handleFavoritePress}
         >
-          <FontAwesome
-            name={isFavorite ? 'heart' : 'heart-o'}
+          <AntDesign
+            name={isFavorite ? 'heart' : 'hearto'}
             color="rgba(255, 255, 255, 0.75)"
             size={24}
           />
@@ -292,6 +319,9 @@ AnimeScreen.propTypes = {
   completeEpisodes: PropTypes.shape().isRequired,
   favorites: PropTypes.arrayOf(PropTypes.object).isRequired,
   markEpisodeAsComplete: PropTypes.func.isRequired,
+  navigation: PropTypes.shape({
+    addListener: PropTypes.func.isRequired,
+  }).isRequired,
   removeFromFavorites: PropTypes.func.isRequired,
   route: PropTypes.shape().isRequired,
   undoMarkEpisodeAsComplete: PropTypes.func.isRequired,

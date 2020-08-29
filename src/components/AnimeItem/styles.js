@@ -7,25 +7,30 @@ const styles = StyleSheet.create({
     fontSize: 12,
   },
   item: {
-    alignItems: 'center',
-    backgroundColor: '#232323',
-    borderRadius: 10,
-    flexDirection: 'row',
-    height: 55,
-    justifyContent: 'center',
     marginBottom: 15,
   },
   removeContainer: {
-    padding: 15,
+    backgroundColor: '#232323',
+    borderRadius: 10,
+    justifyContent: 'center',
+    paddingHorizontal: 20,
   },
   title: {
     color: 'white',
     fontFamily: 'Quicksand_700Bold',
     fontSize: 14,
   },
+  titlesAndRemoveContainer: {
+    alignItems: 'stretch',
+    backgroundColor: '#232323',
+    borderRadius: 10,
+    flexDirection: 'row',
+    height: 55,
+  },
   titlesContainer: {
     flex: 1,
-    marginHorizontal: 20,
+    justifyContent: 'center',
+    paddingHorizontal: 20,
   },
 });
 

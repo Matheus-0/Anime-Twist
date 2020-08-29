@@ -3,17 +3,16 @@ import * as Constants from '../constants';
 const initialState = {
   animeList: [],
   animeObjectForEpisodes: {},
-  history: [],
   favorites: [],
 };
 
 export default (state = initialState, action) => {
   switch (action.type) {
-    case Constants.ADD_TO_HISTORY:
+    case Constants.ADD_TO_FAVORITES:
       return {
         ...state,
-        history: [
-          ...state.history.filter((item) => item.id !== action.anime.id),
+        favorites: [
+          ...state.favorites.filter((item) => item.id !== action.anime.id),
           action.anime,
         ],
       };
@@ -38,15 +37,17 @@ export default (state = initialState, action) => {
         },
       };
     }
-    case Constants.REMOVE_ALL_HISTORY:
+    case Constants.REMOVE_ALL_FAVORITES:
       return {
         ...state,
-        history: [],
+        favorites: [],
       };
-    case Constants.REMOVE_FROM_HISTORY:
+    case Constants.REMOVE_FROM_FAVORITES:
       return {
         ...state,
-        history: [...state.history.filter((item) => item.id !== action.anime.id)],
+        favorites: [
+          ...state.favorites.filter((item) => item.id !== action.anime.id),
+        ],
       };
     case Constants.UNDO_MARK_EPISODE_COMPLETE: {
       const animeID = action.episode.anime_id;
@@ -65,29 +66,6 @@ export default (state = initialState, action) => {
       }
 
       return state;
-    }
-    case Constants.ADD_TO_FAVORITES: {
-      return {
-        ...state,
-        favorites: [
-          ...state.favorites.filter((item) => item.id !== action.anime.id),
-          action.anime,
-        ],
-      };
-    }
-    case Constants.REMOVE_ALL_FAVORITES: {
-      return {
-        ...state,
-        favorites: [],
-      };
-    }
-    case Constants.REMOVE_FROM_FAVORITES: {
-      return {
-        ...state,
-        favorites: [
-          ...state.favorites.filter((item) => item.id !== action.anime.id),
-        ],
-      };
     }
     default:
       return state;
