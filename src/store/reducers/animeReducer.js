@@ -4,6 +4,7 @@ const initialState = {
   animeList: [],
   animeObjectForEpisodes: {},
   history: [],
+  favorites: [],
 };
 
 export default (state = initialState, action) => {
@@ -64,6 +65,28 @@ export default (state = initialState, action) => {
       }
 
       return state;
+    }
+    case Constants.ADD_TO_FAVORITE: {
+      return {
+        ...state,
+        favorites: [
+          ...state.favorites.filter((animeToFavorite) => animeToFavorite.id !== action.anime.id),
+          action.anime,
+        ],
+      };
+    }
+    case Constants.REMOVE_ALL_FAVORITE: {
+      return {
+        ...state,
+        favorites: [],
+      };
+    }
+    case Constants.REMOVE_FROM_FAVORITE: {
+      return {
+        ...state,
+        favorites: [...state.favorites
+          .filter((animeToRemove) => animeToRemove.id !== action.anime.id)],
+      };
     }
     default:
       return state;

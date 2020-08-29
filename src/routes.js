@@ -7,11 +7,13 @@ import { createStackNavigator } from '@react-navigation/stack';
 
 import HistoryScreen from './screens/HistoryScreen';
 import SearchScreen from './screens/SearchScreen';
+import FavoriteScreen from './screens/FavoriteScreen';
 import SecondSearchScreen from './screens/SecondSearchScreen';
 import AnimeScreen from './screens/AnimeScreen';
 
 const HistoryStack = createStackNavigator();
 const SearchStack = createStackNavigator();
+const FavoriteStack = createStackNavigator();
 
 const SearchStackScreen = () => (
   <SearchStack.Navigator screenOptions={() => ({
@@ -36,6 +38,19 @@ const HistoryStackScreen = () => (
     <HistoryStack.Screen component={HistoryScreen} name="History" />
     <HistoryStack.Screen component={AnimeScreen} name="Anime" />
   </HistoryStack.Navigator>
+);
+
+const FavoriteStackScreen = () => (
+  <FavoriteStack.Navigator screenOptions={() => ({
+    cardStyle: {
+      backgroundColor: 'transparent',
+    },
+    headerShown: false,
+  })}
+  >
+    <FavoriteStack.Screen component={FavoriteScreen} name="Favorite" />
+    <FavoriteStack.Screen component={AnimeScreen} name="Anime" />
+  </FavoriteStack.Navigator>
 );
 
 const Tab = createBottomTabNavigator();
@@ -64,6 +79,15 @@ export default () => (
         options={{
           tabBarIcon: ({ color, focused, size }) => (
             <FontAwesome color={focused ? '#e63232' : color} name="search" size={size} />
+          ),
+        }}
+      />
+      <Tab.Screen
+        component={FavoriteStackScreen}
+        name="Favorite"
+        options={{
+          tabBarIcon: ({ color, focused, size }) => (
+            <FontAwesome color={focused ? '#e63232' : color} name="heart" size={size} />
           ),
         }}
       />

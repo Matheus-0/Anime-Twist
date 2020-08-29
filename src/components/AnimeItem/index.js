@@ -9,11 +9,12 @@ import { connect } from 'react-redux';
 
 import styles from './styles';
 
-import { addToHistory, removeFromHistory } from '../../store/actions';
+import { addToHistory, removeFromHistory, removeFromFavorite } from '../../store/actions';
 
 const AnimeItem = ({
   addToHistory,
   anime,
+  favoriteRemove,
   removeFromHistory,
   removeFromParentAnimation,
   style,
@@ -33,7 +34,11 @@ const AnimeItem = ({
   const handleRemoveAnime = () => {
     removeFromParentAnimation();
 
-    removeFromHistory(anime);
+    if (favoriteRemove) {
+      removeFromFavorite(anime);
+    } else {
+      removeFromHistory(anime);
+    }
   };
 
   const handleRemoveAnimation = () => {
@@ -73,7 +78,11 @@ const AnimeItem = ({
           onPress={handleRemoveAnimation}
           style={styles.removeContainer}
         >
-          <AntDesign color="white" name="close" size={24} />
+          <AntDesign
+            color="white"
+            name={favoriteRemove ? 'hearto' : 'close'}
+            size={24}
+          />
         </TouchableOpacity>
       )}
     </Animated.View>
@@ -89,6 +98,7 @@ AnimeItem.defaultProps = {
 AnimeItem.propTypes = {
   addToHistory: PropTypes.func.isRequired,
   anime: PropTypes.shape().isRequired,
+  favoriteRemove: PropTypes.bool,
   removeFromHistory: PropTypes.func.isRequired,
   removeFromParentAnimation: PropTypes.func,
   style: PropTypes.shape(),
@@ -98,6 +108,7 @@ AnimeItem.propTypes = {
 const mapDispatchToProps = {
   addToHistory,
   removeFromHistory,
+  removeFromFavorite,
 };
 
 export default connect(null, mapDispatchToProps)(AnimeItem);

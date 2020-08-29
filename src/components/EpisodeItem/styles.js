@@ -4,6 +4,7 @@ const styles = StyleSheet.create({
   completeItem: {
     borderColor: '#e63232',
     borderWidth: 1,
+    backgroundColor: '#212121',
   },
   episodeText: {
     color: 'white',
