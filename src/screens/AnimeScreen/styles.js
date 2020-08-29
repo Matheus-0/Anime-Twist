@@ -15,7 +15,6 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     backgroundColor: '#191919',
     flex: 1,
-    paddingTop: 15,
   },
   episodesContainer: {
     flex: 1,
@@ -32,22 +31,23 @@ const styles = StyleSheet.create({
     textAlign: 'center',
   },
   favoriteButton: {
-    alignSelf: 'flex-end',
     alignItems: 'center',
+    backgroundColor: '#e63232',
+    borderRadius: 27.5,
+    height: 55,
     justifyContent: 'center',
-    borderRadius: 30,
-    backgroundColor: '#070707',
-    width: 70,
-    height: 70,
+    width: 55,
+  },
+  favoriteButtonView: {
+    bottom: 20,
     position: 'absolute',
-    bottom: 15,
     right: 20,
   },
   listContent: {
     flexDirection: 'row',
     flexWrap: 'wrap',
     paddingHorizontal: '5%',
-    paddingBottom: '5%',
+    paddingBottom: '25%',
   },
   loading: {
     flex: 1,

@@ -1,5 +1,5 @@
 /* eslint-disable no-shadow */
-import { AntDesign } from '@expo/vector-icons';
+import { AntDesign, Ionicons } from '@expo/vector-icons';
 import { useNavigation } from '@react-navigation/native';
 import PropTypes from 'prop-types';
 import React, { useState } from 'react';
@@ -9,12 +9,13 @@ import { connect } from 'react-redux';
 
 import styles from './styles';
 
-import { addToHistory, removeFromHistory, removeFromFavorite } from '../../store/actions';
+import { addToHistory, removeFromHistory, removeFromFavorites } from '../../store/actions';
 
 const AnimeItem = ({
   addToHistory,
   anime,
   favoriteRemove,
+  removeFromFavorites,
   removeFromHistory,
   removeFromParentAnimation,
   style,
@@ -34,11 +35,8 @@ const AnimeItem = ({
   const handleRemoveAnime = () => {
     removeFromParentAnimation();
 
-    if (favoriteRemove) {
-      removeFromFavorite(anime);
-    } else {
-      removeFromHistory(anime);
-    }
+    if (favoriteRemove) removeFromFavorites(anime);
+    else removeFromHistory(anime);
   };
 
   const handleRemoveAnimation = () => {
@@ -73,16 +71,22 @@ const AnimeItem = ({
         )}
       </RectButton>
 
+      {favoriteRemove && (
+        <TouchableOpacity
+          activeOpacity={1}
+          onPress={handleRemoveAnimation}
+          style={styles.removeContainer}
+        >
+          <Ionicons color="rgba(255, 255, 255, 0.75)" name="md-heart-dislike" size={24} />
+        </TouchableOpacity>
+      )}
+
       {toRemove && (
         <TouchableOpacity
           onPress={handleRemoveAnimation}
           style={styles.removeContainer}
         >
-          <AntDesign
-            color="white"
-            name={favoriteRemove ? 'hearto' : 'close'}
-            size={24}
-          />
+          <AntDesign color="white" name="close" size={24} />
         </TouchableOpacity>
       )}
     </Animated.View>
@@ -90,6 +94,7 @@ const AnimeItem = ({
 };
 
 AnimeItem.defaultProps = {
+  favoriteRemove: false,
   removeFromParentAnimation: () => {},
   style: {},
   toRemove: false,
@@ -99,6 +104,7 @@ AnimeItem.propTypes = {
   addToHistory: PropTypes.func.isRequired,
   anime: PropTypes.shape().isRequired,
   favoriteRemove: PropTypes.bool,
+  removeFromFavorites: PropTypes.func.isRequired,
   removeFromHistory: PropTypes.func.isRequired,
   removeFromParentAnimation: PropTypes.func,
   style: PropTypes.shape(),
@@ -108,7 +114,7 @@ AnimeItem.propTypes = {
 const mapDispatchToProps = {
   addToHistory,
   removeFromHistory,
-  removeFromFavorite,
+  removeFromFavorites,
 };
 
 export default connect(null, mapDispatchToProps)(AnimeItem);

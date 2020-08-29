@@ -29,6 +29,7 @@ const styles = StyleSheet.create({
   noFavoriteContainer: {
     alignItems: 'center',
     marginTop: '30%',
+    marginHorizontal: '5%',
   },
   noFavoriteText: {
     color: 'white',

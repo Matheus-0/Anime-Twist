@@ -15,7 +15,7 @@ export const removeFromHistory = (anime) => ({
   anime,
 });
 
-// Episode actions
+// Anime and episode actions
 export const loadAnimeList = (animeList) => ({
   type: Constants.LOAD_ANIME_LIST,
   animeList,
@@ -31,17 +31,17 @@ export const undoMarkEpisodeAsComplete = (episode) => ({
   episode,
 });
 
-// Favorites actions
-export const addToFavorite = (anime) => ({
-  type: Constants.ADD_TO_FAVORITE,
+// Favorite anime actions
+export const addToFavorites = (anime) => ({
+  type: Constants.ADD_TO_FAVORITES,
   anime,
 });
 
-export const removeAllFavorite = () => ({
-  type: Constants.REMOVE_ALL_FAVORITE,
+export const removeAllFavorites = () => ({
+  type: Constants.REMOVE_ALL_FAVORITES,
 });
 
-export const removeFromFavorite = (anime) => ({
-  type: Constants.REMOVE_FROM_FAVORITE,
+export const removeFromFavorites = (anime) => ({
+  type: Constants.REMOVE_FROM_FAVORITES,
   anime,
 });

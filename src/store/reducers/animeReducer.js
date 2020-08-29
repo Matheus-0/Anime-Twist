@@ -66,26 +66,27 @@ export default (state = initialState, action) => {
 
       return state;
     }
-    case Constants.ADD_TO_FAVORITE: {
+    case Constants.ADD_TO_FAVORITES: {
       return {
         ...state,
         favorites: [
-          ...state.favorites.filter((animeToFavorite) => animeToFavorite.id !== action.anime.id),
+          ...state.favorites.filter((item) => item.id !== action.anime.id),
           action.anime,
         ],
       };
     }
-    case Constants.REMOVE_ALL_FAVORITE: {
+    case Constants.REMOVE_ALL_FAVORITES: {
       return {
         ...state,
         favorites: [],
       };
     }
-    case Constants.REMOVE_FROM_FAVORITE: {
+    case Constants.REMOVE_FROM_FAVORITES: {
       return {
         ...state,
-        favorites: [...state.favorites
-          .filter((animeToRemove) => animeToRemove.id !== action.anime.id)],
+        favorites: [
+          ...state.favorites.filter((item) => item.id !== action.anime.id),
+        ],
       };
     }
     default:

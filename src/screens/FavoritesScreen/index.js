@@ -1,20 +1,21 @@
-import React, { useState, useEffect } from 'react';
+/* eslint-disable no-shadow */
+import { AntDesign } from '@expo/vector-icons';
 import { useFocusEffect } from '@react-navigation/native';
 import PropTypes from 'prop-types';
-import { connect } from 'react-redux';
+import React, { useState, useEffect } from 'react';
 import {
-  Animated, View, Text, LayoutAnimation,
+  Animated, LayoutAnimation, Text, View,
 } from 'react-native';
 import { RectButton } from 'react-native-gesture-handler';
-import { MaterialIcons } from '@expo/vector-icons';
+import { connect } from 'react-redux';
 
 import styles from './styles';
 
 import AnimeItem from '../../components/AnimeItem';
 
-import { removeAllFavorite } from '../../store/actions';
+import { removeAllFavorites } from '../../store/actions';
 
-const FavoriteScreen = ({ navigation, removeAllFavorite, favorite }) => {
+const FavoritesScreen = ({ navigation, removeAllFavorites, favorites }) => {
   const [fadeAnimation] = useState(new Animated.Value(0));
   const [scrollViewAnimation] = useState(new Animated.Value(100));
 
@@ -56,7 +57,7 @@ const FavoriteScreen = ({ navigation, removeAllFavorite, favorite }) => {
       toValue: 100,
       useNativeDriver: true,
     }).start(() => {
-      removeAllFavorite();
+      removeAllFavorites();
 
       playLayoutAnimation(400);
     });
@@ -76,14 +77,14 @@ const FavoriteScreen = ({ navigation, removeAllFavorite, favorite }) => {
       >
         <Text style={styles.favoriteTitle}>Favorites</Text>
       </Animated.View>
-      {favorite.length !== 0 ? (
+      {favorites.length !== 0 ? (
         <>
           <Animated.View
             style={[styles.favoriteDescriptionContainer, {
               opacity: fadeAnimation,
             }]}
           >
-            <Text style={styles.favoriteDescription}>These are anime you&apos;ve favorited.</Text>
+            <Text style={styles.favoriteDescription}>These are your favorite anime.</Text>
           </Animated.View>
 
           <Animated.View
@@ -101,7 +102,7 @@ const FavoriteScreen = ({ navigation, removeAllFavorite, favorite }) => {
               onPress={handleRemoveAllFavorite}
               style={styles.removeAllFavoriteButton}
             >
-              <Text style={styles.removeAllFavoriteText}>Clear all favorite list</Text>
+              <Text style={styles.removeAllFavoriteText}>Clear all favorites</Text>
             </RectButton>
           </Animated.View>
 
@@ -118,7 +119,7 @@ const FavoriteScreen = ({ navigation, removeAllFavorite, favorite }) => {
               }],
             }]}
           >
-            {favorite.map((_, index, array) => {
+            {favorites.map((_, index, array) => {
               const anime = array[array.length - 1 - index];
 
               return (
@@ -126,7 +127,6 @@ const FavoriteScreen = ({ navigation, removeAllFavorite, favorite }) => {
                   anime={anime}
                   key={anime.id}
                   removeFromParentAnimation={() => playLayoutAnimation(200)}
-                  toRemove
                   favoriteRemove
                 />
               );
@@ -145,9 +145,10 @@ const FavoriteScreen = ({ navigation, removeAllFavorite, favorite }) => {
             }],
           }]}
         >
-          <MaterialIcons name="favorite-border" size={80} color="white" />
+          <AntDesign name="questioncircleo" size={80} color="white" />
+
           <Text style={styles.noFavoriteText}>
-            No favorite anime found. Go watch your favorites animes!
+            No favorite anime found. Favorite one first!
           </Text>
         </Animated.View>
       )}
@@ -155,18 +156,18 @@ const FavoriteScreen = ({ navigation, removeAllFavorite, favorite }) => {
   );
 };
 
-FavoriteScreen.propTypes = {
-  favorite: PropTypes.arrayOf(PropTypes.object).isRequired,
+FavoritesScreen.propTypes = {
+  favorites: PropTypes.arrayOf(PropTypes.object).isRequired,
   navigation: PropTypes.shape({
     addListener: PropTypes.func.isRequired,
   }).isRequired,
-  removeAllFavorite: PropTypes.func.isRequired,
+  removeAllFavorites: PropTypes.func.isRequired,
 };
 
 const mapDispatchToProps = {
-  removeAllFavorite,
+  removeAllFavorites,
 };
 
-const mapStateToProps = (state) => ({ favorite: state.animeReducer.favorites });
+const mapStateToProps = (state) => ({ favorites: state.animeReducer.favorites });
 
-export default connect(mapStateToProps, mapDispatchToProps)(FavoriteScreen);
+export default connect(mapStateToProps, mapDispatchToProps)(FavoritesScreen);

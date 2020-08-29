@@ -149,6 +149,7 @@ const HistoryScreen = ({ history, navigation, removeAllHistory }) => {
           }]}
         >
           <AntDesign name="questioncircleo" size={80} color="white" />
+
           <Text style={styles.noHistoryText}>No history found. Go watch some anime!</Text>
         </Animated.View>
       )}

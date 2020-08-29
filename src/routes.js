@@ -7,13 +7,13 @@ import { createStackNavigator } from '@react-navigation/stack';
 
 import HistoryScreen from './screens/HistoryScreen';
 import SearchScreen from './screens/SearchScreen';
-import FavoriteScreen from './screens/FavoriteScreen';
+import FavoritesScreen from './screens/FavoritesScreen';
 import SecondSearchScreen from './screens/SecondSearchScreen';
 import AnimeScreen from './screens/AnimeScreen';
 
 const HistoryStack = createStackNavigator();
 const SearchStack = createStackNavigator();
-const FavoriteStack = createStackNavigator();
+const FavoritesStack = createStackNavigator();
 
 const SearchStackScreen = () => (
   <SearchStack.Navigator screenOptions={() => ({
@@ -40,17 +40,17 @@ const HistoryStackScreen = () => (
   </HistoryStack.Navigator>
 );
 
-const FavoriteStackScreen = () => (
-  <FavoriteStack.Navigator screenOptions={() => ({
+const FavoritesStackScreen = () => (
+  <FavoritesStack.Navigator screenOptions={() => ({
     cardStyle: {
       backgroundColor: 'transparent',
     },
     headerShown: false,
   })}
   >
-    <FavoriteStack.Screen component={FavoriteScreen} name="Favorite" />
-    <FavoriteStack.Screen component={AnimeScreen} name="Anime" />
-  </FavoriteStack.Navigator>
+    <FavoritesStack.Screen component={FavoritesScreen} name="Favorites" />
+    <FavoritesStack.Screen component={AnimeScreen} name="Anime" />
+  </FavoritesStack.Navigator>
 );
 
 const Tab = createBottomTabNavigator();
@@ -59,17 +59,10 @@ export default () => (
   <NavigationContainer>
     <Tab.Navigator
       tabBarOptions={{
-        activeTintColor: '#e66e6e',
-        labelStyle: {
-          fontFamily: 'Quicksand_400Regular',
-        },
+        showLabel: false,
         style: {
-          backgroundColor: '#191919',
-          borderTopColor: 'black',
-          height: 60,
-        },
-        tabStyle: {
-          marginBottom: 5,
+          backgroundColor: '#232323',
+          borderTopWidth: 0,
         },
       }}
     >
@@ -83,8 +76,8 @@ export default () => (
         }}
       />
       <Tab.Screen
-        component={FavoriteStackScreen}
-        name="Favorite"
+        component={FavoritesStackScreen}
+        name="Favorites"
         options={{
           tabBarIcon: ({ color, focused, size }) => (
             <FontAwesome color={focused ? '#e63232' : color} name="heart" size={size} />

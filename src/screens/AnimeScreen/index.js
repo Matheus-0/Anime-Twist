@@ -1,5 +1,7 @@
 /* eslint-disable no-shadow */
+import { FontAwesome } from '@expo/vector-icons';
 import CheckBox from '@react-native-community/checkbox';
+import { useFocusEffect } from '@react-navigation/native';
 import { Video } from 'expo-av';
 import { lockAsync, OrientationLock } from 'expo-screen-orientation';
 import PropTypes from 'prop-types';
@@ -9,12 +11,11 @@ import {
 } from 'react-native';
 import { RectButton } from 'react-native-gesture-handler';
 import { connect } from 'react-redux';
-import { FontAwesome } from '@expo/vector-icons';
 
 import styles from './styles';
 
 import {
-  markEpisodeAsComplete, undoMarkEpisodeAsComplete, addToFavorite, removeFromFavorite,
+  addToFavorites, markEpisodeAsComplete, removeFromFavorites, undoMarkEpisodeAsComplete,
 } from '../../store/actions';
 
 import EpisodeItem from '../../components/EpisodeItem';
@@ -24,11 +25,11 @@ import { decryptSource, getAnimeSources } from '../../services/api';
 import { baseURL, userAgent } from '../../constants';
 
 const AnimeScreen = ({
-  addToFavorite,
+  addToFavorites,
   completeEpisodes,
   favorites,
   markEpisodeAsComplete,
-  removeFromFavorite,
+  removeFromFavorites,
   route,
   undoMarkEpisodeAsComplete,
 }) => {
@@ -38,7 +39,7 @@ const AnimeScreen = ({
   const [autoCheckBox, setAutoCheckBox] = useState(true);
   const [toggleCheckBox, setToggleCheckBox] = useState(false);
   const [episodePlaying, setEpisodePlaying] = useState({});
-  const [favorited, setFavorited] = useState(false);
+  const [isFavorite, setIsFavorite] = useState(false);
   const [networkAvailable, setNetworkAvailable] = useState(true);
   const [orientationIsLandscape, setOrientationIsLandscape] = useState(false);
   const [showSourceError, setShowSourceError] = useState(false);
@@ -48,7 +49,7 @@ const AnimeScreen = ({
   const [fadeAnimation] = useState(new Animated.Value(0));
   const [flatListFadeAnimation] = useState(new Animated.Value(0));
 
-  const isAnimeFavorited = (anime) => favorites.includes(anime);
+  const isAnimeFavorite = (anime) => favorites.includes(anime);
 
   const playFadeAnimation = (animation) => Animated.spring(animation, {
     tension: 10,
@@ -65,11 +66,14 @@ const AnimeScreen = ({
     playFadeAnimation(flatListFadeAnimation);
   };
 
+  useFocusEffect(() => setIsFavorite(isAnimeFavorite(anime)));
+
   useEffect(() => {
     playFadeAnimation(fadeAnimation);
 
     fetchData();
-    setFavorited(isAnimeFavorited(anime));
+
+    setIsFavorite(isAnimeFavorite(anime));
   }, [networkAvailable]);
 
   const isEpisodeComplete = (episode) => {
@@ -88,12 +92,10 @@ const AnimeScreen = ({
   };
 
   const handleFavoritePress = () => {
-    setFavorited(!favorited);
-    if (!favorited) {
-      addToFavorite(anime);
-    } else {
-      removeFromFavorite(anime);
-    }
+    setIsFavorite(!isFavorite);
+
+    if (!isFavorite) addToFavorites(anime);
+    else removeFromFavorites(anime);
   };
 
   const handleOnFullscreenUpdate = async () => {
@@ -213,6 +215,7 @@ const AnimeScreen = ({
           </View>
         </View>
       )}
+
       {animeSources ? (
         <>
           {animeSources.length !== 0 ? (
@@ -257,35 +260,47 @@ const AnimeScreen = ({
           )}
         </>
       )}
-      <RectButton
-        style={styles.favoriteButton}
-        opacity={0.6}
-        onPress={handleFavoritePress}
+
+      <Animated.View
+        style={[styles.favoriteButtonView, {
+          opacity: fadeAnimation,
+          transform: [{
+            translateX: fadeAnimation.interpolate({
+              inputRange: [0, 1],
+              outputRange: [100, 0],
+            }),
+          }],
+        }]}
       >
-        <FontAwesome
-          name={favorited ? 'heart-o' : 'heart'}
-          color={favorited ? '#e66e6e' : '#e63232'}
-          size={40}
-        />
-      </RectButton>
+        <RectButton
+          style={styles.favoriteButton}
+          onPress={handleFavoritePress}
+        >
+          <FontAwesome
+            name={isFavorite ? 'heart' : 'heart-o'}
+            color="rgba(255, 255, 255, 0.75)"
+            size={24}
+          />
+        </RectButton>
+      </Animated.View>
     </View>
   );
 };
 
 AnimeScreen.propTypes = {
-  addToFavorite: PropTypes.func.isRequired,
+  addToFavorites: PropTypes.func.isRequired,
   completeEpisodes: PropTypes.shape().isRequired,
-  favorites: PropTypes.array.isRequired,
+  favorites: PropTypes.arrayOf(PropTypes.object).isRequired,
   markEpisodeAsComplete: PropTypes.func.isRequired,
-  removeFromFavorite: PropTypes.func.isRequired,
+  removeFromFavorites: PropTypes.func.isRequired,
   route: PropTypes.shape().isRequired,
   undoMarkEpisodeAsComplete: PropTypes.func.isRequired,
 };
 
 const mapDispatchToProps = {
-  addToFavorite,
+  addToFavorites,
   markEpisodeAsComplete,
-  removeFromFavorite,
+  removeFromFavorites,
   undoMarkEpisodeAsComplete,
 };
 

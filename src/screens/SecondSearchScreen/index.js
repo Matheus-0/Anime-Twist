@@ -23,7 +23,7 @@ const SecondSearchScreen = ({ animeList }) => {
   const [searchResults, setSearchResults] = useState([]);
   const [searchText, setSearchText] = useState('');
 
-  const SEARCH_RESULTS_LIMIT = 100;
+  const MAX_RESULTS = 100;
 
   useEffect(() => {
     Animated.sequence([
@@ -52,10 +52,8 @@ const SecondSearchScreen = ({ animeList }) => {
       if (animeList) {
         results = animeList.filter(
           (anime) => {
-            if (count < SEARCH_RESULTS_LIMIT) {
+            if (count < MAX_RESULTS) {
               let alternative = getAnimeAlternativeTitle(anime);
-              const slug = getAnimeSlug(anime);
-              const title = getAnimeTitle(anime).toLowerCase();
 
               if (alternative) {
                 alternative = alternative.toLowerCase();
@@ -66,6 +64,9 @@ const SecondSearchScreen = ({ animeList }) => {
                   return true;
                 }
               }
+
+              const slug = getAnimeSlug(anime);
+              const title = getAnimeTitle(anime).toLowerCase();
 
               if (slug.includes(query) || title.includes(query)) {
                 count += 1;
