@@ -47,15 +47,9 @@ const SearchScreen = ({ loadAnimeList, navigation }) => {
     loadResourcesAsync();
   }, [failedRequest]);
 
-  useEffect(() => {
-    const unsubscribe = navigation.addListener('blur', () => fadeAnimation.setValue(0));
+  const handleSearchOnPress = () => navigation.navigate('SecondSearch');
 
-    return unsubscribe;
-  }, [navigation]);
-
-  useFocusEffect(() => {
-    playFadeAnimation(fadeAnimation);
-  });
+  useFocusEffect(() => playFadeAnimation(fadeAnimation));
 
   return (
     <View style={styles.container}>
@@ -75,7 +69,7 @@ const SearchScreen = ({ loadAnimeList, navigation }) => {
       {isReady ? (
         <AnimatedTouchableOpacity
           activeOpacity={1}
-          onPress={() => navigation.navigate('SecondSearch')}
+          onPress={handleSearchOnPress}
           style={[styles.search, {
             opacity: fadeAnimation,
           }]}
@@ -118,8 +112,6 @@ SearchScreen.propTypes = {
   }).isRequired,
 };
 
-const mapDispatchToProps = {
-  loadAnimeList,
-};
+const mapDispatchToProps = { loadAnimeList };
 
 export default connect(null, mapDispatchToProps)(SearchScreen);

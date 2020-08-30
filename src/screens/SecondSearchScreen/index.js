@@ -48,10 +48,11 @@ const SecondSearchScreen = ({ animeList }) => {
 
       if (!firstSearchDone) setFirstSearchDone(true);
 
-      let count = 0;
       let results = [];
 
       if (animeList) {
+        let count = 0;
+
         results = animeList.filter(
           (anime) => {
             if (count < MAX_RESULTS) {

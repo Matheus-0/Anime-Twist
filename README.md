@@ -15,9 +15,3 @@
 ## License
 
 This project is under the MIT license. See the [LICENSE](LICENSE.md) file for more details.
-
-## Contributors
-
-<a href="https://github.com/Matheus-0/Anime-Twist/graphs/contributors">
-  <img src="https://contributors-img.web.app/image?repo=Matheus-0/Anime-Twist" />
-</a>

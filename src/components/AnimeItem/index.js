@@ -31,6 +31,7 @@ const AnimeItem = ({
     removeFromFavorites(anime);
   };
 
+  // This is called before removing the anime so that the animation can finish first
   const handleRemoveAnimation = () => {
     Animated.parallel([
       Animated.spring(removeFadeAnimation, {

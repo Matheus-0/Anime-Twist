@@ -5,25 +5,13 @@ import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 
-import SearchScreen from './screens/SearchScreen';
-import FavoritesScreen from './screens/FavoritesScreen';
-import SecondSearchScreen from './screens/SecondSearchScreen';
 import AnimeScreen from './screens/AnimeScreen';
+import FavoritesScreen from './screens/FavoritesScreen';
+import SearchScreen from './screens/SearchScreen';
+import SecondSearchScreen from './screens/SecondSearchScreen';
 
-const SearchStack = createStackNavigator();
 const FavoritesStack = createStackNavigator();
-
-const SearchStackScreen = () => (
-  <SearchStack.Navigator screenOptions={() => ({
-    animationEnabled: false,
-    headerShown: false,
-  })}
-  >
-    <SearchStack.Screen component={SearchScreen} name="Search" />
-    <SearchStack.Screen component={SecondSearchScreen} name="SecondSearch" />
-    <SearchStack.Screen component={AnimeScreen} name="Anime" />
-  </SearchStack.Navigator>
-);
+const SearchStack = createStackNavigator();
 
 const FavoritesStackScreen = () => (
   <FavoritesStack.Navigator screenOptions={() => ({
@@ -36,6 +24,18 @@ const FavoritesStackScreen = () => (
     <FavoritesStack.Screen component={FavoritesScreen} name="Favorites" />
     <FavoritesStack.Screen component={AnimeScreen} name="Anime" />
   </FavoritesStack.Navigator>
+);
+
+const SearchStackScreen = () => (
+  <SearchStack.Navigator screenOptions={() => ({
+    animationEnabled: false,
+    headerShown: false,
+  })}
+  >
+    <SearchStack.Screen component={SearchScreen} name="Search" />
+    <SearchStack.Screen component={SecondSearchScreen} name="SecondSearch" />
+    <SearchStack.Screen component={AnimeScreen} name="Anime" />
+  </SearchStack.Navigator>
 );
 
 const Tab = createBottomTabNavigator();

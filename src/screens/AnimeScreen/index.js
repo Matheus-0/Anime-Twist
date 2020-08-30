@@ -3,7 +3,7 @@ import { AntDesign } from '@expo/vector-icons';
 import CheckBox from '@react-native-community/checkbox';
 import { useFocusEffect } from '@react-navigation/native';
 import { Video } from 'expo-av';
-import { lockAsync, OrientationLock, getOrientationLockAsync } from 'expo-screen-orientation';
+import { getOrientationLockAsync, lockAsync, OrientationLock } from 'expo-screen-orientation';
 import PropTypes from 'prop-types';
 import React, { useEffect, useState } from 'react';
 import {
@@ -72,8 +72,10 @@ const AnimeScreen = ({
     const unsubscribe = navigation.addListener('blur', async () => {
       const orientation = await getOrientationLockAsync();
 
-      if (orientation === OrientationLock.LANDSCAPE_RIGHT) {
-        await lockAsync(OrientationLock.PORTRAIT);
+      const { PORTRAIT, LANDSCAPE, LANDSCAPE_RIGHT } = OrientationLock;
+
+      if (orientation === LANDSCAPE || orientation === LANDSCAPE_RIGHT) {
+        await lockAsync(PORTRAIT);
       }
     });
 
@@ -113,17 +115,21 @@ const AnimeScreen = ({
   const handleOnFullscreenUpdate = async ({ fullscreenUpdate }) => {
     const orientation = await getOrientationLockAsync();
 
+    const {
+      LANDSCAPE, LANDSCAPE_RIGHT, PORTRAIT, PORTRAIT_UP,
+    } = OrientationLock;
+
     switch (fullscreenUpdate) {
       case Video.FULLSCREEN_UPDATE_PLAYER_DID_PRESENT: {
-        if (orientation === OrientationLock.PORTRAIT) {
-          await lockAsync(OrientationLock.LANDSCAPE_RIGHT);
+        if (orientation === PORTRAIT || orientation === PORTRAIT_UP) {
+          await lockAsync(LANDSCAPE_RIGHT);
         }
 
         break;
       }
       case Video.FULLSCREEN_UPDATE_PLAYER_DID_DISMISS: {
-        if (orientation === OrientationLock.LANDSCAPE_RIGHT) {
-          await lockAsync(OrientationLock.PORTRAIT);
+        if (orientation === LANDSCAPE || orientation === LANDSCAPE_RIGHT) {
+          await lockAsync(PORTRAIT);
         }
 
         break;

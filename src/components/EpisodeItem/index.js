@@ -18,7 +18,7 @@ const EpisodeItem = ({
 
   return (
     <TouchableOpacity
-      activeOpacity={0.7}
+      activeOpacity={0.75}
       onPress={onPress}
       style={[styles.item, extraStyles]}
     >

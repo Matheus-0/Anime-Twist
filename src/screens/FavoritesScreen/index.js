@@ -2,7 +2,7 @@
 import { AntDesign } from '@expo/vector-icons';
 import { useFocusEffect } from '@react-navigation/native';
 import PropTypes from 'prop-types';
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import {
   Animated, LayoutAnimation, Text, View,
 } from 'react-native';
@@ -15,18 +15,9 @@ import AnimeItem from '../../components/AnimeItem';
 
 import { removeAllFavorites } from '../../store/actions';
 
-const FavoritesScreen = ({ navigation, removeAllFavorites, favorites }) => {
+const FavoritesScreen = ({ removeAllFavorites, favorites }) => {
   const [fadeAnimation] = useState(new Animated.Value(0));
   const [scrollViewAnimation] = useState(new Animated.Value(100));
-
-  useEffect(() => {
-    const unsubscribe = navigation.addListener('blur', () => {
-      fadeAnimation.setValue(0);
-      scrollViewAnimation.setValue(100);
-    });
-
-    return unsubscribe;
-  }, [navigation]);
 
   useFocusEffect(() => {
     Animated.parallel([
@@ -62,6 +53,7 @@ const FavoritesScreen = ({ navigation, removeAllFavorites, favorites }) => {
       playLayoutAnimation(400);
     });
   };
+
   return (
     <View style={styles.container}>
       <Animated.View
@@ -77,6 +69,7 @@ const FavoritesScreen = ({ navigation, removeAllFavorites, favorites }) => {
       >
         <Text style={styles.favoriteTitle}>Favorites</Text>
       </Animated.View>
+
       {favorites.length !== 0 ? (
         <>
           <Animated.View
@@ -120,6 +113,7 @@ const FavoritesScreen = ({ navigation, removeAllFavorites, favorites }) => {
             }]}
           >
             {favorites.map((_, index, array) => {
+              // Mapping in reverse order so that the recent favourites show up first
               const anime = array[array.length - 1 - index];
 
               return (
@@ -158,9 +152,6 @@ const FavoritesScreen = ({ navigation, removeAllFavorites, favorites }) => {
 
 FavoritesScreen.propTypes = {
   favorites: PropTypes.arrayOf(PropTypes.object).isRequired,
-  navigation: PropTypes.shape({
-    addListener: PropTypes.func.isRequired,
-  }).isRequired,
   removeAllFavorites: PropTypes.func.isRequired,
 };
 
