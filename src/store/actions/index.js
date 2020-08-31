@@ -1,13 +1,24 @@
 import * as Constants from '../constants';
 
-// Anime and episode actions
+// Anime actions
 export const loadAnimeList = (animeList) => ({
   type: Constants.LOAD_ANIME_LIST,
   animeList,
 });
 
+// Episodes actions
+export const markEpisodeAsCurrent = (episode) => ({
+  type: Constants.MARK_EPISODE_AS_CURRENT,
+  episode,
+});
+
 export const markEpisodeAsComplete = (episode) => ({
   type: Constants.MARK_EPISODE_COMPLETE,
+  episode,
+});
+
+export const unmarkEpisodeAsCurrent = (episode) => ({
+  type: Constants.UNMARK_EPISODE_AS_CURRENT,
   episode,
 });
 

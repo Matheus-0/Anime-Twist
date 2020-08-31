@@ -8,13 +8,14 @@ import styles from './styles';
 const EpisodeItem = ({
   animeEpisode,
   isComplete,
+  isCurrent,
   isPlaying,
   onPress,
 }) => {
   let extraStyles = {};
 
-  if (isComplete) extraStyles = styles.completeItem;
-  else if (isPlaying) extraStyles = styles.playingItem;
+  if (isCurrent) extraStyles = styles.currentItem;
+  else if (isComplete) extraStyles = styles.completeItem;
 
   return (
     <TouchableOpacity
@@ -23,7 +24,7 @@ const EpisodeItem = ({
       style={[styles.item, extraStyles]}
     >
       {isPlaying ? (
-        <SimpleLineIcons name="control-play" size={16} color="grey" />
+        <SimpleLineIcons name="control-play" size={16} color="rgba(255, 255, 255, 0.75)" />
       ) : (
         <Text style={styles.episodeText}>{animeEpisode.number}</Text>
       )}
@@ -34,6 +35,7 @@ const EpisodeItem = ({
 EpisodeItem.propTypes = {
   animeEpisode: PropTypes.shape().isRequired,
   isComplete: PropTypes.bool.isRequired,
+  isCurrent: PropTypes.bool.isRequired,
   isPlaying: PropTypes.bool.isRequired,
   onPress: PropTypes.func.isRequired,
 };

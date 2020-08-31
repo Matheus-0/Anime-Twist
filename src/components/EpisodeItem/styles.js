@@ -5,6 +5,9 @@ const styles = StyleSheet.create({
     borderColor: '#e63232',
     borderWidth: 1,
   },
+  currentItem: {
+    backgroundColor: '#e63232',
+  },
   episodeText: {
     color: 'white',
     fontFamily: 'Quicksand_400Regular',
@@ -20,10 +23,6 @@ const styles = StyleSheet.create({
     marginBottom: 10,
     marginHorizontal: 5,
     width: 70,
-  },
-  playingItem: {
-    borderColor: '#646464',
-    borderWidth: 1,
   },
 });
 

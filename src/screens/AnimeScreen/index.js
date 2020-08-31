@@ -15,7 +15,12 @@ import { connect } from 'react-redux';
 import styles from './styles';
 
 import {
-  addToFavorites, markEpisodeAsComplete, removeFromFavorites, undoMarkEpisodeAsComplete,
+  addToFavorites,
+  markEpisodeAsComplete,
+  markEpisodeAsCurrent,
+  removeFromFavorites,
+  undoMarkEpisodeAsComplete,
+  unmarkEpisodeAsCurrent,
 } from '../../store/actions';
 
 import EpisodeItem from '../../components/EpisodeItem';
@@ -27,12 +32,15 @@ import { baseURL, userAgent } from '../../constants';
 const AnimeScreen = ({
   addToFavorites,
   completeEpisodes,
+  currentEpisodes,
   favorites,
   markEpisodeAsComplete,
+  markEpisodeAsCurrent,
   navigation,
   removeFromFavorites,
   route,
   undoMarkEpisodeAsComplete,
+  unmarkEpisodeAsCurrent,
 }) => {
   const { anime } = route.params;
 
@@ -98,6 +106,14 @@ const AnimeScreen = ({
     return false;
   };
 
+  const isEpisodeCurrent = (episode) => {
+    const currentEpisodeNumber = currentEpisodes[episode.anime_id];
+
+    if (currentEpisodeNumber) return episode.number === currentEpisodeNumber;
+
+    return false;
+  };
+
   const handleCheckBoxOnValueChange = (newValue) => {
     if (newValue) markEpisodeAsComplete(episodePlaying);
     else undoMarkEpisodeAsComplete(episodePlaying);
@@ -139,7 +155,7 @@ const AnimeScreen = ({
     }
   };
 
-  const handleOnLoad = (status) => setVideoCompletePosition(status.durationMillis * 0.9);
+  const handleOnLoad = (status) => setVideoCompletePosition(status.durationMillis * 0.8);
 
   const handleOnPlaybackStatusUpdate = (status) => {
     if (status.error) {
@@ -153,6 +169,7 @@ const AnimeScreen = ({
       && !isEpisodeComplete(episodePlaying)
     ) {
       markEpisodeAsComplete(episodePlaying);
+      unmarkEpisodeAsCurrent(episodePlaying);
 
       setAutoCheckBox(false);
       setToggleCheckBox(true);
@@ -161,6 +178,8 @@ const AnimeScreen = ({
     if (status.didJustFinish) {
       if (episodePlaying.number < animeSources.length) {
         const nextEpisode = animeSources.find((item) => item.number === episodePlaying.number + 1);
+
+        markEpisodeAsCurrent(nextEpisode);
 
         setAutoCheckBox(true);
         setVideoCompletePosition(null);
@@ -173,15 +192,20 @@ const AnimeScreen = ({
 
   const handleRenderItem = (item) => {
     const isComplete = isEpisodeComplete(item);
+    const isCurrent = isEpisodeCurrent(item);
+    const isPlaying = item.number === episodePlaying.number;
 
     return (
       <EpisodeItem
         animeEpisode={item}
         isComplete={isComplete}
-        isPlaying={item.number === episodePlaying.number}
+        isCurrent={isCurrent}
+        isPlaying={isPlaying}
         key={String(item.number)}
         onPress={() => {
-          if (episodePlaying.number !== item.number) {
+          if (!isPlaying || showSourceError) {
+            markEpisodeAsCurrent(item);
+
             setAutoCheckBox(true);
             setVideoCompletePosition(null);
             setShowSourceError(false);
@@ -323,25 +347,31 @@ const AnimeScreen = ({
 AnimeScreen.propTypes = {
   addToFavorites: PropTypes.func.isRequired,
   completeEpisodes: PropTypes.shape().isRequired,
+  currentEpisodes: PropTypes.objectOf(PropTypes.number).isRequired,
   favorites: PropTypes.arrayOf(PropTypes.object).isRequired,
   markEpisodeAsComplete: PropTypes.func.isRequired,
+  markEpisodeAsCurrent: PropTypes.func.isRequired,
   navigation: PropTypes.shape({
     addListener: PropTypes.func.isRequired,
   }).isRequired,
   removeFromFavorites: PropTypes.func.isRequired,
   route: PropTypes.shape().isRequired,
   undoMarkEpisodeAsComplete: PropTypes.func.isRequired,
+  unmarkEpisodeAsCurrent: PropTypes.func.isRequired,
 };
 
 const mapDispatchToProps = {
   addToFavorites,
   markEpisodeAsComplete,
+  markEpisodeAsCurrent,
   removeFromFavorites,
   undoMarkEpisodeAsComplete,
+  unmarkEpisodeAsCurrent,
 };
 
 const mapStateToProps = (state) => ({
   completeEpisodes: state.animeReducer.animeObjectForEpisodes,
+  currentEpisodes: state.animeReducer.animeObjectForCurrentEpisode,
   favorites: state.animeReducer.favorites,
 });
 

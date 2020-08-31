@@ -3,6 +3,7 @@ import * as Constants from '../constants';
 const initialState = {
   animeList: [],
   animeObjectForEpisodes: {},
+  animeObjectForCurrentEpisode: {},
   favorites: [],
 };
 
@@ -21,6 +22,18 @@ export default (state = initialState, action) => {
         ...state,
         animeList: action.animeList,
       };
+    case Constants.MARK_EPISODE_AS_CURRENT: {
+      const animeID = action.episode.anime_id;
+      const episodeNumber = action.episode.number;
+
+      return {
+        ...state,
+        animeObjectForCurrentEpisode: {
+          ...state.animeObjectForCurrentEpisode,
+          [animeID]: episodeNumber,
+        },
+      };
+    }
     case Constants.MARK_EPISODE_COMPLETE: {
       const animeID = action.episode.anime_id;
       const episodeNumber = action.episode.number;
@@ -61,6 +74,22 @@ export default (state = initialState, action) => {
           animeObjectForEpisodes: {
             ...state.animeObjectForEpisodes,
             [animeID]: [...arrayOfEpisodes.filter((item) => item !== episodeNumber)],
+          },
+        };
+      }
+
+      return state;
+    }
+    case Constants.UNMARK_EPISODE_AS_CURRENT: {
+      if (state.animeObjectForCurrentEpisode) {
+        const animeID = action.episode.anime_id;
+
+        const { [animeID]: _, ...remainingAnime } = state.animeObjectForCurrentEpisode;
+
+        return {
+          ...state,
+          animeObjectForCurrentEpisode: {
+            ...remainingAnime,
           },
         };
       }
