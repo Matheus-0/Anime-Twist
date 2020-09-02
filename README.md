@@ -4,14 +4,16 @@
 
 <p align="center">An app to stream anime from Anime Twist.</p>
 
-## Contributing
+## Installation
 
-1. Fork this repository.
-2. Create a branch with your feature (`git checkout -b my-feature`).
-3. Commit your changes (`git commit -m 'Add my feature!'`).
-4. Push to your branch (`git push origin my-feature`).
-5. Create a pull request.
+Just go to the [latest release](https://github.com/Matheus-0/Anime-Twist/releases/latest), download the application and install it on your device.
+
+## Disclaimer
+
+I am not affiliated with [Anime Twist](https://twist.moe/), neither is this application. I made this project for personal use.
+
+If you can, please donate to help them keep their site up and running.
 
 ## License
 
-This project is under the MIT license. See the [LICENSE](LICENSE.md) file for more details.
+This project is under a GNU license. See the [LICENSE](LICENSE.md) file for more details.
