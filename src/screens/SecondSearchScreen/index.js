@@ -10,9 +10,7 @@ import styles from './styles';
 
 import AnimeItem from '../../components/AnimeItem';
 
-import {
-  customIncludes, getAnimeAlternativeTitle, getAnimeSlug, getAnimeTitle,
-} from '../../utils/anime';
+import { customIncludes } from '../../utils/anime';
 
 const SecondSearchScreen = ({ animeList }) => {
   const [downloadTextAnimation] = useState(new Animated.Value(-100));
@@ -56,7 +54,7 @@ const SecondSearchScreen = ({ animeList }) => {
         results = animeList.filter(
           (anime) => {
             if (count < MAX_RESULTS) {
-              let alternative = getAnimeAlternativeTitle(anime);
+              let alternative = anime.alt_title;
 
               if (alternative) {
                 alternative = alternative.toLowerCase();
@@ -68,8 +66,8 @@ const SecondSearchScreen = ({ animeList }) => {
                 }
               }
 
-              const slug = getAnimeSlug(anime);
-              const title = getAnimeTitle(anime).toLowerCase();
+              const { slug } = anime.slug;
+              const { title } = anime;
 
               if (customIncludes(slug, query) || customIncludes(title, query)) {
                 count += 1;

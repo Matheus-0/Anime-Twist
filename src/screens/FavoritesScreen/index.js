@@ -1,4 +1,3 @@
-/* eslint-disable no-shadow */
 import { AntDesign } from '@expo/vector-icons';
 import { useFocusEffect } from '@react-navigation/native';
 import PropTypes from 'prop-types';

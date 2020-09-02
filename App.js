@@ -1,4 +1,3 @@
-/* eslint-disable camelcase */
 import { AppLoading } from 'expo';
 import { StatusBar } from 'expo-status-bar';
 import React from 'react';
@@ -8,7 +7,7 @@ import { PersistGate } from 'redux-persist/integration/react';
 
 import { Quicksand_400Regular, Quicksand_700Bold, useFonts } from '@expo-google-fonts/quicksand';
 
-import { persistor, store } from './src/store';
+import { persistedStore, store } from './src/store';
 
 import Routes from './src/routes';
 
@@ -28,7 +27,7 @@ export default function App() {
 
   return (
     <Provider store={store}>
-      <PersistGate loading={<AppLoading />} persistor={persistor}>
+      <PersistGate loading={<AppLoading />} persistor={persistedStore}>
         <Routes />
         <StatusBar style="light" translucent={false} />
         <NetworkStatus

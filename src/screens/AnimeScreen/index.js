@@ -1,4 +1,3 @@
-/* eslint-disable no-shadow */
 import { AntDesign } from '@expo/vector-icons';
 import CheckBox from '@react-native-community/checkbox';
 import { useFocusEffect } from '@react-navigation/native';
@@ -55,7 +54,7 @@ const AnimeScreen = ({
   const [videoSource, setVideoSource] = useState('');
 
   const [fadeAnimation] = useState(new Animated.Value(0));
-  const [flatListFadeAnimation] = useState(new Animated.Value(0));
+  const [scrollViewFadeAnimation] = useState(new Animated.Value(0));
 
   const isAnimeFavorite = (anime) => favorites.includes(anime);
 
@@ -71,24 +70,18 @@ const AnimeScreen = ({
     if (response) setAnimeSources(response);
     else setNetworkAvailable(false);
 
-    playFadeAnimation(flatListFadeAnimation);
+    playFadeAnimation(scrollViewFadeAnimation);
   };
 
   useFocusEffect(() => setIsFavorite(isAnimeFavorite(anime)));
 
-  useEffect(() => {
-    const unsubscribe = navigation.addListener('blur', async () => {
-      const orientation = await getOrientationLockAsync();
+  useEffect(() => navigation.addListener('blur', async () => {
+    const orientation = await getOrientationLockAsync();
 
-      const { PORTRAIT, LANDSCAPE, LANDSCAPE_RIGHT } = OrientationLock;
+    const { PORTRAIT, LANDSCAPE, LANDSCAPE_RIGHT } = OrientationLock;
 
-      if (orientation === LANDSCAPE || orientation === LANDSCAPE_RIGHT) {
-        await lockAsync(PORTRAIT);
-      }
-    });
-
-    return unsubscribe;
-  }, [navigation]);
+    if (orientation === LANDSCAPE || orientation === LANDSCAPE_RIGHT) await lockAsync(PORTRAIT);
+  }), [navigation]);
 
   useEffect(() => {
     playFadeAnimation(fadeAnimation);
@@ -169,7 +162,6 @@ const AnimeScreen = ({
       && !isEpisodeComplete(episodePlaying)
     ) {
       markEpisodeAsComplete(episodePlaying);
-      unmarkEpisodeAsCurrent(episodePlaying);
 
       setAutoCheckBox(false);
       setToggleCheckBox(true);
@@ -179,6 +171,7 @@ const AnimeScreen = ({
       if (episodePlaying.number < animeSources.length) {
         const nextEpisode = animeSources.find((item) => item.number === episodePlaying.number + 1);
 
+        unmarkEpisodeAsCurrent(episodePlaying);
         markEpisodeAsCurrent(nextEpisode);
 
         setAutoCheckBox(true);
@@ -263,7 +256,6 @@ const AnimeScreen = ({
             <CheckBox
               value={toggleCheckBox}
               onValueChange={handleCheckBoxOnValueChange}
-              style={styles.checkbox}
               tintColors={{
                 true: '#e63232',
                 false: 'gray',
@@ -281,9 +273,9 @@ const AnimeScreen = ({
                 contentContainerStyle={styles.listContent}
                 overScrollMode="never"
                 style={{
-                  opacity: flatListFadeAnimation,
+                  opacity: scrollViewFadeAnimation,
                   transform: [{
-                    translateY: flatListFadeAnimation.interpolate({
+                    translateY: scrollViewFadeAnimation.interpolate({
                       inputRange: [0, 1],
                       outputRange: [200, 0],
                     }),

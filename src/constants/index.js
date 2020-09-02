@@ -1,4 +1,3 @@
-/* eslint-disable global-require */
 export const accessToken = '1rj2vRtegS8Y60B3w3qNZm5T2Q0TN2NR';
 export const baseURL = 'https://twist.moe';
 export const CDN = 'https://twistcdn.bunny.sh';

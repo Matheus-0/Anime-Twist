@@ -2,8 +2,6 @@ import axios from 'axios';
 import CryptoJS from 'crypto-js';
 import AES from 'crypto-js/aes';
 
-import { getAnimeSlug } from '../utils/anime';
-
 import {
   accessToken, baseURL, CDN, key, userAgent,
 } from '../constants';
@@ -33,7 +31,7 @@ export const getAnimeList = async () => {
 
 export const getAnimeSources = async (anime) => {
   try {
-    const response = await api.get(`/api/anime/${getAnimeSlug(anime)}/sources`);
+    const response = await api.get(`/api/anime/${anime.slug.slug}/sources`);
 
     return response.data;
   } catch (error) {

@@ -1,4 +1,3 @@
-/* eslint-disable no-shadow */
 import { AntDesign } from '@expo/vector-icons';
 import { useFocusEffect } from '@react-navigation/native';
 import PropTypes from 'prop-types';
@@ -93,10 +92,7 @@ const SearchScreen = ({ loadAnimeList, navigation }) => {
               </RectButton>
             </>
           ) : (
-            <>
-              <ActivityIndicator color="#e63232" size="large" style={styles.loading} />
-              <Text style={styles.loadingText}>Loading anime data...</Text>
-            </>
+            <ActivityIndicator color="#e63232" size="large" style={styles.loading} />
           )}
         </>
       )}

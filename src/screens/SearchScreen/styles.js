@@ -15,14 +15,7 @@ const styles = StyleSheet.create({
     width: 75,
   },
   loading: {
-    marginTop: '35%',
-  },
-  loadingText: {
-    color: 'white',
-    fontFamily: 'Quicksand_400Regular',
-    fontSize: 14,
-    marginTop: '5%',
-    textAlign: 'center',
+    marginTop: '42.5%',
   },
   requestFailedButton: {
     backgroundColor: '#e63232',
@@ -37,7 +30,7 @@ const styles = StyleSheet.create({
     textAlign: 'center',
   },
   requestFailedContainer: {
-    marginTop: '35%',
+    marginTop: '40%',
   },
   requestFailedText: {
     color: 'white',
@@ -50,7 +43,7 @@ const styles = StyleSheet.create({
     borderRadius: 5,
     flexDirection: 'row',
     justifyContent: 'center',
-    marginTop: '35%',
+    marginTop: '40%',
     paddingVertical: 15,
     width: '90%',
   },

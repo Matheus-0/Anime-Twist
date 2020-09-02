@@ -1,6 +1,6 @@
 import NetInfo from '@react-native-community/netinfo';
 import PropTypes from 'prop-types';
-import React, { useState, useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Animated, Text } from 'react-native';
 
 import styles from './styles';

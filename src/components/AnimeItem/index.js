@@ -1,4 +1,3 @@
-/* eslint-disable no-shadow */
 import { Ionicons } from '@expo/vector-icons';
 import { useNavigation } from '@react-navigation/native';
 import PropTypes from 'prop-types';
@@ -48,10 +47,10 @@ const AnimeItem = ({
   return (
     <Animated.View
       style={[styles.item, style, {
+        opacity: removeFadeAnimation,
         transform: [{
           translateX: removePositionAnimation,
         }],
-        opacity: removeFadeAnimation,
       }]}
     >
       <RectButton
