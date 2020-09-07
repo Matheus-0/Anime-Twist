@@ -5,7 +5,7 @@ const styles = StyleSheet.create({
     alignSelf: 'center',
     backgroundColor: '#e63232',
     borderRadius: 5,
-    marginTop: '5%',
+    marginTop: 20,
     paddingVertical: 5,
     position: 'absolute',
     width: '90%',
@@ -44,7 +44,7 @@ const styles = StyleSheet.create({
     marginHorizontal: 15,
   },
   searchScroll: {
-    marginTop: '5%',
+    marginTop: 20,
     width: '100%',
   },
   searchScrollContent: {

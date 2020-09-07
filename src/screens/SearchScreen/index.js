@@ -21,6 +21,7 @@ const SearchScreen = ({ loadAnimeList, navigation }) => {
   const [failedRequest, setFailedRequest] = useState(false);
 
   const [fadeAnimation] = useState(new Animated.Value(0));
+  const [failedRequestFadeAnimation] = useState(new Animated.Value(0));
 
   const AnimatedTouchableOpacity = Animated.createAnimatedComponent(TouchableOpacity);
 
@@ -39,7 +40,11 @@ const SearchScreen = ({ loadAnimeList, navigation }) => {
       setIsReady(true);
 
       playFadeAnimation(fadeAnimation);
-    } else setFailedRequest(true);
+    } else {
+      setFailedRequest(true);
+
+      playFadeAnimation(failedRequestFadeAnimation);
+    }
   };
 
   useEffect(() => {
@@ -80,19 +85,28 @@ const SearchScreen = ({ loadAnimeList, navigation }) => {
       ) : (
         <>
           {failedRequest ? (
-            <>
-              <View style={styles.requestFailedContainer}>
-                <Text style={styles.requestFailedText}>Connection error.</Text>
-              </View>
+            <Animated.View
+              style={[styles.requestFailedContainer, {
+                opacity: failedRequestFadeAnimation,
+                transform: [{
+                  translateY: failedRequestFadeAnimation.interpolate({
+                    inputRange: [0, 1],
+                    outputRange: [100, 0],
+                  }),
+                }],
+              }]}
+            >
+              <Text style={styles.requestFailedText}>Connection error.</Text>
+
               <RectButton
                 onPress={() => setFailedRequest(false)}
                 style={styles.requestFailedButton}
               >
                 <Text style={styles.requestFailedButtonText}>Retry</Text>
               </RectButton>
-            </>
+            </Animated.View>
           ) : (
-            <ActivityIndicator color="#e63232" size="large" style={styles.loading} />
+            <ActivityIndicator color="#e63232" size="large" />
           )}
         </>
       )}

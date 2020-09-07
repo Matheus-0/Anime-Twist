@@ -21,6 +21,7 @@ const styles = StyleSheet.create({
     width: '100%',
   },
   episodesNotFoundContainer: {
+    alignItems: 'center',
     justifyContent: 'center',
     flex: 1,
   },
@@ -28,6 +29,7 @@ const styles = StyleSheet.create({
     color: 'white',
     fontFamily: 'Quicksand_400Regular',
     fontSize: 18,
+    marginTop: 25,
     textAlign: 'center',
   },
   favoriteButton: {
@@ -46,8 +48,8 @@ const styles = StyleSheet.create({
   listContent: {
     flexDirection: 'row',
     flexWrap: 'wrap',
-    paddingHorizontal: '5%',
-    paddingBottom: '25%',
+    paddingHorizontal: 20,
+    paddingBottom: 80,
   },
   loading: {
     flex: 1,
@@ -55,7 +57,7 @@ const styles = StyleSheet.create({
   noConnectionButton: {
     backgroundColor: '#e63232',
     borderRadius: 10,
-    marginTop: '5%',
+    marginTop: 20,
     paddingHorizontal: 40,
     paddingVertical: 10,
   },
@@ -78,33 +80,33 @@ const styles = StyleSheet.create({
   sourceErrorText: {
     color: 'white',
     fontFamily: 'Quicksand_400Regular',
-    marginBottom: '10%',
+    marginBottom: 20,
     paddingHorizontal: 20,
     textAlign: 'center',
   },
   title: {
     color: 'white',
     fontFamily: 'Quicksand_700Bold',
-    fontSize: 25,
+    fontSize: 22,
     textAlign: 'center',
   },
   titleContainer: {
     alignItems: 'center',
     justifyContent: 'center',
-    marginBottom: '7.5%',
-    marginTop: '7.5%',
-    paddingHorizontal: '10%',
+    marginBottom: 20,
+    marginTop: 20,
+    paddingHorizontal: 40,
   },
   video: {
     aspectRatio: 16 / 9,
     height: undefined,
-    marginBottom: '2.5%',
+    marginBottom: 5,
     width: '90%',
   },
   videoContainer: {
     alignItems: 'center',
     justifyContent: 'center',
-    marginBottom: '2.5%',
+    marginBottom: 5,
     width: '100%',
   },
 });

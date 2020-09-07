@@ -141,7 +141,7 @@ const FavoritesScreen = ({ removeAllFavorites, favorites }) => {
           <AntDesign name="questioncircleo" size={80} color="white" />
 
           <Text style={styles.noFavoriteText}>
-            No favorite anime found. Favorite one first!
+            No favorite anime. Find one first!
           </Text>
         </Animated.View>
       )}

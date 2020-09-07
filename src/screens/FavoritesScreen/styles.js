@@ -13,29 +13,30 @@ const styles = StyleSheet.create({
     textAlign: 'center',
   },
   favoriteDescriptionContainer: {
-    marginTop: '5%',
+    marginTop: 20,
   },
   favoriteTitle: {
     color: 'white',
     fontFamily: 'Quicksand_700Bold',
-    fontSize: 25,
+    fontSize: 22,
     textAlign: 'center',
   },
   favoriteTitleContainer: {
     alignItems: 'center',
     justifyContent: 'center',
-    marginTop: '7.5%',
+    marginTop: 20,
   },
   noFavoriteContainer: {
     alignItems: 'center',
-    marginTop: '30%',
-    marginHorizontal: '5%',
+    flex: 1,
+    justifyContent: 'center',
+    marginHorizontal: 20,
   },
   noFavoriteText: {
     color: 'white',
     fontFamily: 'Quicksand_400Regular',
     fontSize: 20,
-    marginTop: '10%',
+    marginTop: 25,
     textAlign: 'center',
   },
   removeAllFavoriteContainer: {
@@ -43,7 +44,7 @@ const styles = StyleSheet.create({
     backgroundColor: '#e63232',
     borderRadius: 5,
     marginRight: 20,
-    marginTop: '5%',
+    marginTop: 15,
   },
   removeAllFavoriteButton: {
     paddingVertical: 5,
@@ -55,7 +56,7 @@ const styles = StyleSheet.create({
     fontSize: 12,
   },
   scrollView: {
-    marginTop: '5%',
+    marginTop: 15,
     width: '100%',
   },
   scrollViewContainer: {

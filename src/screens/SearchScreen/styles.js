@@ -5,22 +5,21 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     backgroundColor: '#191919',
     flex: 1,
+    justifyContent: 'center',
   },
   icon: {
     marginRight: 10,
   },
   image: {
     height: 75,
-    marginTop: '10%',
+    position: 'absolute',
+    top: 20,
     width: 75,
-  },
-  loading: {
-    marginTop: '42.5%',
   },
   requestFailedButton: {
     backgroundColor: '#e63232',
     borderRadius: 10,
-    marginTop: '5%',
+    marginTop: 20,
     paddingHorizontal: 40,
     paddingVertical: 10,
   },
@@ -30,7 +29,9 @@ const styles = StyleSheet.create({
     textAlign: 'center',
   },
   requestFailedContainer: {
-    marginTop: '40%',
+    alignItems: 'center',
+    flex: 1,
+    justifyContent: 'center',
   },
   requestFailedText: {
     color: 'white',
@@ -43,7 +44,6 @@ const styles = StyleSheet.create({
     borderRadius: 5,
     flexDirection: 'row',
     justifyContent: 'center',
-    marginTop: '40%',
     paddingVertical: 15,
     width: '90%',
   },

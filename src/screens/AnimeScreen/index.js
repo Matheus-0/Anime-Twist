@@ -53,12 +53,14 @@ const AnimeScreen = ({
   const [videoCompletePosition, setVideoCompletePosition] = useState(null);
   const [videoSource, setVideoSource] = useState('');
 
+  const [checkAnimation] = useState(new Animated.Value(0));
   const [fadeAnimation] = useState(new Animated.Value(0));
   const [scrollViewFadeAnimation] = useState(new Animated.Value(0));
 
   const isAnimeFavorite = (anime) => favorites.includes(anime);
 
-  const playFadeAnimation = (animation) => Animated.spring(animation, {
+  const playFadeAnimation = (animation, delay = 0) => Animated.spring(animation, {
+    delay,
     tension: 10,
     toValue: 1,
     useNativeDriver: true,
@@ -196,6 +198,8 @@ const AnimeScreen = ({
         isPlaying={isPlaying}
         key={String(item.number)}
         onPress={() => {
+          if (!videoSource) playFadeAnimation(checkAnimation, 700);
+
           if (!isPlaying || showSourceError) {
             markEpisodeAsCurrent(item);
 
@@ -250,7 +254,17 @@ const AnimeScreen = ({
             useNativeControls
           />
 
-          <View style={styles.checkboxContainer}>
+          <Animated.View
+            style={[styles.checkboxContainer, {
+              opacity: checkAnimation,
+              transform: [{
+                translateX: checkAnimation.interpolate({
+                  inputRange: [0, 1],
+                  outputRange: [100, 0],
+                }),
+              }],
+            }]}
+          >
             <Text style={styles.checkboxText}>Mark episode as complete!</Text>
 
             <CheckBox
@@ -261,7 +275,7 @@ const AnimeScreen = ({
                 false: 'gray',
               }}
             />
-          </View>
+          </Animated.View>
         </View>
       )}
 
@@ -286,9 +300,21 @@ const AnimeScreen = ({
               </Animated.ScrollView>
             </View>
           ) : (
-            <View style={styles.episodesNotFoundContainer}>
+            <Animated.View
+              style={[styles.episodesNotFoundContainer, {
+                opacity: scrollViewFadeAnimation,
+                transform: [{
+                  translateY: scrollViewFadeAnimation.interpolate({
+                    inputRange: [0, 1],
+                    outputRange: [100, 0],
+                  }),
+                }],
+              }]}
+            >
+              <AntDesign name="questioncircleo" size={80} color="white" />
+
               <Text style={styles.episodesNotFoundText}>No episodes found.</Text>
-            </View>
+            </Animated.View>
           )}
         </>
       ) : (
@@ -296,7 +322,17 @@ const AnimeScreen = ({
           {networkAvailable ? (
             <ActivityIndicator color="#e63232" size="large" style={styles.loading} />
           ) : (
-            <View style={styles.noConnectionContainer}>
+            <Animated.View
+              style={[styles.noConnectionContainer, {
+                opacity: scrollViewFadeAnimation,
+                transform: [{
+                  translateY: scrollViewFadeAnimation.interpolate({
+                    inputRange: [0, 1],
+                    outputRange: [100, 0],
+                  }),
+                }],
+              }]}
+            >
               <Text style={styles.noConnectionText}>Connection error.</Text>
 
               <RectButton
@@ -305,7 +341,7 @@ const AnimeScreen = ({
               >
                 <Text style={styles.noConnectionButtonText}>Retry</Text>
               </RectButton>
-            </View>
+            </Animated.View>
           )}
         </>
       )}
