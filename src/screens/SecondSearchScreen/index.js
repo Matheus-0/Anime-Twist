@@ -102,7 +102,7 @@ const SecondSearchScreen = ({ animeList }) => {
   const handleOnSubmitEditing = () => {
     const currentSearch = replaceWithSpaces(searchText).trim().toLowerCase();
 
-    if (currentSearch !== previousSearch) {
+    if (currentSearch && currentSearch !== previousSearch) {
       setIsSearching(true);
       setPreviousSearch(currentSearch);
     }
