@@ -10,7 +10,7 @@ import styles from './styles';
 
 import AnimeItem from '../../components/AnimeItem';
 
-import { customIncludes } from '../../utils/anime';
+import { customIncludes, replaceWithSpaces } from '../../utils/anime';
 
 const SecondSearchScreen = ({ animeList }) => {
   const [downloadTextAnimation] = useState(new Animated.Value(-100));
@@ -20,6 +20,7 @@ const SecondSearchScreen = ({ animeList }) => {
 
   const [firstSearchDone, setFirstSearchDone] = useState(false);
   const [isSearching, setIsSearching] = useState(false);
+  const [previousSearch, setPreviousSearch] = useState('');
   const [searchResults, setSearchResults] = useState([]);
   const [searchText, setSearchText] = useState('');
 
@@ -38,8 +39,8 @@ const SecondSearchScreen = ({ animeList }) => {
     ]).start();
   }, []);
 
-  const handleSearch = (text) => {
-    const query = text.trim().toLowerCase();
+  const handleSearch = () => {
+    const query = replaceWithSpaces(searchText).trim().toLowerCase();
 
     if (query) {
       scrollFadeAnimation.setValue(0);
@@ -98,9 +99,19 @@ const SecondSearchScreen = ({ animeList }) => {
     }
   };
 
+  const handleOnSubmitEditing = () => {
+    const currentSearch = replaceWithSpaces(searchText).trim().toLowerCase();
+
+    if (currentSearch !== previousSearch) {
+      setIsSearching(true);
+      setPreviousSearch(currentSearch);
+    }
+  };
+
   useEffect(() => {
     if (isSearching) {
-      handleSearch(searchText, 100);
+      handleSearch();
+
       setIsSearching(false);
     }
   }, [isSearching]);
@@ -121,7 +132,7 @@ const SecondSearchScreen = ({ animeList }) => {
         <TextInput
           autoFocus
           onChangeText={(text) => setSearchText(text)}
-          onSubmitEditing={() => setIsSearching(true)}
+          onSubmitEditing={handleOnSubmitEditing}
           placeholder="Search"
           returnKeyType="search"
           style={styles.searchInput}
@@ -129,7 +140,7 @@ const SecondSearchScreen = ({ animeList }) => {
       </Animated.View>
 
       {isSearching ? (
-        <ActivityIndicator color="#e63232" size="large" style={{ flex: 1 }} />
+        <ActivityIndicator color="#e63232" size="large" style={styles.loading} />
       ) : (
         <>
           {firstSearchDone ? (

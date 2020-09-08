@@ -2,7 +2,7 @@ import { StyleSheet } from 'react-native';
 
 const styles = StyleSheet.create({
   alternative: {
-    color: 'white',
+    color: 'rgba(255, 255, 255, 0.875)',
     fontFamily: 'Quicksand_400Regular',
     fontSize: 12,
   },
@@ -17,7 +17,7 @@ const styles = StyleSheet.create({
   },
   title: {
     color: 'white',
-    fontFamily: 'Quicksand_700Bold',
+    fontFamily: 'Quicksand_600SemiBold',
     fontSize: 14,
   },
   titlesAndRemoveContainer: {

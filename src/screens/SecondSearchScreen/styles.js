@@ -18,8 +18,11 @@ const styles = StyleSheet.create({
   },
   downloadText: {
     color: 'white',
-    fontFamily: 'Quicksand_700Bold',
+    fontFamily: 'Quicksand_600SemiBold',
     fontSize: 18,
+  },
+  loading: {
+    flex: 1,
   },
   lookForTitleText: {
     color: 'white',

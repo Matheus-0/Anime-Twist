@@ -17,7 +17,7 @@ const styles = StyleSheet.create({
   },
   favoriteTitle: {
     color: 'white',
-    fontFamily: 'Quicksand_700Bold',
+    fontFamily: 'Quicksand_600SemiBold',
     fontSize: 22,
     textAlign: 'center',
   },

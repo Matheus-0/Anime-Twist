@@ -5,7 +5,7 @@ import { Platform, UIManager } from 'react-native';
 import { Provider } from 'react-redux';
 import { PersistGate } from 'redux-persist/integration/react';
 
-import { Quicksand_400Regular, Quicksand_700Bold, useFonts } from '@expo-google-fonts/quicksand';
+import { Quicksand_400Regular, Quicksand_600SemiBold, useFonts } from '@expo-google-fonts/quicksand';
 
 import { persistedStore, store } from './src/store';
 
@@ -20,7 +20,7 @@ if (Platform.OS === 'android' && UIManager.setLayoutAnimationEnabledExperimental
 export default function App() {
   const [fontsLoaded] = useFonts({
     Quicksand_400Regular,
-    Quicksand_700Bold,
+    Quicksand_600SemiBold,
   });
 
   if (!fontsLoaded) return <AppLoading />;

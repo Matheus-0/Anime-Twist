@@ -258,9 +258,9 @@ const AnimeScreen = ({
             style={[styles.checkboxContainer, {
               opacity: checkAnimation,
               transform: [{
-                translateX: checkAnimation.interpolate({
+                translateY: checkAnimation.interpolate({
                   inputRange: [0, 1],
-                  outputRange: [100, 0],
+                  outputRange: [-100, 0],
                 }),
               }],
             }]}

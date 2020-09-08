@@ -6,6 +6,7 @@ const styles = StyleSheet.create({
     alignSelf: 'flex-end',
     flexDirection: 'row',
     marginRight: 20,
+    zIndex: -1,
   },
   checkboxText: {
     color: '#cdcdcd',
@@ -86,7 +87,7 @@ const styles = StyleSheet.create({
   },
   title: {
     color: 'white',
-    fontFamily: 'Quicksand_700Bold',
+    fontFamily: 'Quicksand_600SemiBold',
     fontSize: 22,
     textAlign: 'center',
   },
