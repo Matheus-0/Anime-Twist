@@ -1,6 +1,4 @@
-export const replaceWithSpaces = (string) => (
-  string.replace(/:/g, ' ').replace(/_/g, ' ').replace(/-/g, ' ').replace(/\./g, ' ')
-);
+export const replaceWithSpaces = (string) => string.replace(/[^a-zA-Z0-9 ]/g, ' ');
 
 export const customIncludes = (title, query) => {
   const newQuery = replaceWithSpaces(query);
