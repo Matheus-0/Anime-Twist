@@ -38,6 +38,7 @@ const AnimeScreen = ({
   navigation,
   removeFromFavorites,
   route,
+  settings,
   undoMarkEpisodeAsComplete,
   unmarkEpisodeAsCurrent,
 }) => {
@@ -158,7 +159,8 @@ const AnimeScreen = ({
       setShowSourceError(true);
     }
 
-    if (videoCompletePosition
+    if (settings.autoMark
+      && videoCompletePosition
       && autoCheckBox
       && status.positionMillis > videoCompletePosition
       && !isEpisodeComplete(episodePlaying)
@@ -170,7 +172,7 @@ const AnimeScreen = ({
     }
 
     if (status.didJustFinish) {
-      if (episodePlaying.number < animeSources.length) {
+      if (settings.autoplay && episodePlaying.number < animeSources.length) {
         const nextEpisode = animeSources.find((item) => item.number === episodePlaying.number + 1);
 
         unmarkEpisodeAsCurrent(episodePlaying);
@@ -194,7 +196,7 @@ const AnimeScreen = ({
       <EpisodeItem
         animeEpisode={item}
         isComplete={isComplete}
-        isCurrent={isCurrent}
+        isCurrent={settings.highlight && isCurrent}
         isPlaying={isPlaying}
         key={String(item.number)}
         onPress={() => {
@@ -384,6 +386,11 @@ AnimeScreen.propTypes = {
   }).isRequired,
   removeFromFavorites: PropTypes.func.isRequired,
   route: PropTypes.shape().isRequired,
+  settings: PropTypes.shape({
+    autoMark: PropTypes.bool.isRequired,
+    autoplay: PropTypes.bool.isRequired,
+    highlight: PropTypes.bool.isRequired,
+  }).isRequired,
   undoMarkEpisodeAsComplete: PropTypes.func.isRequired,
   unmarkEpisodeAsCurrent: PropTypes.func.isRequired,
 };
@@ -401,6 +408,7 @@ const mapStateToProps = (state) => ({
   completeEpisodes: state.animeReducer.animeObjectForEpisodes,
   currentEpisodes: state.animeReducer.animeObjectForCurrentEpisode,
   favorites: state.animeReducer.favorites,
+  settings: state.animeReducer.settings,
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(AnimeScreen);

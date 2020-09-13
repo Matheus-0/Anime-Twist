@@ -9,6 +9,7 @@ import AnimeScreen from './screens/AnimeScreen';
 import FavoritesScreen from './screens/FavoritesScreen';
 import SearchScreen from './screens/SearchScreen';
 import SecondSearchScreen from './screens/SecondSearchScreen';
+import SettingsScreen from './screens/SettingsScreen';
 
 const FavoritesStack = createStackNavigator();
 const SearchStack = createStackNavigator();
@@ -66,6 +67,15 @@ export default () => (
         options={{
           tabBarIcon: ({ color, focused, size }) => (
             <AntDesign color={focused ? '#e63232' : color} name="hearto" size={size} />
+          ),
+        }}
+      />
+      <Tab.Screen
+        component={SettingsScreen}
+        name="Settings"
+        options={{
+          tabBarIcon: ({ color, focused, size }) => (
+            <AntDesign color={focused ? '#e63232' : color} name="setting" size={size} />
           ),
         }}
       />
