@@ -9,6 +9,15 @@ const styles = StyleSheet.create({
   item: {
     marginBottom: 15,
   },
+  ongoing: {
+    justifyContent: 'center',
+    paddingHorizontal: 10,
+  },
+  ongoingText: {
+    color: '#e63232',
+    fontFamily: 'Quicksand_600SemiBold',
+    fontSize: 12,
+  },
   removeContainer: {
     backgroundColor: '#232323',
     borderRadius: 10,

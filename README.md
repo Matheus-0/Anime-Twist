@@ -16,4 +16,4 @@ If you can, please donate to help them keep their site up and running.
 
 ## License
 
-This project is under a GNU license. See the [LICENSE](LICENSE.md) file for more details.
+This project is under the [GPL-3.0](LICENSE.md) license.

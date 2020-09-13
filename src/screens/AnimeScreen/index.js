@@ -268,8 +268,8 @@ const AnimeScreen = ({
             <Text style={styles.checkboxText}>Mark episode as complete!</Text>
 
             <CheckBox
-              value={toggleCheckBox}
               onValueChange={handleCheckBoxOnValueChange}
+              value={toggleCheckBox}
               tintColors={{
                 true: '#e63232',
                 false: 'gray',

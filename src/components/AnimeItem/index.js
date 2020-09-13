@@ -72,6 +72,12 @@ const AnimeItem = ({
             <Ionicons color="rgba(255, 255, 255, 0.75)" name="md-heart-dislike" size={24} />
           </RectButton>
         )}
+
+        {anime.ongoing === 1 && (
+          <View style={styles.ongoing}>
+            <Text style={styles.ongoingText}>ONGOING</Text>
+          </View>
+        )}
       </RectButton>
     </Animated.View>
   );
