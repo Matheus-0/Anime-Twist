@@ -41,3 +41,18 @@ export const removeFromFavorites = (anime) => ({
   type: Constants.REMOVE_FROM_FAVORITES,
   anime,
 });
+
+// Settings actions
+export const changeSetting = (key, value) => ({
+  type: Constants.CHANGE_SETTING,
+  key,
+  value,
+});
+
+export const eraseAllData = () => ({
+  type: Constants.ERASE_ALL,
+});
+
+export const resetSettings = () => ({
+  type: Constants.RESET_SETTINGS,
+});

@@ -5,6 +5,11 @@ const initialState = {
   animeObjectForEpisodes: {},
   animeObjectForCurrentEpisode: {},
   favorites: [],
+  settings: {
+    autoplay: true,
+    autoMark: true,
+    highlight: true,
+  },
 };
 
 export default (state = initialState, action) => {
@@ -16,6 +21,24 @@ export default (state = initialState, action) => {
           ...state.favorites.filter((item) => item.id !== action.anime.id),
           action.anime,
         ],
+      };
+    case Constants.CHANGE_SETTING:
+      if (Object.prototype.hasOwnProperty.call(state.settings, action.key)) {
+        return {
+          ...state,
+          settings: {
+            ...state.settings,
+            [action.key]: action.value,
+          },
+        };
+      }
+
+      return state;
+    case Constants.ERASE_ALL:
+      return {
+        ...state,
+        animeObjectForEpisodes: {},
+        animeObjectForCurrentEpisode: {},
       };
     case Constants.LOAD_ANIME_LIST:
       return {
@@ -61,6 +84,15 @@ export default (state = initialState, action) => {
         favorites: [
           ...state.favorites.filter((item) => item.id !== action.anime.id),
         ],
+      };
+    case Constants.RESET_SETTINGS:
+      return {
+        ...state,
+        settings: {
+          autoplay: true,
+          autoMark: true,
+          highlight: true,
+        },
       };
     case Constants.UNDO_MARK_EPISODE_COMPLETE: {
       const animeID = action.episode.anime_id;
