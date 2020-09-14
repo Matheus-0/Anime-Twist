@@ -9,44 +9,32 @@ const styles = StyleSheet.create({
   customCheckBox: {
     paddingHorizontal: 30,
   },
-  resetButton: {
-    alignItems: 'center',
+  eraseAllDataContainer: {
+    alignSelf: 'flex-end',
     backgroundColor: '#e63232',
-    borderRadius: 10,
-    marginBottom: 15,
-    paddingVertical: 7.5,
-    width: '50%',
+    borderRadius: 5,
+    marginRight: 20,
+    marginTop: 15,
   },
-  resetButtonsContainer: {
-    alignItems: 'center',
-    flex: 1,
-    justifyContent: 'flex-end',
-    paddingBottom: 15,
-    width: '100%',
+  eraseButton: {
+    paddingVertical: 5,
+    paddingHorizontal: 15,
   },
-  resetButtonText: {
+  eraseButtonText: {
     color: 'white',
     fontFamily: 'Quicksand_400Regular',
-    textAlign: 'center',
+    fontSize: 12,
   },
   sectionTitle: {
     color: 'white',
     fontFamily: 'Quicksand_600SemiBold',
     fontSize: 18,
-    marginVertical: 10,
+    marginBottom: 10,
     marginLeft: 20,
+    marginTop: 15,
   },
   settingsContainer: {
     width: '100%',
-  },
-  settingsDescription: {
-    color: 'white',
-    fontFamily: 'Quicksand_400Regular',
-    fontSize: 15,
-    textAlign: 'center',
-  },
-  settingsDescriptionContainer: {
-    marginVertical: 20,
   },
   settingsTitle: {
     color: 'white',

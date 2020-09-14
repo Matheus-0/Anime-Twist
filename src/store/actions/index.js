@@ -52,7 +52,3 @@ export const changeSetting = (key, value) => ({
 export const eraseAllData = () => ({
   type: Constants.ERASE_ALL,
 });
-
-export const resetSettings = () => ({
-  type: Constants.RESET_SETTINGS,
-});

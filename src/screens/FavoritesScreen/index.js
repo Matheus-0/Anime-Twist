@@ -11,10 +11,13 @@ import { connect } from 'react-redux';
 import styles from './styles';
 
 import AnimeItem from '../../components/AnimeItem';
+import CustomModal from '../../components/CustomModal';
 
 import { removeAllFavorites } from '../../store/actions';
 
 const FavoritesScreen = ({ removeAllFavorites, favorites }) => {
+  const [clearFavoritesModalVisible, setClearFavoritesModalVisible] = useState(false);
+
   const [fadeAnimation] = useState(new Animated.Value(0));
   const [scrollViewAnimation] = useState(new Animated.Value(100));
 
@@ -41,22 +44,31 @@ const FavoritesScreen = ({ removeAllFavorites, favorites }) => {
     );
   };
 
-  const handleRemoveAllFavorite = () => {
-    Animated.spring(scrollViewAnimation, {
-      tension: 10,
-      toValue: 100,
-      useNativeDriver: true,
-    }).start(() => {
-      removeAllFavorites();
+  const handleRemoveAllFavorites = () => {
+    removeAllFavorites();
 
-      playLayoutAnimation(400);
-    });
+    playLayoutAnimation(400);
+  };
+
+  const handleModalNegativeResponse = () => setClearFavoritesModalVisible(false);
+
+  const handleModalPositiveResponse = () => {
+    setClearFavoritesModalVisible(false);
+
+    handleRemoveAllFavorites();
   };
 
   return (
     <View style={styles.container}>
+      <CustomModal
+        isVisible={clearFavoritesModalVisible}
+        onNegativeResponse={handleModalNegativeResponse}
+        onPositiveResponse={handleModalPositiveResponse}
+        text="All your favorite anime list will be cleared. Continue?"
+      />
+
       <Animated.View
-        style={[styles.favoriteTitleContainer, {
+        style={[styles.favoritesTitleContainer, {
           opacity: fadeAnimation,
           transform: [{
             translateY: fadeAnimation.interpolate({
@@ -66,21 +78,13 @@ const FavoritesScreen = ({ removeAllFavorites, favorites }) => {
           }],
         }]}
       >
-        <Text style={styles.favoriteTitle}>Favorites</Text>
+        <Text style={styles.favoritesTitle}>Favorites</Text>
       </Animated.View>
 
       {favorites.length !== 0 ? (
         <>
           <Animated.View
-            style={[styles.favoriteDescriptionContainer, {
-              opacity: fadeAnimation,
-            }]}
-          >
-            <Text style={styles.favoriteDescription}>These are your favorite anime.</Text>
-          </Animated.View>
-
-          <Animated.View
-            style={[styles.removeAllFavoriteContainer, {
+            style={[styles.removeAllFavoritesContainer, {
               opacity: fadeAnimation,
               transform: [{
                 translateX: fadeAnimation.interpolate({
@@ -91,10 +95,10 @@ const FavoritesScreen = ({ removeAllFavorites, favorites }) => {
             }]}
           >
             <RectButton
-              onPress={handleRemoveAllFavorite}
-              style={styles.removeAllFavoriteButton}
+              onPress={() => setClearFavoritesModalVisible(true)}
+              style={styles.removeAllFavoritesButton}
             >
-              <Text style={styles.removeAllFavoriteText}>Clear all</Text>
+              <Text style={styles.removeAllFavoritesText}>Clear all</Text>
             </RectButton>
           </Animated.View>
 
@@ -128,7 +132,7 @@ const FavoritesScreen = ({ removeAllFavorites, favorites }) => {
         </>
       ) : (
         <Animated.View
-          style={[styles.noFavoriteContainer, {
+          style={[styles.noFavoritesContainer, {
             opacity: fadeAnimation,
             transform: [{
               translateY: fadeAnimation.interpolate({
@@ -140,8 +144,8 @@ const FavoritesScreen = ({ removeAllFavorites, favorites }) => {
         >
           <AntDesign name="questioncircleo" size={80} color="white" />
 
-          <Text style={styles.noFavoriteText}>
-            No favorite anime. Find one first!
+          <Text style={styles.noFavoritesText}>
+            No favorite anime. Explore a bit!
           </Text>
         </Animated.View>
       )}

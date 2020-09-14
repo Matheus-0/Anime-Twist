@@ -24,6 +24,10 @@ const styles = StyleSheet.create({
     marginHorizontal: 5,
     width: 70,
   },
+  playingItem: {
+    borderColor: 'gray',
+    borderWidth: 1,
+  },
 });
 
 export default styles;

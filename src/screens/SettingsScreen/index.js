@@ -8,12 +8,12 @@ import { connect } from 'react-redux';
 import CustomCheckBox from '../../components/CustomCheckBox';
 import CustomModal from '../../components/CustomModal';
 
-import { changeSetting, eraseAllData, resetSettings } from '../../store/actions';
+import { changeSetting, eraseAllData } from '../../store/actions';
 
 import styles from './styles';
 
 const SettingsScreen = ({
-  changeSetting, eraseAllData, resetSettings, settings,
+  changeSetting, eraseAllData, settings,
 }) => {
   const [eraseSettingsModalVisible, setEraseSettingsModalVisible] = useState(false);
 
@@ -59,52 +59,26 @@ const SettingsScreen = ({
       </Animated.View>
 
       <Animated.View
-        style={[styles.settingsDescriptionContainer, {
-          opacity: fadeAnimation,
-        }]}
-      >
-        <Text style={styles.settingsDescription}>Basic settings that you can change.</Text>
-      </Animated.View>
-
-      <Animated.View
-        style={[styles.settingsContainer, {
+        style={[styles.eraseAllDataContainer, {
           opacity: fadeAnimation,
           transform: [{
             translateX: fadeAnimation.interpolate({
               inputRange: [0, 1],
-              outputRange: [-100, 0],
+              outputRange: [100, 0],
             }),
           }],
         }]}
       >
-        <Text style={styles.sectionTitle}>Player</Text>
-
-        <CustomCheckBox
-          onPress={() => changeSetting('autoplay', !settings.autoplay)}
-          value={settings.autoplay}
-          style={styles.customCheckBox}
-          text="Automatically play next episode."
-        />
-
-        <Text style={styles.sectionTitle}>Tracking</Text>
-
-        <CustomCheckBox
-          onPress={() => changeSetting('autoMark', !settings.autoMark)}
-          value={settings.autoMark}
-          style={styles.customCheckBox}
-          text="Automatically mark episodes as complete."
-        />
-
-        <CustomCheckBox
-          onPress={() => changeSetting('highlight', !settings.highlight)}
-          value={settings.highlight}
-          style={styles.customCheckBox}
-          text="Highlight last played episode."
-        />
+        <RectButton
+          onPress={() => setEraseSettingsModalVisible(true)}
+          style={styles.eraseButton}
+        >
+          <Text style={styles.eraseButtonText}>Clear anime data</Text>
+        </RectButton>
       </Animated.View>
 
       <Animated.View
-        style={[styles.resetButtonsContainer, {
+        style={[styles.settingsContainer, {
           opacity: fadeAnimation,
           transform: [{
             translateY: fadeAnimation.interpolate({
@@ -114,19 +88,30 @@ const SettingsScreen = ({
           }],
         }]}
       >
-        <RectButton
-          onPress={() => resetSettings()}
-          style={styles.resetButton}
-        >
-          <Text style={styles.resetButtonText}>Reset to defaults</Text>
-        </RectButton>
+        <Text style={styles.sectionTitle}>Player</Text>
 
-        <RectButton
-          onPress={() => setEraseSettingsModalVisible(true)}
-          style={styles.resetButton}
-        >
-          <Text style={styles.resetButtonText}>Erase all anime data</Text>
-        </RectButton>
+        <CustomCheckBox
+          onValueChange={() => changeSetting('autoplay', !settings.autoplay)}
+          value={settings.autoplay}
+          style={styles.customCheckBox}
+          text="Automatically play next episode."
+        />
+
+        <Text style={styles.sectionTitle}>Tracking</Text>
+
+        <CustomCheckBox
+          onValueChange={() => changeSetting('autoMark', !settings.autoMark)}
+          value={settings.autoMark}
+          style={styles.customCheckBox}
+          text="Automatically mark episodes as complete."
+        />
+
+        <CustomCheckBox
+          onValueChange={() => changeSetting('highlight', !settings.highlight)}
+          value={settings.highlight}
+          style={styles.customCheckBox}
+          text="Highlight last played episode."
+        />
       </Animated.View>
     </View>
   );
@@ -135,14 +120,12 @@ const SettingsScreen = ({
 SettingsScreen.propTypes = {
   changeSetting: PropTypes.func.isRequired,
   eraseAllData: PropTypes.func.isRequired,
-  resetSettings: PropTypes.func.isRequired,
   settings: PropTypes.objectOf(PropTypes.bool).isRequired,
 };
 
 const mapDispatchToProps = {
   changeSetting,
   eraseAllData,
-  resetSettings,
 };
 
 const mapStateToProps = (state) => ({ settings: state.animeReducer.settings });

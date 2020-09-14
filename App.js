@@ -35,7 +35,7 @@ export default function App() {
             alignItems: 'center',
             alignSelf: 'center',
             borderRadius: 10,
-            bottom: 90,
+            bottom: 80,
             paddingVertical: 5,
             position: 'absolute',
             width: '50%',

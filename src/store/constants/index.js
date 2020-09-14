@@ -15,4 +15,3 @@ export const REMOVE_FROM_FAVORITES = 'REMOVE_FROM_FAVORITES';
 // Settings
 export const CHANGE_SETTING = 'CHANGE_SETTING';
 export const ERASE_ALL = 'ERASE_ALL';
-export const RESET_SETTINGS = 'RESET_SETTINGS';

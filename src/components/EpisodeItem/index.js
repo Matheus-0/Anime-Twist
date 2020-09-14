@@ -16,6 +16,7 @@ const EpisodeItem = ({
 
   if (isCurrent) extraStyles = styles.currentItem;
   else if (isComplete) extraStyles = styles.completeItem;
+  else if (isPlaying) extraStyles = styles.playingItem;
 
   return (
     <TouchableOpacity

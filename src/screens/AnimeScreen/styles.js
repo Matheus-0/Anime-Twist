@@ -100,6 +100,7 @@ const styles = StyleSheet.create({
   },
   video: {
     aspectRatio: 16 / 9,
+    backgroundColor: 'black',
     height: undefined,
     marginBottom: 5,
     width: '90%',

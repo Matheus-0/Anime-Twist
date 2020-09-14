@@ -85,15 +85,6 @@ export default (state = initialState, action) => {
           ...state.favorites.filter((item) => item.id !== action.anime.id),
         ],
       };
-    case Constants.RESET_SETTINGS:
-      return {
-        ...state,
-        settings: {
-          autoplay: true,
-          autoMark: true,
-          highlight: true,
-        },
-      };
     case Constants.UNDO_MARK_EPISODE_COMPLETE: {
       const animeID = action.episode.anime_id;
       const episodeNumber = action.episode.number;
