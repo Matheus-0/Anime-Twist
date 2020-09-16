@@ -1,10 +1,6 @@
 import { StyleSheet } from 'react-native';
 
 const styles = StyleSheet.create({
-  completeItem: {
-    borderColor: '#e63232',
-    borderWidth: 1,
-  },
   currentItem: {
     backgroundColor: '#e63232',
   },
@@ -12,6 +8,11 @@ const styles = StyleSheet.create({
     color: 'white',
     fontFamily: 'Quicksand_400Regular',
     fontSize: 16,
+  },
+  icon: {
+    position: 'absolute',
+    right: 5,
+    top: 5,
   },
   item: {
     alignItems: 'center',
@@ -23,10 +24,6 @@ const styles = StyleSheet.create({
     marginBottom: 10,
     marginHorizontal: 5,
     width: 70,
-  },
-  playingItem: {
-    borderColor: 'gray',
-    borderWidth: 1,
   },
 });
 

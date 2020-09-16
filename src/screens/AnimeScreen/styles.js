@@ -42,15 +42,15 @@ const styles = StyleSheet.create({
     width: 55,
   },
   favoriteButtonView: {
-    bottom: 20,
+    bottom: 25,
     position: 'absolute',
-    right: 20,
+    right: 25,
   },
   listContent: {
     flexDirection: 'row',
     flexWrap: 'wrap',
     paddingHorizontal: 20,
-    paddingBottom: 80,
+    paddingBottom: 90,
   },
   loading: {
     flex: 1,

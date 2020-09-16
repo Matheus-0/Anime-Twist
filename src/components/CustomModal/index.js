@@ -9,8 +9,8 @@ const CustomModal = ({
   isVisible, onNegativeResponse, onPositiveResponse, text,
 }) => (
   <Modal
-    animationIn="zoomIn"
-    animationOut="zoomOut"
+    animationIn="fadeIn"
+    animationOut="fadeOut"
     isVisible={isVisible}
     onBackButtonPress={onNegativeResponse}
     onBackdropPress={onNegativeResponse}

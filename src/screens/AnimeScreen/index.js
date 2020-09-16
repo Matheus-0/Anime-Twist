@@ -81,7 +81,7 @@ const AnimeScreen = ({
   useEffect(() => navigation.addListener('blur', async () => {
     const orientation = await getOrientationLockAsync();
 
-    const { PORTRAIT, LANDSCAPE, LANDSCAPE_RIGHT } = OrientationLock;
+    const { LANDSCAPE, LANDSCAPE_RIGHT, PORTRAIT } = OrientationLock;
 
     if (orientation === LANDSCAPE || orientation === LANDSCAPE_RIGHT) await lockAsync(PORTRAIT);
   }), [navigation]);
@@ -160,10 +160,10 @@ const AnimeScreen = ({
     }
 
     if (settings.autoMark
-      && videoCompletePosition
       && autoCheckBox
-      && status.positionMillis > videoCompletePosition
       && !isEpisodeComplete(episodePlaying)
+      && videoCompletePosition
+      && status.positionMillis > videoCompletePosition
     ) {
       markEpisodeAsComplete(episodePlaying);
 

@@ -103,7 +103,7 @@ const SettingsScreen = ({
           onValueChange={() => changeSetting('autoMark', !settings.autoMark)}
           value={settings.autoMark}
           style={styles.customCheckBox}
-          text="Automatically mark episodes as complete."
+          text="Automatically mark episode as complete."
         />
 
         <CustomCheckBox
