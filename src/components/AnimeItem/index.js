@@ -30,20 +30,6 @@ const AnimeItem = ({
     removeFromFavorites(anime);
   };
 
-  // This is called before removing the anime so that the animation can finish first
-  const handleRemoveAnimation = () => {
-    Animated.parallel([
-      Animated.spring(removeFadeAnimation, {
-        toValue: 0,
-        useNativeDriver: true,
-      }),
-      Animated.spring(removePositionAnimation, {
-        toValue: -100,
-        useNativeDriver: true,
-      }),
-    ]).start(handleRemoveAnime);
-  };
-
   return (
     <Animated.View
       style={[styles.item, style, {
@@ -64,17 +50,19 @@ const AnimeItem = ({
           )}
         </View>
 
-        {favoriteRemove ? (
+        {anime.ongoing === 1 && (
+          <View style={styles.ongoing}>
+            <Ionicons color="#e63232" name="md-tv" size={20} />
+          </View>
+        )}
+
+        {favoriteRemove && (
           <RectButton
-            onPress={handleRemoveAnimation}
+            onPress={handleRemoveAnime}
             style={styles.removeContainer}
           >
-            <Ionicons color="rgba(255, 255, 255, 0.75)" name="md-heart-dislike" size={24} />
+            <Ionicons color="rgba(255, 255, 255, 0.75)" name="md-heart-dislike" size={20} />
           </RectButton>
-        ) : anime.ongoing === 1 && (
-          <View style={styles.ongoing}>
-            <Text style={styles.ongoingText}>ONGOING</Text>
-          </View>
         )}
       </RectButton>
     </Animated.View>

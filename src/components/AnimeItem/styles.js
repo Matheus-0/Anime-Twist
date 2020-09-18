@@ -11,12 +11,7 @@ const styles = StyleSheet.create({
   },
   ongoing: {
     justifyContent: 'center',
-    paddingHorizontal: 10,
-  },
-  ongoingText: {
-    color: '#e63232',
-    fontFamily: 'Quicksand_600SemiBold',
-    fontSize: 12,
+    paddingRight: 20,
   },
   removeContainer: {
     backgroundColor: '#232323',
