@@ -11,8 +11,6 @@ import { persistedStore, store } from './src/store';
 
 import Routes from './src/routes';
 
-import NetworkStatus from './src/components/NetworkStatus';
-
 if (Platform.OS === 'android' && UIManager.setLayoutAnimationEnabledExperimental) {
   UIManager.setLayoutAnimationEnabledExperimental(true);
 }
@@ -30,17 +28,6 @@ export default function App() {
       <PersistGate loading={<AppLoading />} persistor={persistedStore}>
         <Routes />
         <StatusBar style="light" translucent={false} />
-        <NetworkStatus
-          style={{
-            alignItems: 'center',
-            alignSelf: 'center',
-            borderRadius: 10,
-            bottom: 74,
-            paddingVertical: 5,
-            position: 'absolute',
-            width: '50%',
-          }}
-        />
       </PersistGate>
     </Provider>
   );
