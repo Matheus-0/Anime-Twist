@@ -134,6 +134,7 @@ const SecondSearchScreen = ({ animeList }) => {
           onChangeText={(text) => setSearchText(text)}
           onSubmitEditing={handleOnSubmitEditing}
           placeholder="Search"
+          placeholderTextColor="#d2d2d2"
           returnKeyType="search"
           style={styles.searchInput}
         />
