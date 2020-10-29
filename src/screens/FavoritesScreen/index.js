@@ -122,9 +122,9 @@ const FavoritesScreen = ({ removeAllFavorites, favorites }) => {
               return (
                 <AnimeItem
                   anime={anime}
+                  favoriteRemove
                   key={anime.id}
                   removeFromParentAnimation={() => playLayoutAnimation(200)}
-                  favoriteRemove
                 />
               );
             })}
