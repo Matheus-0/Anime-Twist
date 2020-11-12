@@ -119,6 +119,11 @@ export default (state = initialState, action) => {
 
       return state;
     }
+    case Constants.UPDATE_FAVORITES:
+      return {
+        ...state,
+        favorites: action.favorites,
+      };
     default:
       return state;
   }

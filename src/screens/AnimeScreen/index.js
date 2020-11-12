@@ -4,7 +4,7 @@ import { useFocusEffect } from '@react-navigation/native';
 import { Video } from 'expo-av';
 import { getOrientationLockAsync, lockAsync, OrientationLock } from 'expo-screen-orientation';
 import PropTypes from 'prop-types';
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import {
   ActivityIndicator, Animated, LayoutAnimation, Text, View,
 } from 'react-native';
@@ -42,6 +42,8 @@ const AnimeScreen = ({
   undoMarkEpisodeAsComplete,
   unmarkEpisodeAsCurrent,
 }) => {
+  const videoRef = useRef(null);
+
   const { anime } = route.params;
 
   const [animeSources, setAnimeSources] = useState(null);
@@ -84,6 +86,8 @@ const AnimeScreen = ({
     const { LANDSCAPE, LANDSCAPE_RIGHT, PORTRAIT } = OrientationLock;
 
     if (orientation === LANDSCAPE || orientation === LANDSCAPE_RIGHT) await lockAsync(PORTRAIT);
+
+    videoRef.current.pauseAsync();
   }), [navigation]);
 
   useEffect(() => {
@@ -243,6 +247,7 @@ const AnimeScreen = ({
             onFullscreenUpdate={handleOnFullscreenUpdate}
             onLoad={handleOnLoad}
             onPlaybackStatusUpdate={handleOnPlaybackStatusUpdate}
+            ref={videoRef}
             resizeMode={Video.RESIZE_MODE_CONTAIN}
             shouldPlay
             source={{

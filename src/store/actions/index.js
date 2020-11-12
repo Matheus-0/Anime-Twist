@@ -42,6 +42,11 @@ export const removeFromFavorites = (anime) => ({
   anime,
 });
 
+export const updateFavorites = (favorites) => ({
+  type: Constants.UPDATE_FAVORITES,
+  favorites,
+});
+
 // Settings actions
 export const changeSetting = (key, value) => ({
   type: Constants.CHANGE_SETTING,

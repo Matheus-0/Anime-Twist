@@ -10,13 +10,15 @@ import { connect } from 'react-redux';
 
 import styles from './styles';
 
-import { loadAnimeList } from '../../store/actions';
+import { loadAnimeList, updateFavorites } from '../../store/actions';
 
 import { getAnimeList } from '../../services/api';
 
 import logo from '../../assets/images/logo.png';
 
-const SearchScreen = ({ loadAnimeList, navigation }) => {
+const SearchScreen = ({
+  favorites, loadAnimeList, navigation, updateFavorites,
+}) => {
   const [isReady, setIsReady] = useState(false);
   const [failedRequest, setFailedRequest] = useState(false);
 
@@ -36,6 +38,22 @@ const SearchScreen = ({ loadAnimeList, navigation }) => {
 
     if (animeList) {
       loadAnimeList(animeList);
+
+      const newFavorites = [];
+
+      favorites.forEach((anime) => {
+        animeList.some((secondAnime) => {
+          if (anime.id === secondAnime.id) {
+            newFavorites.push(secondAnime);
+
+            return true;
+          }
+
+          return false;
+        });
+      });
+
+      updateFavorites(newFavorites);
 
       setIsReady(true);
 
@@ -115,13 +133,17 @@ const SearchScreen = ({ loadAnimeList, navigation }) => {
 };
 
 SearchScreen.propTypes = {
+  favorites: PropTypes.arrayOf(PropTypes.object).isRequired,
   loadAnimeList: PropTypes.func.isRequired,
   navigation: PropTypes.shape({
     addListener: PropTypes.func.isRequired,
     navigate: PropTypes.func.isRequired,
   }).isRequired,
+  updateFavorites: PropTypes.func.isRequired,
 };
 
-const mapDispatchToProps = { loadAnimeList };
+const mapDispatchToProps = { loadAnimeList, updateFavorites };
 
-export default connect(null, mapDispatchToProps)(SearchScreen);
+const mapStateToProps = (state) => ({ favorites: state.animeReducer.favorites });
+
+export default connect(mapStateToProps, mapDispatchToProps)(SearchScreen);
