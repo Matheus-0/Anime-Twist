@@ -33,7 +33,7 @@ const styles = StyleSheet.create({
     marginTop: 25,
     textAlign: 'center',
   },
-  favoriteButton: {
+  floatingButton: {
     alignItems: 'center',
     backgroundColor: '#e63232',
     borderRadius: 27.5,
@@ -41,10 +41,38 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     width: 55,
   },
-  favoriteButtonView: {
+  floatingButtonView: {
     bottom: 25,
     position: 'absolute',
     right: 25,
+  },
+  floatingMenu: {
+    alignItems: 'flex-end',
+    bottom: 90,
+    position: 'absolute',
+    right: 25,
+  },
+  floatingMenuItem: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    marginTop: 10,
+  },
+  floatingMenuItemButton: {
+    alignItems: 'center',
+    backgroundColor: '#e63232',
+    borderRadius: 22.5,
+    height: 45,
+    justifyContent: 'center',
+    marginLeft: 10,
+    width: 45,
+  },
+  floatingMenuItemText: {
+    backgroundColor: '#4b4b4b',
+    borderRadius: 5,
+    color: 'white',
+    fontFamily: 'Quicksand_400Regular',
+    paddingHorizontal: 10,
+    paddingVertical: 5,
   },
   listContent: {
     flexDirection: 'row',
@@ -54,6 +82,30 @@ const styles = StyleSheet.create({
   },
   loading: {
     flex: 1,
+  },
+  modalButton: {
+    alignItems: 'center',
+    borderColor: '#e63232',
+    borderRadius: 10,
+    borderWidth: 1,
+    marginTop: 10,
+    paddingVertical: 5,
+    width: '35%',
+  },
+  modalButtonText: {
+    color: 'white',
+    fontFamily: 'Quicksand_400Regular',
+  },
+  modalContainer: {
+    alignItems: 'center',
+    backgroundColor: '#191919',
+    borderRadius: 10,
+    paddingVertical: 20,
+  },
+  modalPromptText: {
+    color: 'white',
+    fontFamily: 'Quicksand_400Regular',
+    marginBottom: 10,
   },
   noConnectionButton: {
     backgroundColor: '#e63232',

@@ -6,9 +6,10 @@ import { getOrientationLockAsync, lockAsync, OrientationLock } from 'expo-screen
 import PropTypes from 'prop-types';
 import React, { useEffect, useRef, useState } from 'react';
 import {
-  ActivityIndicator, Animated, LayoutAnimation, Text, View,
+  ActivityIndicator, Animated, LayoutAnimation, Text, TouchableOpacity, View,
 } from 'react-native';
 import { RectButton } from 'react-native-gesture-handler';
+import Modal from 'react-native-modal';
 import { connect } from 'react-redux';
 
 import styles from './styles';
@@ -42,22 +43,30 @@ const AnimeScreen = ({
   undoMarkEpisodeAsComplete,
   unmarkEpisodeAsCurrent,
 }) => {
+  const CHUNK_SIZE = 100;
+
   const videoRef = useRef(null);
+
+  const floatingMenuOpen = useRef(false);
 
   const { anime } = route.params;
 
   const [animeSources, setAnimeSources] = useState(null);
+  const [sourcesChunks, setSourcesChunks] = useState(null);
   const [autoCheckBox, setAutoCheckBox] = useState(true);
+  const [chunkIndex, setChunkIndex] = useState(0);
   const [toggleCheckBox, setToggleCheckBox] = useState(false);
   const [episodePlaying, setEpisodePlaying] = useState({});
   const [isFavorite, setIsFavorite] = useState(false);
   const [networkAvailable, setNetworkAvailable] = useState(true);
+  const [rangeModalVisible, setRangeModalVisible] = useState(false);
   const [showSourceError, setShowSourceError] = useState(false);
   const [videoCompletePosition, setVideoCompletePosition] = useState(null);
   const [videoSource, setVideoSource] = useState('');
 
   const [checkAnimation] = useState(new Animated.Value(0));
   const [fadeAnimation] = useState(new Animated.Value(0));
+  const [rotateButtonAnimation] = useState(new Animated.Value(0));
   const [scrollViewFadeAnimation] = useState(new Animated.Value(0));
 
   const isAnimeFavorite = (anime) => favorites.includes(anime);
@@ -69,11 +78,25 @@ const AnimeScreen = ({
     useNativeDriver: true,
   }).start();
 
+  const playRotateAnimation = (animation, toValue) => Animated.spring(animation, {
+    toValue,
+    useNativeDriver: true,
+  }).start();
+
   const fetchData = async () => {
     const response = await getAnimeSources(anime);
 
-    if (response) setAnimeSources(response);
-    else setNetworkAvailable(false);
+    const chunks = [];
+
+    if (response) {
+      setAnimeSources(response);
+
+      for (let i = 0; i < response.length; i += CHUNK_SIZE) chunks.push(i);
+
+      chunks.push(response.length);
+
+      setSourcesChunks(chunks);
+    } else setNetworkAvailable(false);
 
     playFadeAnimation(scrollViewFadeAnimation);
   };
@@ -87,7 +110,7 @@ const AnimeScreen = ({
 
     if (orientation === LANDSCAPE || orientation === LANDSCAPE_RIGHT) await lockAsync(PORTRAIT);
 
-    videoRef.current.pauseAsync();
+    if (videoRef.current) videoRef.current.pauseAsync();
   }), [navigation]);
 
   useEffect(() => {
@@ -155,7 +178,7 @@ const AnimeScreen = ({
     }
   };
 
-  const handleOnLoad = (status) => setVideoCompletePosition(status.durationMillis * 0.8);
+  const handleOnLoad = (status) => setVideoCompletePosition(status.durationMillis * 0.9);
 
   const handleOnPlaybackStatusUpdate = (status) => {
     if (status.error) {
@@ -286,7 +309,36 @@ const AnimeScreen = ({
         </View>
       )}
 
-      {animeSources ? (
+      {sourcesChunks && (
+        <Modal
+          animationIn="fadeIn"
+          animationOut="fadeOut"
+          isVisible={rangeModalVisible}
+          onBackButtonPress={() => setRangeModalVisible(false)}
+          onBackdropPress={() => setRangeModalVisible(false)}
+          useNativeDriver
+        >
+          <View style={styles.modalContainer}>
+            <Text style={styles.modalPromptText}>Select range:</Text>
+
+            {sourcesChunks.slice(0, sourcesChunks.length - 1).map((value, index) => (
+              <TouchableOpacity
+                activeOpacity={0.75}
+                key={value}
+                onPress={() => {
+                  setRangeModalVisible(false);
+                  setChunkIndex(value);
+                }}
+                style={styles.modalButton}
+              >
+                <Text style={styles.modalButtonText}>{`${value + 1} - ${sourcesChunks[index + 1]}`}</Text>
+              </TouchableOpacity>
+            ))}
+          </View>
+        </Modal>
+      )}
+
+      {animeSources && sourcesChunks ? (
         <>
           {animeSources.length !== 0 ? (
             <View style={styles.episodesContainer}>
@@ -303,7 +355,9 @@ const AnimeScreen = ({
                   }],
                 }}
               >
-                {animeSources.map((item) => handleRenderItem(item))}
+                {animeSources.slice(chunkIndex, chunkIndex + CHUNK_SIZE).map(
+                  (item) => handleRenderItem(item),
+                )}
               </Animated.ScrollView>
             </View>
           ) : (
@@ -354,26 +408,79 @@ const AnimeScreen = ({
       )}
 
       <Animated.View
-        style={[styles.favoriteButtonView, {
+        style={[styles.floatingButtonView, {
           opacity: fadeAnimation,
           transform: [{
             translateX: fadeAnimation.interpolate({
               inputRange: [0, 1],
               outputRange: [100, 0],
             }),
+          }, {
+            rotate: rotateButtonAnimation.interpolate({
+              inputRange: [0, 1],
+              outputRange: ['0deg', '45deg'],
+            }),
           }],
         }]}
       >
         <RectButton
-          style={styles.favoriteButton}
-          onPress={handleFavoritePress}
+          style={styles.floatingButton}
+          onPress={() => {
+            playRotateAnimation(rotateButtonAnimation, floatingMenuOpen.current ? 0 : 1);
+
+            floatingMenuOpen.current = !floatingMenuOpen.current;
+          }}
         >
           <AntDesign
-            name={isFavorite ? 'heart' : 'hearto'}
+            name="plus"
             color="rgba(255, 255, 255, 0.75)"
             size={24}
           />
         </RectButton>
+      </Animated.View>
+
+      <Animated.View
+        style={[styles.floatingMenu, {
+          opacity: rotateButtonAnimation,
+          transform: [{
+            translateY: rotateButtonAnimation.interpolate({
+              inputRange: [0, 0.1, 1],
+              outputRange: [300, 10, 0],
+            }),
+          }],
+        }]}
+      >
+        <View style={styles.floatingMenuItem}>
+          <Text style={styles.floatingMenuItemText}>Mark as a favorite!</Text>
+
+          <RectButton
+            style={styles.floatingMenuItemButton}
+            onPress={handleFavoritePress}
+          >
+            <AntDesign
+              name={isFavorite ? 'heart' : 'hearto'}
+              color="rgba(255, 255, 255, 0.75)"
+              size={20}
+            />
+          </RectButton>
+        </View>
+
+        {sourcesChunks && sourcesChunks.length > 2 && (
+          <View style={styles.floatingMenuItem}>
+            <Text style={styles.floatingMenuItemText}>Select episodes range!</Text>
+
+            <RectButton
+              style={styles.floatingMenuItemButton}
+              onPress={() => setRangeModalVisible(true)}
+            >
+              <AntDesign
+                name="swap"
+                color="rgba(255, 255, 255, 0.75)"
+                size={20}
+              />
+            </RectButton>
+          </View>
+        )}
       </Animated.View>
     </View>
   );
