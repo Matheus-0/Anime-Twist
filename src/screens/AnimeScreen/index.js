@@ -338,7 +338,7 @@ const AnimeScreen = ({
             LayoutAnimation.configureNext(LayoutAnimation.Presets.easeInEaseOut);
           }}
           text={
-            `Episode ${lastEpisodes.current[anime.id].episode} (${millisToTime(lastEpisodes.current[anime.id].millis)})`
+            `Resume?\n\nEpisode ${lastEpisodes.current[anime.id].episode} (${millisToTime(lastEpisodes.current[anime.id].millis)})`
           }
         />
       )}
