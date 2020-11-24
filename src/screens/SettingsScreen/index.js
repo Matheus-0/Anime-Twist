@@ -1,3 +1,4 @@
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useFocusEffect } from '@react-navigation/native';
 import PropTypes from 'prop-types';
 import React, { useState } from 'react';
@@ -27,12 +28,21 @@ const SettingsScreen = ({
     }).start();
   });
 
+  const eraseTimeData = async () => {
+    try {
+      await AsyncStorage.removeItem('lastEpisodes');
+    } catch (error) {
+      // console.log(error);
+    }
+  };
+
   const handleModalNegativeResponse = () => setEraseSettingsModalVisible(false);
 
   const handleModalPositiveResponse = () => {
     setEraseSettingsModalVisible(false);
 
     eraseAllData();
+    eraseTimeData();
   };
 
   return (
@@ -41,7 +51,7 @@ const SettingsScreen = ({
         isVisible={eraseSettingsModalVisible}
         onNegativeResponse={handleModalNegativeResponse}
         onPositiveResponse={handleModalPositiveResponse}
-        text="All completed and highlighted episodes will be erased. Continue?"
+        text="All data related to anime episodes will be erased. Continue?"
       />
 
       <Animated.View

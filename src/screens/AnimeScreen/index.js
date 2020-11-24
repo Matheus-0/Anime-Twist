@@ -70,6 +70,7 @@ const AnimeScreen = ({
   const [rangeModalVisible, setRangeModalVisible] = useState(false);
   const [resumeModalVisible, setResumeModalVisible] = useState(false);
   const [showSourceError, setShowSourceError] = useState(false);
+  const [titleNumberOfLines, setTitleNumberOfLines] = useState(0);
   const [videoSource, setVideoSource] = useState('');
 
   const [checkAnimation] = useState(new Animated.Value(0));
@@ -128,16 +129,25 @@ const AnimeScreen = ({
     const response = await getAnimeSources(anime);
     const lastEpisodesResponse = await getLastEpisodes();
 
+    const currentEpisodeNumber = currentEpisodes[anime.id];
+
     const chunks = [];
 
     if (response) {
       setAnimeSources(response);
 
-      for (let i = 0; i < response.length; i += CHUNK_SIZE) chunks.push(i);
+      let index = 0;
+
+      for (let i = 0; i < response.length; i += CHUNK_SIZE) {
+        chunks.push(i);
+
+        if (currentEpisodeNumber >= i + 1) index = i;
+      }
 
       chunks.push(response.length);
 
       setSourcesChunks(chunks);
+      setChunkIndex(index);
 
       lastEpisodes.current = lastEpisodesResponse;
 
@@ -296,7 +306,11 @@ const AnimeScreen = ({
         onPress={() => {
           if (!videoSource) playFadeAnimation(checkAnimation, 700);
 
-          if (!isPlaying) deleteLastEpisodeTime();
+          if (!isPlaying) {
+            acceptedResume.current = false;
+
+            deleteLastEpisodeTime();
+          }
 
           if (!isPlaying || showSourceError) {
             markEpisodeAsCurrent(item);
@@ -354,7 +368,13 @@ const AnimeScreen = ({
           }],
         }]}
       >
-        <Text numberOfLines={3} style={styles.title}>{anime.title}</Text>
+        <Text
+          numberOfLines={videoSource.length !== 0 ? titleNumberOfLines : 3}
+          onTextLayout={(e) => setTitleNumberOfLines(e.nativeEvent.lines.length > 1 ? 1 : 2)}
+          style={styles.title}
+        >
+          {anime.title}
+        </Text>
       </Animated.View>
 
       {showSourceError && <Text style={styles.sourceErrorText}>Could not load video.</Text>}
@@ -567,7 +587,13 @@ const AnimeScreen = ({
 
             <RectButton
               style={styles.floatingMenuItemButton}
-              onPress={() => setRangeModalVisible(true)}
+              onPress={() => {
+                playRotateAnimation(rotateButtonAnimation, 0);
+
+                floatingMenuOpen.current = false;
+
+                setRangeModalVisible(true);
+              }}
             >
               <AntDesign
                 name="swap"
