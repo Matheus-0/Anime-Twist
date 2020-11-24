@@ -7,3 +7,20 @@ export const customIncludes = (title, query) => {
 
   return words.every((item) => title.includes(item));
 };
+
+export const millisToTime = (millis) => {
+  let seconds = Math.floor((millis / 1000) % 60);
+  let minutes = Math.floor((millis / 60000) % 60);
+  let hours = Math.floor((millis / 3600000) % 24);
+
+  minutes = (minutes < 10) ? `0${minutes}` : minutes;
+  seconds = (seconds < 10) ? `0${seconds}` : seconds;
+
+  if (hours > 0) {
+    hours = (hours < 10) ? `0${hours}` : hours;
+
+    return `${hours}:${minutes}:${seconds}`;
+  }
+
+  return `${minutes}:${seconds}`;
+};

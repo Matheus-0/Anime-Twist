@@ -64,6 +64,7 @@ const styles = StyleSheet.create({
     height: 45,
     justifyContent: 'center',
     marginLeft: 10,
+    marginRight: 5,
     width: 45,
   },
   floatingMenuItemText: {

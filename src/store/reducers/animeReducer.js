@@ -6,6 +6,7 @@ const initialState = {
   animeObjectForCurrentEpisode: {},
   favorites: [],
   settings: {
+    askResume: true,
     autoplay: true,
     autoMark: true,
     highlight: true,

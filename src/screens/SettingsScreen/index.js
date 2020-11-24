@@ -100,6 +100,13 @@ const SettingsScreen = ({
         <Text style={styles.sectionTitle}>Tracking</Text>
 
         <CustomCheckBox
+          onValueChange={() => changeSetting('askResume', !settings.askResume)}
+          value={settings.askResume}
+          style={styles.customCheckBox}
+          text="Always ask me to resume."
+        />
+
+        <CustomCheckBox
           onValueChange={() => changeSetting('autoMark', !settings.autoMark)}
           value={settings.autoMark}
           style={styles.customCheckBox}

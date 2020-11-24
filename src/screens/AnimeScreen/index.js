@@ -1,4 +1,5 @@
 import { AntDesign } from '@expo/vector-icons';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import CheckBox from '@react-native-community/checkbox';
 import { useFocusEffect } from '@react-navigation/native';
 import { Video } from 'expo-av';
@@ -23,9 +24,12 @@ import {
   unmarkEpisodeAsCurrent,
 } from '../../store/actions';
 
+import CustomModal from '../../components/CustomModal';
 import EpisodeItem from '../../components/EpisodeItem';
 
 import { decryptSource, getAnimeSources } from '../../services/api';
+
+import { millisToTime } from '../../utils/anime';
 
 import { baseURL, userAgent } from '../../constants';
 
@@ -44,10 +48,14 @@ const AnimeScreen = ({
   unmarkEpisodeAsCurrent,
 }) => {
   const CHUNK_SIZE = 100;
+  const MIN_VIDEO_RESUME_POSITION = 90000; // 1 minute and a half
 
   const videoRef = useRef(null);
 
+  const acceptedResume = useRef(false);
   const floatingMenuOpen = useRef(false);
+  const lastEpisodes = useRef({});
+  const videoCompletePosition = useRef(null);
 
   const { anime } = route.params;
 
@@ -60,8 +68,8 @@ const AnimeScreen = ({
   const [isFavorite, setIsFavorite] = useState(false);
   const [networkAvailable, setNetworkAvailable] = useState(true);
   const [rangeModalVisible, setRangeModalVisible] = useState(false);
+  const [resumeModalVisible, setResumeModalVisible] = useState(false);
   const [showSourceError, setShowSourceError] = useState(false);
-  const [videoCompletePosition, setVideoCompletePosition] = useState(null);
   const [videoSource, setVideoSource] = useState('');
 
   const [checkAnimation] = useState(new Animated.Value(0));
@@ -83,8 +91,42 @@ const AnimeScreen = ({
     useNativeDriver: true,
   }).start();
 
+  const deleteLastEpisodeTime = async () => {
+    try {
+      delete lastEpisodes.current[anime.id];
+
+      await AsyncStorage.setItem('lastEpisodes', JSON.stringify(lastEpisodes.current));
+    } catch (error) {
+      // console.log(error);
+    }
+  };
+
+  const getLastEpisodes = async () => {
+    try {
+      const result = await AsyncStorage.getItem('lastEpisodes');
+
+      return result !== null ? JSON.parse(result) : {};
+    } catch (error) {
+      return {};
+    }
+  };
+
+  const saveEpisodeTime = async (episode, millis) => {
+    try {
+      lastEpisodes.current[anime.id] = {
+        episode: episode.number,
+        millis,
+      };
+
+      await AsyncStorage.setItem('lastEpisodes', JSON.stringify(lastEpisodes.current));
+    } catch (error) {
+      // console.log(error);
+    }
+  };
+
   const fetchData = async () => {
     const response = await getAnimeSources(anime);
+    const lastEpisodesResponse = await getLastEpisodes();
 
     const chunks = [];
 
@@ -96,6 +138,10 @@ const AnimeScreen = ({
       chunks.push(response.length);
 
       setSourcesChunks(chunks);
+
+      lastEpisodes.current = lastEpisodesResponse;
+
+      if (settings.askResume && anime.id in lastEpisodes.current) setResumeModalVisible(true);
     } else setNetworkAvailable(false);
 
     playFadeAnimation(scrollViewFadeAnimation);
@@ -110,7 +156,7 @@ const AnimeScreen = ({
 
     if (orientation === LANDSCAPE || orientation === LANDSCAPE_RIGHT) await lockAsync(PORTRAIT);
 
-    if (videoRef.current) videoRef.current.pauseAsync();
+    if (videoRef.current) await videoRef.current.pauseAsync();
   }), [navigation]);
 
   useEffect(() => {
@@ -178,9 +224,27 @@ const AnimeScreen = ({
     }
   };
 
-  const handleOnLoad = (status) => setVideoCompletePosition(status.durationMillis * 0.9);
+  const handleOnLoad = (status) => {
+    videoCompletePosition.current = status.durationMillis * 0.9;
+  };
+
+  const handleOnLoadStart = async () => {
+    if (acceptedResume.current) {
+      await videoRef.current.setPositionAsync(lastEpisodes.current[anime.id].millis);
+    }
+
+    await videoRef.current.setProgressUpdateIntervalAsync(5000);
+  };
 
   const handleOnPlaybackStatusUpdate = (status) => {
+    if (status.isLoaded) {
+      if (status.positionMillis > MIN_VIDEO_RESUME_POSITION
+        && status.positionMillis < videoCompletePosition.current
+      ) {
+        saveEpisodeTime(episodePlaying, status.positionMillis);
+      }
+    }
+
     if (status.error) {
       setVideoSource('');
       setShowSourceError(true);
@@ -189,9 +253,11 @@ const AnimeScreen = ({
     if (settings.autoMark
       && autoCheckBox
       && !isEpisodeComplete(episodePlaying)
-      && videoCompletePosition
-      && status.positionMillis > videoCompletePosition
+      && videoCompletePosition.current
+      && status.positionMillis > videoCompletePosition.current
     ) {
+      deleteLastEpisodeTime();
+
       markEpisodeAsComplete(episodePlaying);
 
       setAutoCheckBox(false);
@@ -205,8 +271,9 @@ const AnimeScreen = ({
         unmarkEpisodeAsCurrent(episodePlaying);
         markEpisodeAsCurrent(nextEpisode);
 
+        videoCompletePosition.current = null;
+
         setAutoCheckBox(true);
-        setVideoCompletePosition(null);
         setEpisodePlaying(nextEpisode);
         setToggleCheckBox(isEpisodeComplete(nextEpisode));
         setVideoSource(decryptSource(nextEpisode.source));
@@ -229,11 +296,14 @@ const AnimeScreen = ({
         onPress={() => {
           if (!videoSource) playFadeAnimation(checkAnimation, 700);
 
+          if (!isPlaying) deleteLastEpisodeTime();
+
           if (!isPlaying || showSourceError) {
             markEpisodeAsCurrent(item);
 
+            videoCompletePosition.current = null;
+
             setAutoCheckBox(true);
-            setVideoCompletePosition(null);
             setShowSourceError(false);
             setEpisodePlaying(item);
             setToggleCheckBox(isComplete);
@@ -248,6 +318,31 @@ const AnimeScreen = ({
 
   return (
     <View style={styles.container}>
+      {anime.id in lastEpisodes.current && (
+        <CustomModal
+          isVisible={resumeModalVisible}
+          onNegativeResponse={() => setResumeModalVisible(false)}
+          onPositiveResponse={() => {
+            acceptedResume.current = true;
+
+            const episodeToPlay = animeSources.find(
+              (e) => e.number === lastEpisodes.current[anime.id].episode,
+            );
+
+            playFadeAnimation(checkAnimation, 700);
+
+            setResumeModalVisible(false);
+            setEpisodePlaying(episodeToPlay);
+            setVideoSource(decryptSource(episodeToPlay.source));
+
+            LayoutAnimation.configureNext(LayoutAnimation.Presets.easeInEaseOut);
+          }}
+          text={
+            `Episode ${lastEpisodes.current[anime.id].episode} (${millisToTime(lastEpisodes.current[anime.id].millis)})`
+          }
+        />
+      )}
+
       <Animated.View
         style={[styles.titleContainer, {
           opacity: fadeAnimation,
@@ -269,6 +364,7 @@ const AnimeScreen = ({
           <Video
             onFullscreenUpdate={handleOnFullscreenUpdate}
             onLoad={handleOnLoad}
+            onLoadStart={handleOnLoadStart}
             onPlaybackStatusUpdate={handleOnPlaybackStatusUpdate}
             ref={videoRef}
             resizeMode={Video.RESIZE_MODE_CONTAIN}
@@ -499,6 +595,7 @@ AnimeScreen.propTypes = {
   removeFromFavorites: PropTypes.func.isRequired,
   route: PropTypes.shape().isRequired,
   settings: PropTypes.shape({
+    askResume: PropTypes.bool.isRequired,
     autoMark: PropTypes.bool.isRequired,
     autoplay: PropTypes.bool.isRequired,
     highlight: PropTypes.bool.isRequired,
