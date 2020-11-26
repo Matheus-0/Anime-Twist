@@ -1,7 +1,6 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import { useFocusEffect } from '@react-navigation/native';
 import PropTypes from 'prop-types';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Animated, Text, View } from 'react-native';
 import { RectButton } from 'react-native-gesture-handler';
 import { connect } from 'react-redux';
@@ -20,7 +19,7 @@ const SettingsScreen = ({
 
   const [fadeAnimation] = useState(new Animated.Value(0));
 
-  useFocusEffect(() => {
+  useEffect(() => {
     Animated.spring(fadeAnimation, {
       tension: 10,
       toValue: 1,

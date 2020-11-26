@@ -52,6 +52,19 @@ const styles = StyleSheet.create({
     fontFamily: 'Quicksand_400Regular',
     fontSize: 16,
   },
+  settingsButton: {
+    alignItems: 'center',
+    backgroundColor: '#e63232',
+    borderRadius: 27.5,
+    height: 55,
+    justifyContent: 'center',
+    width: 55,
+  },
+  settingsButtonView: {
+    bottom: 25,
+    position: 'absolute',
+    right: 25,
+  },
 });
 
 export default styles;

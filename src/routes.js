@@ -11,21 +11,10 @@ import SearchScreen from './screens/SearchScreen';
 import SecondSearchScreen from './screens/SecondSearchScreen';
 import SettingsScreen from './screens/SettingsScreen';
 
-const FavoritesStack = createStackNavigator();
-const SearchStack = createStackNavigator();
+const Tab = createBottomTabNavigator();
 
-const FavoritesStackScreen = () => (
-  <FavoritesStack.Navigator screenOptions={() => ({
-    cardStyle: {
-      backgroundColor: 'transparent',
-    },
-    headerShown: false,
-  })}
-  >
-    <FavoritesStack.Screen component={FavoritesScreen} name="Favorites" />
-    <FavoritesStack.Screen component={AnimeScreen} name="Anime" />
-  </FavoritesStack.Navigator>
-);
+const AppStack = createStackNavigator();
+const SearchStack = createStackNavigator();
 
 const SearchStackScreen = () => (
   <SearchStack.Navigator screenOptions={() => ({
@@ -35,50 +24,52 @@ const SearchStackScreen = () => (
   >
     <SearchStack.Screen component={SearchScreen} name="Search" />
     <SearchStack.Screen component={SecondSearchScreen} name="SecondSearch" />
-    <SearchStack.Screen component={AnimeScreen} name="Anime" />
   </SearchStack.Navigator>
 );
 
-const Tab = createBottomTabNavigator();
+const BottomTabs = () => (
+  <Tab.Navigator
+    tabBarOptions={{
+      showLabel: false,
+      style: {
+        backgroundColor: '#232323',
+        borderTopWidth: 0,
+      },
+    }}
+  >
+    <Tab.Screen
+      component={SearchStackScreen}
+      name="Search"
+      options={{
+        tabBarIcon: ({ color, focused, size }) => (
+          <AntDesign color={focused ? '#e63232' : color} name="search1" size={size} />
+        ),
+      }}
+    />
+    <Tab.Screen
+      component={FavoritesScreen}
+      name="Favorites"
+      options={{
+        tabBarIcon: ({ color, focused, size }) => (
+          <AntDesign color={focused ? '#e63232' : color} name="hearto" size={size} />
+        ),
+      }}
+    />
+  </Tab.Navigator>
+);
 
 export default () => (
   <NavigationContainer>
-    <Tab.Navigator
-      tabBarOptions={{
-        showLabel: false,
-        style: {
-          backgroundColor: '#232323',
-          borderTopWidth: 0,
-        },
-      }}
+    <AppStack.Navigator screenOptions={() => ({
+      cardStyle: {
+        backgroundColor: 'transparent',
+      },
+      headerShown: false,
+    })}
     >
-      <Tab.Screen
-        component={SearchStackScreen}
-        name="Search"
-        options={{
-          tabBarIcon: ({ color, focused, size }) => (
-            <AntDesign color={focused ? '#e63232' : color} name="search1" size={size} />
-          ),
-        }}
-      />
-      <Tab.Screen
-        component={FavoritesStackScreen}
-        name="Favorites"
-        options={{
-          tabBarIcon: ({ color, focused, size }) => (
-            <AntDesign color={focused ? '#e63232' : color} name="hearto" size={size} />
-          ),
-        }}
-      />
-      <Tab.Screen
-        component={SettingsScreen}
-        name="Settings"
-        options={{
-          tabBarIcon: ({ color, focused, size }) => (
-            <AntDesign color={focused ? '#e63232' : color} name="setting" size={size} />
-          ),
-        }}
-      />
-    </Tab.Navigator>
+      <AppStack.Screen component={BottomTabs} name="BottomTabs" />
+      <AppStack.Screen component={AnimeScreen} name="Anime" />
+      <AppStack.Screen component={SettingsScreen} name="Settings" />
+    </AppStack.Navigator>
   </NavigationContainer>
 );

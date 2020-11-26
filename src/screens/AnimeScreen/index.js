@@ -1,7 +1,6 @@
 import { AntDesign } from '@expo/vector-icons';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import CheckBox from '@react-native-community/checkbox';
-import { useFocusEffect } from '@react-navigation/native';
 import { Video } from 'expo-av';
 import { getOrientationLockAsync, lockAsync, OrientationLock } from 'expo-screen-orientation';
 import PropTypes from 'prop-types';
@@ -40,7 +39,6 @@ const AnimeScreen = ({
   favorites,
   markEpisodeAsComplete,
   markEpisodeAsCurrent,
-  navigation,
   removeFromFavorites,
   route,
   settings,
@@ -156,18 +154,6 @@ const AnimeScreen = ({
 
     playFadeAnimation(scrollViewFadeAnimation);
   };
-
-  useFocusEffect(() => setIsFavorite(isAnimeFavorite(anime)));
-
-  useEffect(() => navigation.addListener('blur', async () => {
-    const orientation = await getOrientationLockAsync();
-
-    const { LANDSCAPE, LANDSCAPE_RIGHT, PORTRAIT } = OrientationLock;
-
-    if (orientation === LANDSCAPE || orientation === LANDSCAPE_RIGHT) await lockAsync(PORTRAIT);
-
-    if (videoRef.current) await videoRef.current.pauseAsync();
-  }), [navigation]);
 
   useEffect(() => {
     playFadeAnimation(fadeAnimation);
@@ -615,9 +601,6 @@ AnimeScreen.propTypes = {
   favorites: PropTypes.arrayOf(PropTypes.object).isRequired,
   markEpisodeAsComplete: PropTypes.func.isRequired,
   markEpisodeAsCurrent: PropTypes.func.isRequired,
-  navigation: PropTypes.shape({
-    addListener: PropTypes.func.isRequired,
-  }).isRequired,
   removeFromFavorites: PropTypes.func.isRequired,
   route: PropTypes.shape().isRequired,
   settings: PropTypes.shape({

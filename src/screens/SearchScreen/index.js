@@ -98,7 +98,7 @@ const SearchScreen = ({
         >
           <AntDesign color="white" name="search1" size={24} style={styles.icon} />
 
-          <Text style={styles.searchText}>Search for an anime.</Text>
+          <Text style={styles.searchText}>Search for an anime!</Text>
         </AnimatedTouchableOpacity>
       ) : (
         <>
@@ -128,6 +128,29 @@ const SearchScreen = ({
           )}
         </>
       )}
+
+      <Animated.View
+        style={[styles.settingsButtonView, {
+          opacity: fadeAnimation,
+          transform: [{
+            translateX: fadeAnimation.interpolate({
+              inputRange: [0, 1],
+              outputRange: [100, 0],
+            }),
+          }],
+        }]}
+      >
+        <RectButton
+          style={styles.settingsButton}
+          onPress={() => navigation.navigate('Settings')}
+        >
+          <AntDesign
+            name="setting"
+            color="rgba(255, 255, 255, 0.75)"
+            size={24}
+          />
+        </RectButton>
+      </Animated.View>
     </View>
   );
 };
