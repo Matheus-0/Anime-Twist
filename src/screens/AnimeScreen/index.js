@@ -292,7 +292,7 @@ const AnimeScreen = ({
         onPress={() => {
           if (!videoSource) playFadeAnimation(checkAnimation, 700);
 
-          if (!isPlaying) {
+          if (!isCurrent) {
             acceptedResume.current = false;
 
             deleteLastEpisodeTime();
