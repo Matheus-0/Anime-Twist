@@ -10,6 +10,7 @@ import FavoritesScreen from './screens/FavoritesScreen';
 import SearchScreen from './screens/SearchScreen';
 import SecondSearchScreen from './screens/SecondSearchScreen';
 import SettingsScreen from './screens/SettingsScreen';
+import VideoScreen from './screens/VideoScreen';
 
 const Tab = createBottomTabNavigator();
 
@@ -70,6 +71,7 @@ export default () => (
       <AppStack.Screen component={BottomTabs} name="BottomTabs" />
       <AppStack.Screen component={AnimeScreen} name="Anime" />
       <AppStack.Screen component={SettingsScreen} name="Settings" />
+      <AppStack.Screen component={VideoScreen} name="Video" />
     </AppStack.Navigator>
   </NavigationContainer>
 );

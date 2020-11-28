@@ -1,17 +1,6 @@
 import { StyleSheet } from 'react-native';
 
 const styles = StyleSheet.create({
-  checkboxContainer: {
-    alignItems: 'center',
-    alignSelf: 'flex-end',
-    flexDirection: 'row',
-    marginRight: 20,
-    zIndex: -1,
-  },
-  checkboxText: {
-    color: '#cdcdcd',
-    fontFamily: 'Quicksand_400Regular',
-  },
   container: {
     alignItems: 'center',
     backgroundColor: '#191919',
@@ -131,13 +120,6 @@ const styles = StyleSheet.create({
     fontSize: 18,
     textAlign: 'center',
   },
-  sourceErrorText: {
-    color: 'white',
-    fontFamily: 'Quicksand_400Regular',
-    marginBottom: 20,
-    paddingHorizontal: 20,
-    textAlign: 'center',
-  },
   title: {
     color: 'white',
     fontFamily: 'Quicksand_600SemiBold',
@@ -150,19 +132,6 @@ const styles = StyleSheet.create({
     marginBottom: 20,
     marginTop: 20,
     paddingHorizontal: 40,
-  },
-  video: {
-    aspectRatio: 16 / 9,
-    backgroundColor: 'black',
-    height: undefined,
-    marginBottom: 5,
-    width: '90%',
-  },
-  videoContainer: {
-    alignItems: 'center',
-    justifyContent: 'center',
-    marginBottom: 5,
-    width: '100%',
   },
 });
 
