@@ -24,6 +24,9 @@ import { getAnimeSources } from '../../services/api';
 
 import { millisToTime } from '../../utils/anime';
 
+const CHUNK_SIZE = 100;
+const RESUME_SUBTRACT_VALUE = 5000; // Subtract 5 seconds when resuming because of small delay
+
 const AnimeScreen = ({
   addToFavorites,
   completeEpisodes,
@@ -35,8 +38,6 @@ const AnimeScreen = ({
   route,
   settings,
 }) => {
-  const CHUNK_SIZE = 100;
-
   const floatingMenuOpen = useRef(false);
   const lastEpisodes = useRef({});
 
@@ -182,7 +183,7 @@ const AnimeScreen = ({
               animeSources,
               firstEpisode: episodeToPlay,
               firstEpisodeIsComplete: isEpisodeComplete(episodeToPlay),
-              firstEpisodeTime: lastEpisodes.current[anime.id].millis,
+              firstEpisodeTime: lastEpisodes.current[anime.id].millis - RESUME_SUBTRACT_VALUE,
             });
 
             setResumeModalVisible(false);
@@ -190,7 +191,7 @@ const AnimeScreen = ({
             markEpisodeAsCurrent(episodeToPlay);
           }}
           text={
-            `Resume?\n\nEpisode ${lastEpisodes.current[anime.id].episode} (${millisToTime(lastEpisodes.current[anime.id].millis)})`
+            `Resume?\n\nEpisode ${lastEpisodes.current[anime.id].episode} (${millisToTime(lastEpisodes.current[anime.id].millis - RESUME_SUBTRACT_VALUE)})`
           }
         />
       )}

@@ -71,7 +71,7 @@ export default () => (
       <AppStack.Screen component={BottomTabs} name="BottomTabs" />
       <AppStack.Screen component={AnimeScreen} name="Anime" />
       <AppStack.Screen component={SettingsScreen} name="Settings" />
-      <AppStack.Screen component={VideoScreen} name="Video" />
+      <AppStack.Screen component={VideoScreen} name="Video" options={{ animationEnabled: false }} />
     </AppStack.Navigator>
   </NavigationContainer>
 );

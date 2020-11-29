@@ -140,6 +140,10 @@ const VideoScreen = ({
       progressUpdateIntervalMillis: 500,
       shouldPlay: true,
     });
+
+    videoIsPaused.current = false;
+
+    iconOpacityAnimation.setValue(0);
   };
 
   const setInitialData = async () => {
@@ -225,6 +229,10 @@ const VideoScreen = ({
     }
 
     if (status.didJustFinish) {
+      videoIsPaused.current = true;
+
+      iconOpacityAnimation.setValue(1);
+
       if (settings.autoplay && episodePlaying.number < animeSources.length) {
         const nextEpisode = animeSources.find((item) => item.number === episodePlaying.number + 1);
 
@@ -348,12 +356,10 @@ const VideoScreen = ({
           <CheckBox
             onValueChange={handleCheckBoxOnValueChange}
             value={toggleCheckBox}
-            style={{
-              marginHorizontal: 15,
-            }}
+            style={styles.checkBox}
             tintColors={{
               true: '#e63232',
-              false: 'gray',
+              false: 'rgba(255, 255, 255, 0.75)',
             }}
           />
         </Animated.View>
@@ -406,14 +412,14 @@ const VideoScreen = ({
             <TouchableOpacity
               activeOpacity={0.75}
               onPress={handlePlayPausePress}
-              style={styles.centerControlsPlayPauseButton}
+              style={styles.centerControlsButton}
             >
               <Animated.View
                 style={[styles.centerControlsPlayPauseIcon, {
                   opacity: iconOpacityAnimation,
                 }]}
               >
-                <SimpleLineIcons color="white" name="control-play" size={24} />
+                <SimpleLineIcons color="white" name="control-play" size={32} />
               </Animated.View>
 
               <Animated.View
@@ -424,7 +430,7 @@ const VideoScreen = ({
                   }),
                 }]}
               >
-                <SimpleLineIcons color="white" name="control-pause" size={24} />
+                <SimpleLineIcons color="white" name="control-pause" size={32} />
               </Animated.View>
             </TouchableOpacity>
 

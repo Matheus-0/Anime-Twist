@@ -7,6 +7,7 @@ const styles = StyleSheet.create({
     zIndex: 2,
   },
   centerControls: {
+    alignItems: 'center',
     flexDirection: 'row',
     justifyContent: 'space-evenly',
     position: 'absolute',
@@ -14,29 +15,17 @@ const styles = StyleSheet.create({
     zIndex: 2,
   },
   centerControlsButton: {
-    borderRadius: 10,
-    padding: 15,
-  },
-  centerControlsPlayPauseButton: {
     alignItems: 'center',
     borderRadius: 10,
+    height: 62,
     justifyContent: 'center',
-    width: 54,
+    width: 62,
   },
   centerControlsPlayPauseIcon: {
     position: 'absolute',
   },
-  checkBoxText: {
-    color: 'white',
-    fontFamily: 'Quicksand_400Regular',
-  },
-  checkBoxView: {
-    borderRadius: 10,
-    padding: 15,
-    position: 'absolute',
-    right: 0,
-    top: 0,
-    zIndex: 2,
+  checkBox: {
+    marginRight: 15,
   },
   container: {
     alignItems: 'center',
@@ -83,7 +72,7 @@ const styles = StyleSheet.create({
     zIndex: 2,
   },
   lowerControls: {
-    alignItems: 'center',
+    alignItems: 'stretch',
     bottom: 10,
     flexDirection: 'row',
     paddingHorizontal: 15,
@@ -98,7 +87,7 @@ const styles = StyleSheet.create({
     color: 'white',
     fontFamily: 'Quicksand_400Regular',
     textAlign: 'center',
-    width: 50,
+    width: 55,
   },
   upperControls: {
     alignItems: 'center',
