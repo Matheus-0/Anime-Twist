@@ -218,7 +218,7 @@ const AnimeScreen = ({
           }],
         }]}
       >
-        Press and hold to mark/unmark as watched.
+        Press and hold to mark/unmark as complete.
       </Animated.Text>
 
       {sourcesChunks && (
