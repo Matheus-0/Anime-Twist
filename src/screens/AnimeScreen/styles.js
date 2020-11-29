@@ -120,6 +120,13 @@ const styles = StyleSheet.create({
     fontSize: 18,
     textAlign: 'center',
   },
+  tipText: {
+    color: 'white',
+    fontFamily: 'Quicksand_400Regular',
+    marginBottom: 20,
+    paddingHorizontal: 20,
+    textAlign: 'center',
+  },
   title: {
     color: 'white',
     fontFamily: 'Quicksand_600SemiBold',

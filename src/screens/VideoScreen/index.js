@@ -9,7 +9,7 @@ import { setStatusBarHidden } from 'expo-status-bar';
 import PropTypes from 'prop-types';
 import React, { useEffect, useRef, useState } from 'react';
 import {
-  Animated, Text, TouchableOpacity, View,
+  ActivityIndicator, Animated, Text, TouchableOpacity, View,
 } from 'react-native';
 import { connect } from 'react-redux';
 
@@ -27,6 +27,9 @@ import { baseURL, userAgent } from '../../constants';
 
 import { millisToTime } from '../../utils/anime';
 
+const MIN_VIDEO_RESUME_POSITION = 90000; // 1 minute and a half
+const SEEK_MILLIS = 10000; // 10 seconds
+
 const VideoScreen = ({
   completeEpisodes,
   markEpisodeAsComplete,
@@ -36,8 +39,6 @@ const VideoScreen = ({
   settings,
   undoMarkEpisodeAsComplete,
 }) => {
-  const MIN_VIDEO_RESUME_POSITION = 90000; // 1 minute and a half
-
   const {
     anime, animeSources, firstEpisode, firstEpisodeIsComplete, firstEpisodeTime,
   } = route.params;
@@ -46,7 +47,7 @@ const VideoScreen = ({
 
   const timeout = useRef(null);
 
-  const autoCheckBox = useRef(true);
+  const deleteTime = useRef(true);
   const lastEpisodes = useRef({});
   const videoCompletePosition = useRef(null);
   const videoIsPaused = useRef(false);
@@ -54,9 +55,12 @@ const VideoScreen = ({
   const videoPlayerIsHidden = useRef(false);
 
   const [episodePlaying, setEpisodePlaying] = useState({});
+  const [showError, setShowError] = useState(false);
   const [toggleCheckBox, setToggleCheckBox] = useState(false);
   const [videoDurationMillis, setVideoDurationMillis] = useState(0);
+  const [videoIsLoading, setVideoIsLoading] = useState(true);
   const [videoPositionMillis, setVideoPositionMillis] = useState(0);
+  const [videoPositionMillisForText, setVideoPositionMillisForText] = useState(0);
 
   const [controlsOpacityAnimation] = useState(new Animated.Value(1));
   const [iconOpacityAnimation] = useState(new Animated.Value(0));
@@ -102,7 +106,29 @@ const VideoScreen = ({
     }
   };
 
+  const playControlsOpacityAnimation = (toValue) => Animated.spring(controlsOpacityAnimation, {
+    friction: 10,
+    toValue,
+    useNativeDriver: true,
+  }).start();
+
+  const handleHideTimeout = (onlyClear = false) => {
+    if (timeout.current) clearTimeout(timeout.current);
+
+    if (!onlyClear && !videoPlayerIsHidden.current) {
+      timeout.current = setTimeout(() => {
+        playControlsOpacityAnimation(0);
+
+        videoPlayerIsHidden.current = true;
+      }, 3000);
+    }
+  };
+
   const loadVideo = (source, positionMillis = 0) => {
+    videoRef.current.unloadAsync();
+
+    handleHideTimeout();
+
     videoRef.current.loadAsync({
       headers: {
         referer: baseURL,
@@ -161,6 +187,7 @@ const VideoScreen = ({
   const handleOnPlaybackStatusUpdate = (status) => {
     if (status.positionMillis) {
       setVideoPositionMillis(status.positionMillis);
+      setVideoPositionMillisForText(status.positionMillis);
 
       if (status.positionMillis > MIN_VIDEO_RESUME_POSITION
         && status.positionMillis < videoCompletePosition.current
@@ -169,19 +196,32 @@ const VideoScreen = ({
       }
     }
 
-    if (settings.autoMark
-      && autoCheckBox.current
-      && !isEpisodeComplete(episodePlaying)
+    if (status.isLoaded) {
+      if (!videoIsLoading) {
+        if (status.isBuffering && !status.isPlaying && !videoIsPaused.current) {
+          setVideoIsLoading(true);
+        }
+      } else if (videoIsLoading && status.isPlaying) setVideoIsLoading(false);
+    }
+
+    if (status.error) {
+      setShowError(true);
+      setVideoIsLoading(false);
+    }
+
+    if (deleteTime.current
       && videoCompletePosition.current
       && status.positionMillis > videoCompletePosition.current
     ) {
       deleteLastEpisodeTime();
 
-      markEpisodeAsComplete(episodePlaying);
+      deleteTime.current = false;
 
-      autoCheckBox.current = false;
+      if (settings.autoMark && !isEpisodeComplete(episodePlaying)) {
+        markEpisodeAsComplete(episodePlaying);
 
-      setToggleCheckBox(true);
+        setToggleCheckBox(true);
+      }
     }
 
     if (status.didJustFinish) {
@@ -190,12 +230,10 @@ const VideoScreen = ({
 
         markEpisodeAsCurrent(nextEpisode);
 
-        autoCheckBox.current = true;
+        deleteTime.current = true;
 
         setEpisodePlaying(nextEpisode);
         setToggleCheckBox(isEpisodeComplete(nextEpisode));
-
-        videoRef.current.unloadAsync();
 
         loadVideo(decryptSource(nextEpisode.source));
       }
@@ -209,6 +247,8 @@ const VideoScreen = ({
     videoIsPaused.current = !videoIsPaused.current;
 
     iconOpacityAnimation.setValue(videoIsPaused.current ? 1 : 0);
+
+    handleHideTimeout();
   };
 
   const handleOnSlidingComplete = (value) => {
@@ -220,6 +260,8 @@ const VideoScreen = ({
 
       iconOpacityAnimation.setValue(0);
     } else videoRef.current.setPositionAsync(value);
+
+    handleHideTimeout();
   };
 
   const handleOnSlidingStart = () => {
@@ -231,6 +273,8 @@ const VideoScreen = ({
 
       iconOpacityAnimation.setValue(1);
     }
+
+    handleHideTimeout(true);
   };
 
   const handleSeeking = (value) => {
@@ -240,24 +284,8 @@ const VideoScreen = ({
     else if (nextMillis > videoDurationMillis) nextMillis = videoDurationMillis;
 
     videoRef.current.setPositionAsync(nextMillis);
-  };
 
-  const playControlsOpacityAnimation = (toValue) => Animated.spring(controlsOpacityAnimation, {
-    friction: 10,
-    toValue,
-    useNativeDriver: true,
-  }).start();
-
-  const handleHideTimeout = (onlyClear = false) => {
-    if (timeout.current) clearTimeout(timeout.current);
-
-    if (!onlyClear && !videoPlayerIsHidden.current) {
-      timeout.current = setTimeout(() => {
-        playControlsOpacityAnimation(0);
-
-        videoPlayerIsHidden.current = true;
-      }, 3000);
-    }
+    handleHideTimeout();
   };
 
   return (
@@ -305,6 +333,7 @@ const VideoScreen = ({
         >
           <View style={styles.upperLeftView}>
             <TouchableOpacity
+              activeOpacity={0.75}
               onPress={() => navigation.goBack()}
               style={styles.backButton}
             >
@@ -329,71 +358,85 @@ const VideoScreen = ({
           />
         </Animated.View>
 
-        <Animated.View style={[styles.centerControls, {
-          opacity: controlsOpacityAnimation,
-          transform: [{
-            translateY: controlsOpacityAnimation.interpolate({
-              inputRange: [0, 0.1, 1],
-              outputRange: [500, 10, 0],
-            }),
-          }],
-        }]}
-        >
-          <TouchableOpacity
-            onPress={() => {
-              handleSeeking(-10000);
-              handleHideTimeout();
-            }}
-            style={styles.centerControlsButton}
-          >
-            <SimpleLineIcons color="white" name="control-rewind" size={24} />
-          </TouchableOpacity>
+        <ActivityIndicator
+          animating={videoIsLoading}
+          color="#e63232"
+          size={100}
+          style={styles.loading}
+        />
 
-          <TouchableOpacity
-            onPress={() => {
-              handlePlayPausePress();
-              handleHideTimeout();
-            }}
-            style={styles.centerControlsPlayPauseButton}
-          >
-            <Animated.View
-              style={[styles.centerControlsPlayPauseIcon, {
-                opacity: iconOpacityAnimation,
-              }]}
+        {showError ? (
+          <View style={styles.errorView}>
+            <Text style={styles.errorText}>
+              {'Could not load video.\nIf retrying doesn\'t work, restart the app.'}
+            </Text>
+
+            <TouchableOpacity
+              activeOpacity={0.75}
+              onPress={() => {
+                setShowError(false);
+                setVideoIsLoading(true);
+
+                loadVideo(episodePlaying.source, videoPositionMillis);
+              }}
+              style={styles.errorButton}
             >
-              <SimpleLineIcons
-                color="white"
-                name="control-play"
-                size={24}
-              />
-            </Animated.View>
-
-            <Animated.View
-              style={[styles.centerControlsPlayPauseIcon, {
-                opacity: iconOpacityAnimation.interpolate({
-                  inputRange: [0, 1],
-                  outputRange: [1, 0],
-                }),
-              }]}
-            >
-              <SimpleLineIcons
-                color="white"
-                name="control-pause"
-                size={24}
-              />
-            </Animated.View>
-          </TouchableOpacity>
-
-          <TouchableOpacity
-            onPress={() => {
-              handleSeeking(10000);
-              handleHideTimeout();
-            }}
-            style={styles.centerControlsButton}
+              <Text style={styles.errorText}>Retry</Text>
+            </TouchableOpacity>
+          </View>
+        ) : (
+          <Animated.View style={[styles.centerControls, {
+            opacity: controlsOpacityAnimation,
+            transform: [{
+              translateY: controlsOpacityAnimation.interpolate({
+                inputRange: [0, 0.005, 1],
+                outputRange: [500, 1, 0],
+              }),
+            }],
+          }]}
           >
-            <SimpleLineIcons color="white" name="control-forward" size={24} />
-          </TouchableOpacity>
-        </Animated.View>
+            <TouchableOpacity
+              activeOpacity={0.75}
+              onPress={() => handleSeeking(-SEEK_MILLIS)}
+              style={styles.centerControlsButton}
+            >
+              <SimpleLineIcons color="white" name="control-rewind" size={24} />
+            </TouchableOpacity>
+
+            <TouchableOpacity
+              activeOpacity={0.75}
+              onPress={handlePlayPausePress}
+              style={styles.centerControlsPlayPauseButton}
+            >
+              <Animated.View
+                style={[styles.centerControlsPlayPauseIcon, {
+                  opacity: iconOpacityAnimation,
+                }]}
+              >
+                <SimpleLineIcons color="white" name="control-play" size={24} />
+              </Animated.View>
+
+              <Animated.View
+                style={[styles.centerControlsPlayPauseIcon, {
+                  opacity: iconOpacityAnimation.interpolate({
+                    inputRange: [0, 1],
+                    outputRange: [1, 0],
+                  }),
+                }]}
+              >
+                <SimpleLineIcons color="white" name="control-pause" size={24} />
+              </Animated.View>
+            </TouchableOpacity>
+
+            <TouchableOpacity
+              activeOpacity={0.75}
+              onPress={() => handleSeeking(SEEK_MILLIS)}
+              style={styles.centerControlsButton}
+            >
+              <SimpleLineIcons color="white" name="control-forward" size={24} />
+            </TouchableOpacity>
+          </Animated.View>
+        )}
 
         <Animated.View style={[styles.lowerControls, {
           opacity: controlsOpacityAnimation,
@@ -405,21 +448,15 @@ const VideoScreen = ({
           }],
         }]}
         >
-          <Text style={styles.timeText}>{millisToTime(videoPositionMillis)}</Text>
+          <Text style={styles.timeText}>{millisToTime(videoPositionMillisForText)}</Text>
 
           <Slider
             minimumTrackTintColor="#e63232"
             maximumValue={videoDurationMillis}
             minimumValue={0}
-            onSlidingComplete={(value) => {
-              handleOnSlidingComplete(value);
-              handleHideTimeout();
-            }}
-            onSlidingStart={(value) => {
-              handleOnSlidingStart(value);
-              handleHideTimeout(true);
-            }}
-            // onValueChange={handleOnValueChange}
+            onSlidingComplete={handleOnSlidingComplete}
+            onSlidingStart={handleOnSlidingStart}
+            onValueChange={(value) => setVideoPositionMillisForText(value)}
             style={styles.slider}
             thumbTintColor="#e63232"
             value={videoPositionMillis}

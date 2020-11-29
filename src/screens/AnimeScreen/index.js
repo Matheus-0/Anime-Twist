@@ -37,7 +37,6 @@ const AnimeScreen = ({
 }) => {
   const CHUNK_SIZE = 100;
 
-  const acceptedResume = useRef(false);
   const floatingMenuOpen = useRef(false);
   const lastEpisodes = useRef({});
 
@@ -174,8 +173,6 @@ const AnimeScreen = ({
           isVisible={resumeModalVisible}
           onNegativeResponse={() => setResumeModalVisible(false)}
           onPositiveResponse={() => {
-            acceptedResume.current = true;
-
             const episodeToPlay = animeSources.find(
               (e) => e.number === lastEpisodes.current[anime.id].episode,
             );
@@ -189,6 +186,8 @@ const AnimeScreen = ({
             });
 
             setResumeModalVisible(false);
+
+            markEpisodeAsCurrent(episodeToPlay);
           }}
           text={
             `Resume?\n\nEpisode ${lastEpisodes.current[anime.id].episode} (${millisToTime(lastEpisodes.current[anime.id].millis)})`
@@ -209,6 +208,17 @@ const AnimeScreen = ({
       >
         <Text numberOfLines={3} style={styles.title}>{anime.title}</Text>
       </Animated.View>
+
+      <Animated.Text
+        style={[styles.tipText, {
+          opacity: fadeAnimation,
+          transform: [{
+            scale: fadeAnimation,
+          }],
+        }]}
+      >
+        Press and hold to mark/unmark as watched.
+      </Animated.Text>
 
       {sourcesChunks && (
         <Modal

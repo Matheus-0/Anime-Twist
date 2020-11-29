@@ -52,6 +52,23 @@ const styles = StyleSheet.create({
     fontFamily: 'Quicksand_400Regular',
     marginLeft: 15,
   },
+  errorButton: {
+    backgroundColor: '#e63232',
+    borderRadius: 10,
+    marginTop: 15,
+    paddingHorizontal: 20,
+    paddingVertical: 10,
+  },
+  errorText: {
+    color: 'white',
+    fontFamily: 'Quicksand_400Regular',
+    textAlign: 'center',
+  },
+  errorView: {
+    alignItems: 'center',
+    position: 'absolute',
+    zIndex: 2,
+  },
   gradient: {
     flex: 1,
   },
@@ -60,6 +77,10 @@ const styles = StyleSheet.create({
     position: 'absolute',
     width: '100%',
     zIndex: 1,
+  },
+  loading: {
+    position: 'absolute',
+    zIndex: 2,
   },
   lowerControls: {
     alignItems: 'center',
