@@ -28,6 +28,7 @@ import { baseURL, userAgent } from '../../constants';
 import { millisToTime } from '../../utils/anime';
 
 const MIN_VIDEO_RESUME_POSITION = 90000; // 1 minute and a half
+const PLAYER_HIDE_TIMEOUT = 5000; // 5 seconds
 const SEEK_MILLIS = 10000; // 10 seconds
 
 const VideoScreen = ({
@@ -120,7 +121,7 @@ const VideoScreen = ({
         playControlsOpacityAnimation(0);
 
         videoPlayerIsHidden.current = true;
-      }, 3000);
+      }, PLAYER_HIDE_TIMEOUT);
     }
   };
 
@@ -333,8 +334,8 @@ const VideoScreen = ({
             opacity: controlsOpacityAnimation,
             transform: [{
               translateY: controlsOpacityAnimation.interpolate({
-                inputRange: [0, 1],
-                outputRange: [-100, 0],
+                inputRange: [0, 0.005, 1],
+                outputRange: [-500, -1, 0],
               }),
             }],
           }]}
@@ -367,7 +368,7 @@ const VideoScreen = ({
         <ActivityIndicator
           animating={videoIsLoading}
           color="#e63232"
-          size={100}
+          size={85}
           style={styles.loading}
         />
 
@@ -448,8 +449,8 @@ const VideoScreen = ({
           opacity: controlsOpacityAnimation,
           transform: [{
             translateY: controlsOpacityAnimation.interpolate({
-              inputRange: [0, 1],
-              outputRange: [100, 0],
+              inputRange: [0, 0.005, 1],
+              outputRange: [500, 1, 0],
             }),
           }],
         }]}

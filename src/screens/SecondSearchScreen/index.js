@@ -1,4 +1,4 @@
-import { Entypo } from '@expo/vector-icons';
+import { AntDesign } from '@expo/vector-icons';
 import PropTypes from 'prop-types';
 import React, { useEffect, useState } from 'react';
 import {
@@ -157,7 +157,8 @@ const SecondSearchScreen = ({ animeList }) => {
                   }],
                 }]}
                 >
-                  <Entypo color="white" name="emoji-sad" size={64} />
+                  <AntDesign color="white" name="questioncircleo" size={80} />
+
                   <Text style={styles.noResultsText}>Oops! No results.</Text>
                 </Animated.View>
               ) : (
