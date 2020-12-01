@@ -310,9 +310,10 @@ const VideoScreen = ({
       style={styles.containerTouchable}
     >
       <Animated.View style={styles.container}>
-        <Animated.View style={[styles.gradientView, {
-          opacity: controlsOpacityAnimation,
-        }]}
+        <Animated.View
+          style={[styles.gradientView, {
+            opacity: controlsOpacityAnimation,
+          }]}
         >
           <LinearGradient
             colors={['rgba(0, 0, 0, 0.5)', 'rgba(0, 0, 0, 0.25)', 'rgba(0, 0, 0, 0.5)']}
@@ -368,7 +369,7 @@ const VideoScreen = ({
         <ActivityIndicator
           animating={videoIsLoading}
           color="#e63232"
-          size={85}
+          size={80}
           style={styles.loading}
         />
 
@@ -392,15 +393,16 @@ const VideoScreen = ({
             </TouchableOpacity>
           </View>
         ) : (
-          <Animated.View style={[styles.centerControls, {
-            opacity: controlsOpacityAnimation,
-            transform: [{
-              translateY: controlsOpacityAnimation.interpolate({
-                inputRange: [0, 0.005, 1],
-                outputRange: [500, 1, 0],
-              }),
-            }],
-          }]}
+          <Animated.View
+            style={[styles.centerControls, {
+              opacity: controlsOpacityAnimation,
+              transform: [{
+                translateY: controlsOpacityAnimation.interpolate({
+                  inputRange: [0, 0.005, 1],
+                  outputRange: [500, 1, 0],
+                }),
+              }],
+            }]}
           >
             <TouchableOpacity
               activeOpacity={0.75}
@@ -445,15 +447,16 @@ const VideoScreen = ({
           </Animated.View>
         )}
 
-        <Animated.View style={[styles.lowerControls, {
-          opacity: controlsOpacityAnimation,
-          transform: [{
-            translateY: controlsOpacityAnimation.interpolate({
-              inputRange: [0, 0.005, 1],
-              outputRange: [500, 1, 0],
-            }),
-          }],
-        }]}
+        <Animated.View
+          style={[styles.lowerControls, {
+            opacity: controlsOpacityAnimation,
+            transform: [{
+              translateY: controlsOpacityAnimation.interpolate({
+                inputRange: [0, 0.005, 1],
+                outputRange: [500, 1, 0],
+              }),
+            }],
+          }]}
         >
           <Text style={styles.timeText}>{millisToTime(videoPositionMillisForText)}</Text>
 

@@ -147,15 +147,16 @@ const SecondSearchScreen = ({ animeList }) => {
           {firstSearchDone ? (
             <>
               {searchResults.length === 0 ? (
-                <Animated.View style={[styles.container, {
-                  opacity: noResultsFadeAnimation,
-                  transform: [{
-                    translateY: noResultsFadeAnimation.interpolate({
-                      inputRange: [0, 1],
-                      outputRange: [-100, 0],
-                    }),
-                  }],
-                }]}
+                <Animated.View
+                  style={[styles.container, {
+                    opacity: noResultsFadeAnimation,
+                    transform: [{
+                      translateY: noResultsFadeAnimation.interpolate({
+                        inputRange: [0, 1],
+                        outputRange: [-100, 0],
+                      }),
+                    }],
+                  }]}
                 >
                   <AntDesign color="white" name="questioncircleo" size={80} />
 
