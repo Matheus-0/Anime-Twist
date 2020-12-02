@@ -35,6 +35,8 @@ const SettingsScreen = ({
     }
   };
 
+  const handleClearDataPress = () => setEraseSettingsModalVisible(true);
+
   const handleModalNegativeResponse = () => setEraseSettingsModalVisible(false);
 
   const handleModalPositiveResponse = () => {
@@ -79,7 +81,7 @@ const SettingsScreen = ({
         }]}
       >
         <RectButton
-          onPress={() => setEraseSettingsModalVisible(true)}
+          onPress={handleClearDataPress}
           style={styles.eraseButton}
         >
           <Text style={styles.eraseButtonText}>Clear anime data</Text>

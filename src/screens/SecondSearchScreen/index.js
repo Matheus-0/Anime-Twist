@@ -10,9 +10,11 @@ import styles from './styles';
 
 import AnimeItem from '../../components/AnimeItem';
 
-import { customIncludes, replaceWithSpaces } from '../../utils/anime';
+import { customIncludes, replaceWithSpaces } from '../../utils';
 
-const SecondSearchScreen = ({ animeList }) => {
+const MAX_RESULTS = 100;
+
+const SecondSearchScreen = ({ animeList, navigation }) => {
   const [downloadTextAnimation] = useState(new Animated.Value(-100));
   const [fadeAnimation] = useState(new Animated.Value(0));
   const [noResultsFadeAnimation] = useState(new Animated.Value(0));
@@ -23,8 +25,6 @@ const SecondSearchScreen = ({ animeList }) => {
   const [previousSearch, setPreviousSearch] = useState('');
   const [searchResults, setSearchResults] = useState([]);
   const [searchText, setSearchText] = useState('');
-
-  const MAX_RESULTS = 100;
 
   useEffect(() => {
     Animated.sequence([
@@ -38,6 +38,10 @@ const SecondSearchScreen = ({ animeList }) => {
       }),
     ]).start();
   }, []);
+
+  const handleAnimeItemPress = (anime) => navigation.navigate('Anime', { anime });
+
+  const handleChangeText = (text) => setSearchText(text);
 
   const handleSearch = () => {
     const query = replaceWithSpaces(searchText).trim().toLowerCase();
@@ -99,7 +103,7 @@ const SecondSearchScreen = ({ animeList }) => {
     }
   };
 
-  const handleOnSubmitEditing = () => {
+  const handleSubmitEditing = () => {
     const currentSearch = replaceWithSpaces(searchText).trim().toLowerCase();
 
     if (currentSearch && currentSearch !== previousSearch) {
@@ -131,8 +135,8 @@ const SecondSearchScreen = ({ animeList }) => {
       >
         <TextInput
           autoFocus
-          onChangeText={(text) => setSearchText(text)}
-          onSubmitEditing={handleOnSubmitEditing}
+          onChangeText={handleChangeText}
+          onSubmitEditing={handleSubmitEditing}
           placeholder="Search"
           placeholderTextColor="#d2d2d2"
           returnKeyType="search"
@@ -177,7 +181,13 @@ const SecondSearchScreen = ({ animeList }) => {
                     }],
                   }]}
                 >
-                  {searchResults.map((result) => <AnimeItem anime={result} key={result.id} />)}
+                  {searchResults.map((result) => (
+                    <AnimeItem
+                      anime={result}
+                      key={result.id}
+                      onPress={() => handleAnimeItemPress(result)}
+                    />
+                  ))}
                 </Animated.ScrollView>
               )}
             </>
@@ -205,6 +215,9 @@ const SecondSearchScreen = ({ animeList }) => {
 
 SecondSearchScreen.propTypes = {
   animeList: PropTypes.arrayOf(PropTypes.object).isRequired,
+  navigation: PropTypes.shape({
+    navigate: PropTypes.func.isRequired,
+  }).isRequired,
 };
 
 const mapStateToProps = (state) => ({ animeList: state.animeReducer.animeList });

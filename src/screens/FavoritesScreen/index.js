@@ -13,9 +13,11 @@ import styles from './styles';
 import AnimeItem from '../../components/AnimeItem';
 import CustomModal from '../../components/CustomModal';
 
-import { removeAllFavorites } from '../../store/actions';
+import { removeAllFavorites, removeFromFavorites } from '../../store/actions';
 
-const FavoritesScreen = ({ removeAllFavorites, favorites }) => {
+const FavoritesScreen = ({
+  favorites, navigation, removeAllFavorites, removeFromFavorites,
+}) => {
   const [clearFavoritesModalVisible, setClearFavoritesModalVisible] = useState(false);
 
   const [fadeAnimation] = useState(new Animated.Value(0));
@@ -43,6 +45,16 @@ const FavoritesScreen = ({ removeAllFavorites, favorites }) => {
       ),
     );
   };
+
+  const handleAnimeItemPress = (anime) => navigation.navigate('Anime', { anime });
+
+  const handleAnimeItemRemovePress = (anime) => {
+    playLayoutAnimation(200);
+
+    removeFromFavorites(anime);
+  };
+
+  const handleClearAllPress = () => setClearFavoritesModalVisible(true);
 
   const handleRemoveAllFavorites = () => {
     removeAllFavorites();
@@ -95,7 +107,7 @@ const FavoritesScreen = ({ removeAllFavorites, favorites }) => {
             }]}
           >
             <RectButton
-              onPress={() => setClearFavoritesModalVisible(true)}
+              onPress={handleClearAllPress}
               style={styles.removeAllFavoritesButton}
             >
               <Text style={styles.removeAllFavoritesText}>Clear all</Text>
@@ -124,7 +136,8 @@ const FavoritesScreen = ({ removeAllFavorites, favorites }) => {
                   anime={anime}
                   favoriteRemove
                   key={anime.id}
-                  removeFromParentAnimation={() => playLayoutAnimation(200)}
+                  onPress={() => handleAnimeItemPress(anime)}
+                  onRemovePress={() => handleAnimeItemRemovePress(anime)}
                 />
               );
             })}
@@ -155,11 +168,16 @@ const FavoritesScreen = ({ removeAllFavorites, favorites }) => {
 
 FavoritesScreen.propTypes = {
   favorites: PropTypes.arrayOf(PropTypes.object).isRequired,
+  navigation: PropTypes.shape({
+    navigate: PropTypes.func.isRequired,
+  }).isRequired,
   removeAllFavorites: PropTypes.func.isRequired,
+  removeFromFavorites: PropTypes.func.isRequired,
 };
 
 const mapDispatchToProps = {
   removeAllFavorites,
+  removeFromFavorites,
 };
 
 const mapStateToProps = (state) => ({ favorites: state.animeReducer.favorites });

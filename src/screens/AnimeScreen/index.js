@@ -3,7 +3,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import PropTypes from 'prop-types';
 import React, { useEffect, useRef, useState } from 'react';
 import {
-  ActivityIndicator, Animated, Text, TouchableOpacity, View,
+  ActivityIndicator, Animated, Text, TouchableOpacity, Vibration, View,
 } from 'react-native';
 import { RectButton } from 'react-native-gesture-handler';
 import Modal from 'react-native-modal';
@@ -13,8 +13,10 @@ import styles from './styles';
 
 import {
   addToFavorites,
+  markEpisodeAsComplete,
   markEpisodeAsCurrent,
   removeFromFavorites,
+  undoMarkEpisodeAsComplete,
 } from '../../store/actions';
 
 import CustomModal from '../../components/CustomModal';
@@ -22,7 +24,7 @@ import EpisodeItem from '../../components/EpisodeItem';
 
 import { getAnimeSources } from '../../services/api';
 
-import { millisToTime } from '../../utils/anime';
+import { millisToTime } from '../../utils';
 
 const CHUNK_SIZE = 100;
 const RESUME_SUBTRACT_VALUE = 5000; // Subtract 5 seconds when resuming because of small delay
@@ -32,16 +34,18 @@ const AnimeScreen = ({
   completeEpisodes,
   currentEpisodes,
   favorites,
+  markEpisodeAsComplete,
   markEpisodeAsCurrent,
   navigation,
   removeFromFavorites,
   route,
   settings,
+  undoMarkEpisodeAsComplete,
 }) => {
+  const { anime } = route.params;
+
   const floatingMenuOpen = useRef(false);
   const lastEpisodes = useRef({});
-
-  const { anime } = route.params;
 
   const [animeSources, setAnimeSources] = useState(null);
   const [sourcesChunks, setSourcesChunks] = useState(null);
@@ -135,11 +139,51 @@ const AnimeScreen = ({
     return false;
   };
 
+  const handleEpisodeLongPress = (animeEpisode, isComplete) => {
+    if (isComplete) undoMarkEpisodeAsComplete(animeEpisode);
+    else markEpisodeAsComplete(animeEpisode);
+
+    Vibration.vibrate(25);
+  };
+
+  const handleEpisodePress = (animeEpisode, isComplete) => {
+    navigation.navigate('Video', {
+      anime,
+      animeSources,
+      firstEpisode: animeEpisode,
+      firstEpisodeIsComplete: isComplete,
+      firstEpisodeTime: 0,
+    });
+
+    markEpisodeAsCurrent(animeEpisode);
+  };
+
   const handleFavoritePress = () => {
     setIsFavorite(!isFavorite);
 
     if (!isFavorite) addToFavorites(anime);
     else removeFromFavorites(anime);
+  };
+
+  const handleFloatingButtonPress = () => {
+    playRotateAnimation(rotateButtonAnimation, floatingMenuOpen.current ? 0 : 1);
+
+    floatingMenuOpen.current = !floatingMenuOpen.current;
+  };
+
+  const handleRangeItemPress = () => {
+    playRotateAnimation(rotateButtonAnimation, 0);
+
+    floatingMenuOpen.current = false;
+
+    setRangeModalVisible(true);
+  };
+
+  const handleRangeModalNegativeResponse = () => setRangeModalVisible(false);
+
+  const handleRangeModalResponse = (value) => {
+    setRangeModalVisible(false);
+    setChunkIndex(value);
   };
 
   const handleRenderItem = (item) => {
@@ -152,44 +196,41 @@ const AnimeScreen = ({
         isComplete={isComplete}
         isCurrent={settings.highlight && isCurrent}
         key={String(item.number)}
-        onPress={() => {
-          navigation.navigate('Video', {
-            anime,
-            animeSources,
-            firstEpisode: item,
-            firstEpisodeIsComplete: isComplete,
-            firstEpisodeTime: 0,
-          });
-
-          markEpisodeAsCurrent(item);
-        }}
+        onLongPress={() => handleEpisodeLongPress(item, isComplete)}
+        onPress={() => handleEpisodePress(item, isComplete)}
       />
     );
   };
+
+  const handleResumeModalNegativeResponse = () => setResumeModalVisible(false);
+
+  const handleResumeModalPositiveResponse = () => {
+    const episodeToPlay = animeSources.find(
+      (e) => e.number === lastEpisodes.current[anime.id].episode,
+    );
+
+    navigation.navigate('Video', {
+      anime,
+      animeSources,
+      firstEpisode: episodeToPlay,
+      firstEpisodeIsComplete: isEpisodeComplete(episodeToPlay),
+      firstEpisodeTime: lastEpisodes.current[anime.id].millis - RESUME_SUBTRACT_VALUE,
+    });
+
+    setResumeModalVisible(false);
+
+    markEpisodeAsCurrent(episodeToPlay);
+  };
+
+  const handleRetryPress = () => setNetworkAvailable(true);
 
   return (
     <View style={styles.container}>
       {anime.id in lastEpisodes.current && (
         <CustomModal
           isVisible={resumeModalVisible}
-          onNegativeResponse={() => setResumeModalVisible(false)}
-          onPositiveResponse={() => {
-            const episodeToPlay = animeSources.find(
-              (e) => e.number === lastEpisodes.current[anime.id].episode,
-            );
-
-            navigation.navigate('Video', {
-              anime,
-              animeSources,
-              firstEpisode: episodeToPlay,
-              firstEpisodeIsComplete: isEpisodeComplete(episodeToPlay),
-              firstEpisodeTime: lastEpisodes.current[anime.id].millis - RESUME_SUBTRACT_VALUE,
-            });
-
-            setResumeModalVisible(false);
-
-            markEpisodeAsCurrent(episodeToPlay);
-          }}
+          onNegativeResponse={handleResumeModalNegativeResponse}
+          onPositiveResponse={handleResumeModalPositiveResponse}
           text={
             `Resume?\n\nEpisode ${lastEpisodes.current[anime.id].episode} (${millisToTime(lastEpisodes.current[anime.id].millis - RESUME_SUBTRACT_VALUE)})`
           }
@@ -226,8 +267,8 @@ const AnimeScreen = ({
           animationIn="fadeIn"
           animationOut="fadeOut"
           isVisible={rangeModalVisible}
-          onBackButtonPress={() => setRangeModalVisible(false)}
-          onBackdropPress={() => setRangeModalVisible(false)}
+          onBackButtonPress={handleRangeModalNegativeResponse}
+          onBackdropPress={handleRangeModalNegativeResponse}
           useNativeDriver
         >
           <View style={styles.modalContainer}>
@@ -237,10 +278,7 @@ const AnimeScreen = ({
               <TouchableOpacity
                 activeOpacity={0.75}
                 key={value}
-                onPress={() => {
-                  setRangeModalVisible(false);
-                  setChunkIndex(value);
-                }}
+                onPress={() => handleRangeModalResponse(value)}
                 style={styles.modalButton}
               >
                 <Text style={styles.modalButtonText}>{`${value + 1} - ${sourcesChunks[index + 1]}`}</Text>
@@ -309,7 +347,7 @@ const AnimeScreen = ({
               <Text style={styles.noConnectionText}>Connection error.</Text>
 
               <RectButton
-                onPress={() => setNetworkAvailable(true)}
+                onPress={handleRetryPress}
                 style={styles.noConnectionButton}
               >
                 <Text style={styles.noConnectionButtonText}>Retry</Text>
@@ -337,11 +375,7 @@ const AnimeScreen = ({
       >
         <RectButton
           style={styles.floatingButton}
-          onPress={() => {
-            playRotateAnimation(rotateButtonAnimation, floatingMenuOpen.current ? 0 : 1);
-
-            floatingMenuOpen.current = !floatingMenuOpen.current;
-          }}
+          onPress={handleFloatingButtonPress}
         >
           <AntDesign
             name="plus"
@@ -383,13 +417,7 @@ const AnimeScreen = ({
 
             <RectButton
               style={styles.floatingMenuItemButton}
-              onPress={() => {
-                playRotateAnimation(rotateButtonAnimation, 0);
-
-                floatingMenuOpen.current = false;
-
-                setRangeModalVisible(true);
-              }}
+              onPress={handleRangeItemPress}
             >
               <AntDesign
                 name="swap"
@@ -409,6 +437,7 @@ AnimeScreen.propTypes = {
   completeEpisodes: PropTypes.shape().isRequired,
   currentEpisodes: PropTypes.objectOf(PropTypes.number).isRequired,
   favorites: PropTypes.arrayOf(PropTypes.object).isRequired,
+  markEpisodeAsComplete: PropTypes.func.isRequired,
   markEpisodeAsCurrent: PropTypes.func.isRequired,
   navigation: PropTypes.shape({
     navigate: PropTypes.func.isRequired,
@@ -419,12 +448,15 @@ AnimeScreen.propTypes = {
     askResume: PropTypes.bool.isRequired,
     highlight: PropTypes.bool.isRequired,
   }).isRequired,
+  undoMarkEpisodeAsComplete: PropTypes.func.isRequired,
 };
 
 const mapDispatchToProps = {
   addToFavorites,
+  markEpisodeAsComplete,
   markEpisodeAsCurrent,
   removeFromFavorites,
+  undoMarkEpisodeAsComplete,
 };
 
 const mapStateToProps = (state) => ({

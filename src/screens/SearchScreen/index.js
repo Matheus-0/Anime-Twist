@@ -69,7 +69,11 @@ const SearchScreen = ({
     loadResourcesAsync();
   }, [failedRequest]);
 
-  const handleSearchOnPress = () => navigation.navigate('SecondSearch');
+  const handleFailedRequestPress = () => () => setFailedRequest(false);
+
+  const handleSearchPress = () => navigation.navigate('SecondSearch');
+
+  const handleSettingsPress = () => navigation.navigate('Settings');
 
   useFocusEffect(() => playFadeAnimation(fadeAnimation));
 
@@ -91,7 +95,7 @@ const SearchScreen = ({
       {isReady ? (
         <AnimatedTouchableOpacity
           activeOpacity={1}
-          onPress={handleSearchOnPress}
+          onPress={handleSearchPress}
           style={[styles.search, {
             opacity: fadeAnimation,
           }]}
@@ -117,7 +121,7 @@ const SearchScreen = ({
               <Text style={styles.requestFailedText}>Connection error.</Text>
 
               <RectButton
-                onPress={() => setFailedRequest(false)}
+                onPress={handleFailedRequestPress}
                 style={styles.requestFailedButton}
               >
                 <Text style={styles.requestFailedButtonText}>Retry</Text>
@@ -142,7 +146,7 @@ const SearchScreen = ({
       >
         <RectButton
           style={styles.settingsButton}
-          onPress={() => navigation.navigate('Settings')}
+          onPress={handleSettingsPress}
         >
           <AntDesign
             name="setting"

@@ -25,11 +25,13 @@ import { decryptSource } from '../../services/api';
 
 import { baseURL, userAgent } from '../../constants';
 
-import { millisToTime } from '../../utils/anime';
+import { millisToTime } from '../../utils';
 
 const MIN_VIDEO_RESUME_POSITION = 90000; // 1 minute and a half
 const PLAYER_HIDE_TIMEOUT = 5000; // 5 seconds
 const SEEK_MILLIS = 10000; // 10 seconds
+
+let timeout = null;
 
 const VideoScreen = ({
   completeEpisodes,
@@ -45,8 +47,6 @@ const VideoScreen = ({
   } = route.params;
 
   const videoRef = useRef(null);
-
-  const timeout = useRef(null);
 
   const deleteTime = useRef(true);
   const lastEpisodes = useRef({});
@@ -114,10 +114,10 @@ const VideoScreen = ({
   }).start();
 
   const handleHideTimeout = (onlyClear = false) => {
-    if (timeout.current) clearTimeout(timeout.current);
+    if (timeout) clearTimeout(timeout);
 
     if (!onlyClear && !videoPlayerIsHidden.current) {
-      timeout.current = setTimeout(() => {
+      timeout = setTimeout(() => {
         playControlsOpacityAnimation(0);
 
         videoPlayerIsHidden.current = true;
@@ -176,20 +176,30 @@ const VideoScreen = ({
     };
   }, []);
 
-  const handleCheckBoxOnValueChange = (newValue) => {
+  const handleBackArrowPress = () => navigation.goBack();
+
+  const handleCheckBoxValueChange = (newValue) => {
     if (newValue) markEpisodeAsComplete(episodePlaying);
     else undoMarkEpisodeAsComplete(episodePlaying);
 
     setToggleCheckBox(newValue);
   };
 
-  const handleOnLoad = (status) => {
+  const handleLoad = (status) => {
     videoCompletePosition.current = status.durationMillis * 0.9;
 
     setVideoDurationMillis(status.durationMillis);
   };
 
-  const handleOnPlaybackStatusUpdate = (status) => {
+  const handleMainTouchablePress = () => {
+    playControlsOpacityAnimation(videoPlayerIsHidden.current ? 1 : 0);
+
+    videoPlayerIsHidden.current = !videoPlayerIsHidden.current;
+
+    handleHideTimeout();
+  };
+
+  const handlePlaybackStatusUpdate = (status) => {
     if (status.positionMillis) {
       setVideoPositionMillis(status.positionMillis);
       setVideoPositionMillisForText(status.positionMillis);
@@ -260,7 +270,16 @@ const VideoScreen = ({
     handleHideTimeout();
   };
 
-  const handleOnSlidingComplete = (value) => {
+  const handleRetryPress = () => {
+    setShowError(false);
+    setVideoIsLoading(true);
+
+    loadVideo(episodePlaying.source, videoPositionMillis);
+  };
+
+  const handleSliderValueChange = (value) => setVideoPositionMillisForText(value);
+
+  const handleSlidingComplete = (value) => {
     if (videoPausedOnSlide.current) {
       videoRef.current.playFromPositionAsync(value);
 
@@ -273,7 +292,7 @@ const VideoScreen = ({
     handleHideTimeout();
   };
 
-  const handleOnSlidingStart = () => {
+  const handleSlidingStart = () => {
     if (!videoIsPaused.current) {
       videoRef.current.pauseAsync();
 
@@ -300,13 +319,7 @@ const VideoScreen = ({
   return (
     <TouchableOpacity
       activeOpacity={1}
-      onPress={() => {
-        playControlsOpacityAnimation(videoPlayerIsHidden.current ? 1 : 0);
-
-        videoPlayerIsHidden.current = !videoPlayerIsHidden.current;
-
-        handleHideTimeout();
-      }}
+      onPress={handleMainTouchablePress}
       style={styles.containerTouchable}
     >
       <Animated.View style={styles.container}>
@@ -323,8 +336,8 @@ const VideoScreen = ({
         </Animated.View>
 
         <Video
-          onLoad={handleOnLoad}
-          onPlaybackStatusUpdate={handleOnPlaybackStatusUpdate}
+          onLoad={handleLoad}
+          onPlaybackStatusUpdate={handlePlaybackStatusUpdate}
           ref={videoRef}
           resizeMode={Video.RESIZE_MODE_CONTAIN}
           style={styles.video}
@@ -344,7 +357,7 @@ const VideoScreen = ({
           <View style={styles.upperLeftView}>
             <TouchableOpacity
               activeOpacity={0.75}
-              onPress={() => navigation.goBack()}
+              onPress={handleBackArrowPress}
               style={styles.backButton}
             >
               <SimpleLineIcons color="white" name="arrow-left" size={20} />
@@ -356,7 +369,7 @@ const VideoScreen = ({
           </View>
 
           <CheckBox
-            onValueChange={handleCheckBoxOnValueChange}
+            onValueChange={handleCheckBoxValueChange}
             value={toggleCheckBox}
             style={styles.checkBox}
             tintColors={{
@@ -381,12 +394,7 @@ const VideoScreen = ({
 
             <TouchableOpacity
               activeOpacity={0.75}
-              onPress={() => {
-                setShowError(false);
-                setVideoIsLoading(true);
-
-                loadVideo(episodePlaying.source, videoPositionMillis);
-              }}
+              onPress={handleRetryPress}
               style={styles.errorButton}
             >
               <Text style={styles.errorText}>Retry</Text>
@@ -464,9 +472,9 @@ const VideoScreen = ({
             minimumTrackTintColor="#e63232"
             maximumValue={videoDurationMillis}
             minimumValue={0}
-            onSlidingComplete={handleOnSlidingComplete}
-            onSlidingStart={handleOnSlidingStart}
-            onValueChange={(value) => setVideoPositionMillisForText(value)}
+            onSlidingComplete={handleSlidingComplete}
+            onSlidingStart={handleSlidingStart}
+            onValueChange={handleSliderValueChange}
             style={styles.slider}
             thumbTintColor="#e63232"
             value={videoPositionMillis}
