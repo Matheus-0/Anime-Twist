@@ -69,7 +69,7 @@ const SearchScreen = ({
     loadResourcesAsync();
   }, [failedRequest]);
 
-  const handleFailedRequestPress = () => () => setFailedRequest(false);
+  const handleFailedRequestPress = () => setFailedRequest(false);
 
   const handleSearchPress = () => navigation.navigate('SecondSearch');
 

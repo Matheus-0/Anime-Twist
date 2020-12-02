@@ -389,7 +389,7 @@ const VideoScreen = ({
         {showError ? (
           <View style={styles.errorView}>
             <Text style={styles.errorText}>
-              {'Could not load video.\nIf retrying doesn\'t work, restart the app.'}
+              {'Could not load video.\nRestart the app if retrying doesn\'t work.'}
             </Text>
 
             <TouchableOpacity
