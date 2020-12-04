@@ -10,6 +10,7 @@ const initialState = {
     autoplay: true,
     autoMark: true,
     highlight: true,
+    preferEnglish: false,
   },
 };
 

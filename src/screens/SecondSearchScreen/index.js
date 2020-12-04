@@ -14,7 +14,7 @@ import { customIncludes, replaceWithSpaces } from '../../utils';
 
 const MAX_RESULTS = 100;
 
-const SecondSearchScreen = ({ animeList, navigation }) => {
+const SecondSearchScreen = ({ animeList, navigation, settings }) => {
   const [downloadTextAnimation] = useState(new Animated.Value(-100));
   const [fadeAnimation] = useState(new Animated.Value(0));
   const [noResultsFadeAnimation] = useState(new Animated.Value(0));
@@ -186,6 +186,7 @@ const SecondSearchScreen = ({ animeList, navigation }) => {
                       anime={result}
                       key={result.id}
                       onPress={() => handleAnimeItemPress(result)}
+                      preferEnglish={settings.preferEnglish}
                     />
                   ))}
                 </Animated.ScrollView>
@@ -218,8 +219,14 @@ SecondSearchScreen.propTypes = {
   navigation: PropTypes.shape({
     navigate: PropTypes.func.isRequired,
   }).isRequired,
+  settings: PropTypes.shape({
+    preferEnglish: PropTypes.bool.isRequired,
+  }).isRequired,
 };
 
-const mapStateToProps = (state) => ({ animeList: state.animeReducer.animeList });
+const mapStateToProps = (state) => ({
+  animeList: state.animeReducer.animeList,
+  settings: state.animeReducer.settings,
+});
 
 export default connect(mapStateToProps)(SecondSearchScreen);

@@ -3,7 +3,7 @@ import { useFocusEffect } from '@react-navigation/native';
 import PropTypes from 'prop-types';
 import React, { useEffect, useState } from 'react';
 import {
-  Animated, Text, TouchableOpacity, View, ActivityIndicator,
+  ActivityIndicator, Animated, Text, TouchableOpacity, View,
 } from 'react-native';
 import { RectButton } from 'react-native-gesture-handler';
 import { connect } from 'react-redux';

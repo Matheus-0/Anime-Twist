@@ -24,7 +24,7 @@ import EpisodeItem from '../../components/EpisodeItem';
 
 import { getAnimeSources } from '../../services/api';
 
-import { millisToTime } from '../../utils';
+import { getAnimeTitle, millisToTime } from '../../utils';
 
 const CHUNK_SIZE = 100;
 const RESUME_SUBTRACT_VALUE = 5000; // Subtract 5 seconds when resuming because of small delay
@@ -146,12 +146,11 @@ const AnimeScreen = ({
     Vibration.vibrate(25);
   };
 
-  const handleEpisodePress = (animeEpisode, isComplete) => {
+  const handleEpisodePress = (animeEpisode) => {
     navigation.navigate('Video', {
       anime,
       animeSources,
       firstEpisode: animeEpisode,
-      firstEpisodeIsComplete: isComplete,
       firstEpisodeTime: 0,
     });
 
@@ -197,7 +196,7 @@ const AnimeScreen = ({
         isCurrent={settings.highlight && isCurrent}
         key={String(item.number)}
         onLongPress={() => handleEpisodeLongPress(item, isComplete)}
-        onPress={() => handleEpisodePress(item, isComplete)}
+        onPress={() => handleEpisodePress(item)}
       />
     );
   };
@@ -213,7 +212,6 @@ const AnimeScreen = ({
       anime,
       animeSources,
       firstEpisode: episodeToPlay,
-      firstEpisodeIsComplete: isEpisodeComplete(episodeToPlay),
       firstEpisodeTime: lastEpisodes.current[anime.id].millis - RESUME_SUBTRACT_VALUE,
     });
 
@@ -248,7 +246,9 @@ const AnimeScreen = ({
           }],
         }]}
       >
-        <Text numberOfLines={3} style={styles.title}>{anime.title}</Text>
+        <Text numberOfLines={3} style={styles.title}>
+          {getAnimeTitle(anime, settings.preferEnglish)}
+        </Text>
       </Animated.View>
 
       <Animated.Text
@@ -447,6 +447,7 @@ AnimeScreen.propTypes = {
   settings: PropTypes.shape({
     askResume: PropTypes.bool.isRequired,
     highlight: PropTypes.bool.isRequired,
+    preferEnglish: PropTypes.bool.isRequired,
   }).isRequired,
   undoMarkEpisodeAsComplete: PropTypes.func.isRequired,
 };

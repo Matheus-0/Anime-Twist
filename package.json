@@ -13,6 +13,7 @@
     "@react-native-async-storage/async-storage": "^1.13.2",
     "@react-native-community/checkbox": "^0.5.0",
     "@react-native-community/masked-view": "0.1.10",
+    "@react-native-community/slider": "3.0.3",
     "@react-navigation/bottom-tabs": "^5.7.3",
     "@react-navigation/native": "^5.7.2",
     "@react-navigation/stack": "^5.9.0",
@@ -21,6 +22,7 @@
     "expo": "^39.0.0",
     "expo-av": "~8.6.0",
     "expo-font": "~8.3.0",
+    "expo-linear-gradient": "~8.3.0",
     "expo-screen-orientation": "~2.0.0",
     "expo-status-bar": "~1.0.2",
     "prop-types": "^15.7.2",
@@ -35,9 +37,7 @@
     "react-native-web": "~0.13.7",
     "react-redux": "^7.2.1",
     "redux": "^4.0.5",
-    "redux-persist": "^6.0.0",
-    "expo-linear-gradient": "~8.3.0",
-    "@react-native-community/slider": "3.0.3"
+    "redux-persist": "^6.0.0"
   },
   "devDependencies": {
     "@babel/core": "^7.8.6",

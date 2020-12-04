@@ -1,6 +1,5 @@
 import { SimpleLineIcons } from '@expo/vector-icons';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import CheckBox from '@react-native-community/checkbox';
 import Slider from '@react-native-community/slider';
 import { Video } from 'expo-av';
 import { LinearGradient } from 'expo-linear-gradient';
@@ -18,14 +17,13 @@ import styles from './styles';
 import {
   markEpisodeAsComplete,
   markEpisodeAsCurrent,
-  undoMarkEpisodeAsComplete,
 } from '../../store/actions';
 
 import { decryptSource } from '../../services/api';
 
 import { baseURL, userAgent } from '../../constants';
 
-import { millisToTime } from '../../utils';
+import { getAnimeTitle, millisToTime } from '../../utils';
 
 const MIN_VIDEO_RESUME_POSITION = 90000; // 1 minute and a half
 const PLAYER_HIDE_TIMEOUT = 5000; // 5 seconds
@@ -40,10 +38,9 @@ const VideoScreen = ({
   navigation,
   route,
   settings,
-  undoMarkEpisodeAsComplete,
 }) => {
   const {
-    anime, animeSources, firstEpisode, firstEpisodeIsComplete, firstEpisodeTime,
+    anime, animeSources, firstEpisode, firstEpisodeTime,
   } = route.params;
 
   const videoRef = useRef(null);
@@ -57,7 +54,6 @@ const VideoScreen = ({
 
   const [episodePlaying, setEpisodePlaying] = useState({});
   const [showError, setShowError] = useState(false);
-  const [toggleCheckBox, setToggleCheckBox] = useState(false);
   const [videoDurationMillis, setVideoDurationMillis] = useState(0);
   const [videoIsLoading, setVideoIsLoading] = useState(true);
   const [videoPositionMillis, setVideoPositionMillis] = useState(0);
@@ -155,7 +151,6 @@ const VideoScreen = ({
     }
 
     setEpisodePlaying(firstEpisode);
-    setToggleCheckBox(firstEpisodeIsComplete);
 
     if (videoRef.current) loadVideo(decryptSource(firstEpisode.source), firstEpisodeTime);
   };
@@ -177,13 +172,6 @@ const VideoScreen = ({
   }, []);
 
   const handleBackArrowPress = () => navigation.goBack();
-
-  const handleCheckBoxValueChange = (newValue) => {
-    if (newValue) markEpisodeAsComplete(episodePlaying);
-    else undoMarkEpisodeAsComplete(episodePlaying);
-
-    setToggleCheckBox(newValue);
-  };
 
   const handleLoad = (status) => {
     videoCompletePosition.current = status.durationMillis * 0.9;
@@ -234,8 +222,6 @@ const VideoScreen = ({
 
       if (settings.autoMark && !isEpisodeComplete(episodePlaying)) {
         markEpisodeAsComplete(episodePlaying);
-
-        setToggleCheckBox(true);
       }
     }
 
@@ -252,7 +238,6 @@ const VideoScreen = ({
         deleteTime.current = true;
 
         setEpisodePlaying(nextEpisode);
-        setToggleCheckBox(isEpisodeComplete(nextEpisode));
 
         loadVideo(decryptSource(nextEpisode.source));
       }
@@ -344,7 +329,7 @@ const VideoScreen = ({
         />
 
         <Animated.View
-          style={[styles.upperControls, {
+          style={[styles.upperLeftView, {
             opacity: controlsOpacityAnimation,
             transform: [{
               translateY: controlsOpacityAnimation.interpolate({
@@ -354,29 +339,21 @@ const VideoScreen = ({
             }],
           }]}
         >
-          <View style={styles.upperLeftView}>
-            <TouchableOpacity
-              activeOpacity={0.75}
-              onPress={handleBackArrowPress}
-              style={styles.backButton}
-            >
-              <SimpleLineIcons color="white" name="arrow-left" size={20} />
-            </TouchableOpacity>
+          <TouchableOpacity
+            activeOpacity={0.75}
+            onPress={handleBackArrowPress}
+            style={styles.backButton}
+          >
+            <SimpleLineIcons color="white" name="arrow-left" size={20} />
+          </TouchableOpacity>
 
-            <Text style={styles.episodeText}>
-              {`Episode ${episodePlaying.number}`}
-            </Text>
-          </View>
+          <Text numberOfLines={1} style={styles.titleText}>
+            {getAnimeTitle(anime, settings.preferEnglish)}
+          </Text>
 
-          <CheckBox
-            onValueChange={handleCheckBoxValueChange}
-            value={toggleCheckBox}
-            style={styles.checkBox}
-            tintColors={{
-              true: '#e63232',
-              false: 'rgba(255, 255, 255, 0.75)',
-            }}
-          />
+          <Text style={styles.episodeText}>
+            {`Episode ${episodePlaying.number}`}
+          </Text>
         </Animated.View>
 
         <ActivityIndicator
@@ -498,14 +475,13 @@ VideoScreen.propTypes = {
   settings: PropTypes.shape({
     autoMark: PropTypes.bool.isRequired,
     autoplay: PropTypes.bool.isRequired,
+    preferEnglish: PropTypes.bool.isRequired,
   }).isRequired,
-  undoMarkEpisodeAsComplete: PropTypes.func.isRequired,
 };
 
 const mapDispatchToProps = {
   markEpisodeAsComplete,
   markEpisodeAsCurrent,
-  undoMarkEpisodeAsComplete,
 };
 
 const mapStateToProps = (state) => ({

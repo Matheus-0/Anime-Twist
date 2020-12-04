@@ -24,9 +24,6 @@ const styles = StyleSheet.create({
   centerControlsPlayPauseIcon: {
     position: 'absolute',
   },
-  checkBox: {
-    marginRight: 15,
-  },
   container: {
     alignItems: 'center',
     backgroundColor: 'black',
@@ -89,18 +86,19 @@ const styles = StyleSheet.create({
     textAlign: 'center',
     width: 55,
   },
-  upperControls: {
-    alignItems: 'center',
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    position: 'absolute',
-    top: 0,
-    width: '100%',
-    zIndex: 2,
+  titleText: {
+    color: 'white',
+    fontFamily: 'Quicksand_600SemiBold',
+    marginLeft: 15,
+    maxWidth: 200,
   },
   upperLeftView: {
     alignItems: 'center',
     flexDirection: 'row',
+    position: 'absolute',
+    top: 0,
+    left: 0,
+    zIndex: 2,
   },
   video: {
     height: '100%',

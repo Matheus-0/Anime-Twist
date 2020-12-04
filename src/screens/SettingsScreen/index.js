@@ -99,6 +99,15 @@ const SettingsScreen = ({
           }],
         }]}
       >
+        <Text style={styles.sectionTitle}>Appearance</Text>
+
+        <CustomCheckBox
+          onValueChange={() => changeSetting('preferEnglish', !settings.preferEnglish)}
+          value={settings.preferEnglish}
+          style={styles.customCheckBox}
+          text="Prefer English titles."
+        />
+
         <Text style={styles.sectionTitle}>Player</Text>
 
         <CustomCheckBox
@@ -138,7 +147,13 @@ const SettingsScreen = ({
 SettingsScreen.propTypes = {
   changeSetting: PropTypes.func.isRequired,
   eraseAllData: PropTypes.func.isRequired,
-  settings: PropTypes.objectOf(PropTypes.bool).isRequired,
+  settings: PropTypes.shape({
+    askResume: PropTypes.bool.isRequired,
+    autoMark: PropTypes.bool.isRequired,
+    autoplay: PropTypes.bool.isRequired,
+    highlight: PropTypes.bool.isRequired,
+    preferEnglish: PropTypes.bool.isRequired,
+  }).isRequired,
 };
 
 const mapDispatchToProps = {

@@ -1,3 +1,9 @@
+export const getAnimeTitle = (anime, preferEnglish) => {
+  if (preferEnglish && anime.alt_title) return anime.alt_title;
+
+  return anime.title;
+};
+
 export const replaceWithSpaces = (string) => string.replace(/[^a-zA-Z0-9 ]/g, ' ');
 
 export const customIncludes = (title, query) => {

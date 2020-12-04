@@ -16,7 +16,7 @@ import CustomModal from '../../components/CustomModal';
 import { removeAllFavorites, removeFromFavorites } from '../../store/actions';
 
 const FavoritesScreen = ({
-  favorites, navigation, removeAllFavorites, removeFromFavorites,
+  favorites, navigation, removeAllFavorites, removeFromFavorites, settings,
 }) => {
   const [clearFavoritesModalVisible, setClearFavoritesModalVisible] = useState(false);
 
@@ -138,6 +138,7 @@ const FavoritesScreen = ({
                   key={anime.id}
                   onPress={() => handleAnimeItemPress(anime)}
                   onRemovePress={() => handleAnimeItemRemovePress(anime)}
+                  preferEnglish={settings.preferEnglish}
                 />
               );
             })}
@@ -173,6 +174,9 @@ FavoritesScreen.propTypes = {
   }).isRequired,
   removeAllFavorites: PropTypes.func.isRequired,
   removeFromFavorites: PropTypes.func.isRequired,
+  settings: PropTypes.shape({
+    preferEnglish: PropTypes.bool.isRequired,
+  }).isRequired,
 };
 
 const mapDispatchToProps = {
@@ -180,6 +184,9 @@ const mapDispatchToProps = {
   removeFromFavorites,
 };
 
-const mapStateToProps = (state) => ({ favorites: state.animeReducer.favorites });
+const mapStateToProps = (state) => ({
+  favorites: state.animeReducer.favorites,
+  settings: state.animeReducer.settings,
+});
 
 export default connect(mapStateToProps, mapDispatchToProps)(FavoritesScreen);
