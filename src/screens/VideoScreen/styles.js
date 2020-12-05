@@ -49,6 +49,11 @@ const styles = StyleSheet.create({
     color: 'white',
     fontFamily: 'Quicksand_400Regular',
     textAlign: 'center',
+    textShadowOffset: {
+      height: 1,
+      width: 1,
+    },
+    textShadowRadius: 5,
   },
   errorView: {
     alignItems: 'center',
@@ -92,21 +97,15 @@ const styles = StyleSheet.create({
     marginTop: 10,
     width: '100%',
   },
-  nextEpisodeButtonText: {
-    color: 'white',
-    fontFamily: 'Quicksand_400Regular',
-    textAlign: 'center',
-  },
   nextEpisodeText: {
     color: 'white',
     fontFamily: 'Quicksand_400Regular',
-    fontSize: 15,
     textAlign: 'center',
     textShadowOffset: {
       height: 1,
       width: 1,
     },
-    textShadowRadius: 1,
+    textShadowRadius: 5,
   },
   nextEpisodeView: {
     alignItems: 'center',

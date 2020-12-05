@@ -492,7 +492,7 @@ const VideoScreen = ({
                 onPress={playNextEpisode}
                 style={styles.nextEpisodeButton}
               >
-                <Text style={styles.nextEpisodeButtonText}>Next</Text>
+                <Text style={styles.nextEpisodeText}>Next</Text>
               </TouchableOpacity>
 
               <TouchableOpacity
@@ -500,7 +500,7 @@ const VideoScreen = ({
                 onPress={handleNextEpisodeCancel}
                 style={styles.nextEpisodeButton}
               >
-                <Text style={styles.nextEpisodeButtonText}>Cancel</Text>
+                <Text style={styles.nextEpisodeText}>Cancel</Text>
               </TouchableOpacity>
             </View>
           </Animated.View>
