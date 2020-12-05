@@ -1,4 +1,4 @@
-import { StyleSheet } from 'react-native';
+import { Dimensions, StyleSheet } from 'react-native';
 
 const styles = StyleSheet.create({
   backButton: {
@@ -77,6 +77,45 @@ const styles = StyleSheet.create({
     width: '100%',
     zIndex: 2,
   },
+  nextEpisodeButton: {
+    alignItems: 'center',
+    backgroundColor: 'hsla(0, 0%, 100%, 0.1)',
+    borderRadius: 10,
+    height: 35,
+    justifyContent: 'center',
+    width: 75,
+  },
+  nextEpisodeButtons: {
+    alignItems: 'center',
+    flexDirection: 'row',
+    justifyContent: 'space-evenly',
+    marginTop: 10,
+    width: '100%',
+  },
+  nextEpisodeButtonText: {
+    color: 'white',
+    fontFamily: 'Quicksand_400Regular',
+    textAlign: 'center',
+  },
+  nextEpisodeText: {
+    color: 'white',
+    fontFamily: 'Quicksand_400Regular',
+    fontSize: 15,
+    textAlign: 'center',
+    textShadowOffset: {
+      height: 1,
+      width: 1,
+    },
+    textShadowRadius: 1,
+  },
+  nextEpisodeView: {
+    alignItems: 'center',
+    bottom: 45,
+    position: 'absolute',
+    right: 15,
+    width: 180,
+    zIndex: 2,
+  },
   slider: {
     flex: 1,
   },
@@ -90,7 +129,7 @@ const styles = StyleSheet.create({
     color: 'white',
     fontFamily: 'Quicksand_600SemiBold',
     marginLeft: 15,
-    maxWidth: 200,
+    maxWidth: Dimensions.get('screen').height * 0.625,
   },
   upperLeftView: {
     alignItems: 'center',

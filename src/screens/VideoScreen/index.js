@@ -47,6 +47,8 @@ const VideoScreen = ({
 
   const deleteTime = useRef(true);
   const lastEpisodes = useRef({});
+  const nextEpisodeCanceled = useRef(false);
+  const nextEpisodeViewActive = useRef(false);
   const videoCompletePosition = useRef(null);
   const videoIsPaused = useRef(false);
   const videoPausedOnSlide = useRef(false);
@@ -61,6 +63,7 @@ const VideoScreen = ({
 
   const [controlsOpacityAnimation] = useState(new Animated.Value(1));
   const [iconOpacityAnimation] = useState(new Animated.Value(0));
+  const [nextEpisodeViewOpacityAnimation] = useState(new Animated.Value(0));
 
   const isEpisodeComplete = (episode) => {
     const arrayOfEpisodes = completeEpisodes[episode.anime_id];
@@ -103,7 +106,7 @@ const VideoScreen = ({
     }
   };
 
-  const playControlsOpacityAnimation = (toValue) => Animated.spring(controlsOpacityAnimation, {
+  const playOpacityAnimation = (animation, toValue) => Animated.spring(animation, {
     friction: 10,
     toValue,
     useNativeDriver: true,
@@ -114,7 +117,8 @@ const VideoScreen = ({
 
     if (!onlyClear && !videoPlayerIsHidden.current) {
       timeout = setTimeout(() => {
-        playControlsOpacityAnimation(0);
+        playOpacityAnimation(controlsOpacityAnimation, 0);
+        playOpacityAnimation(nextEpisodeViewOpacityAnimation, 0);
 
         videoPlayerIsHidden.current = true;
       }, PLAYER_HIDE_TIMEOUT);
@@ -180,11 +184,40 @@ const VideoScreen = ({
   };
 
   const handleMainTouchablePress = () => {
-    playControlsOpacityAnimation(videoPlayerIsHidden.current ? 1 : 0);
+    playOpacityAnimation(controlsOpacityAnimation, videoPlayerIsHidden.current ? 1 : 0);
+
+    if (nextEpisodeViewActive.current && !nextEpisodeCanceled.current) {
+      playOpacityAnimation(nextEpisodeViewOpacityAnimation, videoPlayerIsHidden.current ? 1 : 0);
+    }
 
     videoPlayerIsHidden.current = !videoPlayerIsHidden.current;
 
     handleHideTimeout();
+  };
+
+  const handleNextEpisodeCancel = () => {
+    playOpacityAnimation(nextEpisodeViewOpacityAnimation, 0);
+
+    nextEpisodeCanceled.current = true;
+    nextEpisodeViewActive.current = false;
+  };
+
+  const playNextEpisode = () => {
+    playOpacityAnimation(nextEpisodeViewOpacityAnimation, 0);
+
+    const nextEpisode = animeSources.find((item) => item.number === episodePlaying.number + 1);
+
+    markEpisodeAsCurrent(nextEpisode);
+
+    deleteTime.current = true;
+    nextEpisodeCanceled.current = false;
+    nextEpisodeViewActive.current = false;
+    videoCompletePosition.current = null;
+
+    setVideoIsLoading(true);
+    setEpisodePlaying(nextEpisode);
+
+    loadVideo(decryptSource(nextEpisode.source));
   };
 
   const handlePlaybackStatusUpdate = (status) => {
@@ -192,10 +225,16 @@ const VideoScreen = ({
       setVideoPositionMillis(status.positionMillis);
       setVideoPositionMillisForText(status.positionMillis);
 
-      if (status.positionMillis > MIN_VIDEO_RESUME_POSITION
-        && status.positionMillis < videoCompletePosition.current
-      ) {
-        saveEpisodeTime(episodePlaying, status.positionMillis);
+      if (status.positionMillis < videoCompletePosition.current) {
+        if (status.positionMillis > MIN_VIDEO_RESUME_POSITION) {
+          saveEpisodeTime(episodePlaying, status.positionMillis);
+        }
+
+        if (nextEpisodeViewActive.current) {
+          playOpacityAnimation(nextEpisodeViewOpacityAnimation, 0);
+
+          nextEpisodeViewActive.current = false;
+        }
       }
     }
 
@@ -204,7 +243,9 @@ const VideoScreen = ({
         if (status.isBuffering && !status.isPlaying && !videoIsPaused.current) {
           setVideoIsLoading(true);
         }
-      } else if (videoIsLoading && status.isPlaying) setVideoIsLoading(false);
+      } else if (videoCompletePosition.current && videoIsLoading && status.isPlaying) {
+        setVideoIsLoading(false);
+      }
     }
 
     if (status.error) {
@@ -212,16 +253,21 @@ const VideoScreen = ({
       setVideoIsLoading(false);
     }
 
-    if (deleteTime.current
-      && videoCompletePosition.current
+    if (videoCompletePosition.current
       && status.positionMillis > videoCompletePosition.current
     ) {
-      deleteLastEpisodeTime();
+      if (episodePlaying.number < animeSources.length) {
+        nextEpisodeViewActive.current = true;
+      }
 
-      deleteTime.current = false;
+      if (deleteTime.current) {
+        deleteLastEpisodeTime();
 
-      if (settings.autoMark && !isEpisodeComplete(episodePlaying)) {
-        markEpisodeAsComplete(episodePlaying);
+        deleteTime.current = false;
+
+        if (settings.autoMark && !isEpisodeComplete(episodePlaying)) {
+          markEpisodeAsComplete(episodePlaying);
+        }
       }
     }
 
@@ -231,15 +277,7 @@ const VideoScreen = ({
       iconOpacityAnimation.setValue(1);
 
       if (settings.autoplay && episodePlaying.number < animeSources.length) {
-        const nextEpisode = animeSources.find((item) => item.number === episodePlaying.number + 1);
-
-        markEpisodeAsCurrent(nextEpisode);
-
-        deleteTime.current = true;
-
-        setEpisodePlaying(nextEpisode);
-
-        loadVideo(decryptSource(nextEpisode.source));
+        playNextEpisode();
       }
     }
   };
@@ -429,6 +467,42 @@ const VideoScreen = ({
             >
               <SimpleLineIcons color="white" name="control-forward" size={24} />
             </TouchableOpacity>
+          </Animated.View>
+        )}
+
+        {settings.autoplay && (
+          <Animated.View
+            style={[styles.nextEpisodeView, {
+              opacity: nextEpisodeViewOpacityAnimation,
+              transform: [{
+                translateY: nextEpisodeViewOpacityAnimation.interpolate({
+                  inputRange: [0, 0.005, 1],
+                  outputRange: [500, 1, 0],
+                }),
+              }],
+            }]}
+          >
+            <Text style={styles.nextEpisodeText}>
+              {`Next episode in: ${millisToTime(videoDurationMillis - videoPositionMillisForText)}`}
+            </Text>
+
+            <View style={styles.nextEpisodeButtons}>
+              <TouchableOpacity
+                activeOpacity={0.75}
+                onPress={playNextEpisode}
+                style={styles.nextEpisodeButton}
+              >
+                <Text style={styles.nextEpisodeButtonText}>Next</Text>
+              </TouchableOpacity>
+
+              <TouchableOpacity
+                activeOpacity={0.75}
+                onPress={handleNextEpisodeCancel}
+                style={styles.nextEpisodeButton}
+              >
+                <Text style={styles.nextEpisodeButtonText}>Cancel</Text>
+              </TouchableOpacity>
+            </View>
           </Animated.View>
         )}
 
