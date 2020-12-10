@@ -49,11 +49,6 @@ const styles = StyleSheet.create({
     color: 'white',
     fontFamily: 'Quicksand_400Regular',
     textAlign: 'center',
-    textShadowOffset: {
-      height: 1,
-      width: 1,
-    },
-    textShadowRadius: 5,
   },
   errorView: {
     alignItems: 'center',
@@ -101,11 +96,6 @@ const styles = StyleSheet.create({
     color: 'white',
     fontFamily: 'Quicksand_400Regular',
     textAlign: 'center',
-    textShadowOffset: {
-      height: 1,
-      width: 1,
-    },
-    textShadowRadius: 5,
   },
   nextEpisodeView: {
     alignItems: 'center',

@@ -27,6 +27,7 @@ export default function App() {
     <Provider store={store}>
       <PersistGate loading={<AppLoading />} persistor={persistedStore}>
         <Routes />
+
         <StatusBar animated style="light" translucent={false} />
       </PersistGate>
     </Provider>
