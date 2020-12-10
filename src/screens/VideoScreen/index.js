@@ -214,6 +214,7 @@ const VideoScreen = ({
     nextEpisodeViewActive.current = false;
     videoCompletePosition.current = null;
 
+    setShowError(false);
     setVideoIsLoading(true);
     setEpisodePlaying(nextEpisode);
 
