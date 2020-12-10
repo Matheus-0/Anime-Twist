@@ -27,7 +27,7 @@ import { getAnimeTitle, millisToTime } from '../../utils';
 
 const MIN_VIDEO_RESUME_POSITION = 90000; // 1 minute and a half
 const PLAYER_HIDE_TIMEOUT = 5000; // 5 seconds
-const SEEK_MILLIS = 10000; // 10 seconds
+const SEEK_MILLIS = 5000; // 5 seconds
 
 let timeout = null;
 
@@ -276,7 +276,11 @@ const VideoScreen = ({
 
       iconOpacityAnimation.setValue(1);
 
-      if (settings.autoplay && episodePlaying.number < animeSources.length) {
+      if (
+        settings.autoplay
+        && !nextEpisodeCanceled.current
+        && episodePlaying.number < animeSources.length
+      ) {
         playNextEpisode();
       }
     }
