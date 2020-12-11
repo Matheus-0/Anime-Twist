@@ -357,7 +357,7 @@ const VideoScreen = ({
           }]}
         >
           <LinearGradient
-            colors={['rgba(0, 0, 0, 0.5)', 'rgba(0, 0, 0, 0.25)', 'rgba(0, 0, 0, 0.5)']}
+            colors={['rgba(0, 0, 0, 0.5)', 'rgba(0, 0, 0, 0.375)', 'rgba(0, 0, 0, 0.5)']}
             locations={[0.005, 0.5, 0.995]}
             style={styles.gradient}
           />
