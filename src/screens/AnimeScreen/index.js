@@ -279,7 +279,7 @@ const AnimeScreen = ({
                 activeOpacity={0.75}
                 key={value}
                 onPress={() => handleRangeModalResponse(value)}
-                style={styles.modalButton}
+                style={[styles.modalButton, value === chunkIndex ? styles.modalButtonRed : {}]}
               >
                 <Text style={styles.modalButtonText}>{`${value + 1} - ${sourcesChunks[index + 1]}`}</Text>
               </TouchableOpacity>

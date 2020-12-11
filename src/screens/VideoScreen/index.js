@@ -222,7 +222,7 @@ const VideoScreen = ({
   };
 
   const handlePlaybackStatusUpdate = (status) => {
-    if (status.positionMillis) {
+    if (status.positionMillis !== undefined) {
       setVideoPositionMillis(status.positionMillis);
       setVideoPositionMillisForText(status.positionMillis);
 

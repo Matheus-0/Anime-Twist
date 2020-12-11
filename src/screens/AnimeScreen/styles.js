@@ -82,6 +82,9 @@ const styles = StyleSheet.create({
     paddingVertical: 5,
     width: '35%',
   },
+  modalButtonRed: {
+    backgroundColor: '#e63232',
+  },
   modalButtonText: {
     color: 'white',
     fontFamily: 'Quicksand_400Regular',
