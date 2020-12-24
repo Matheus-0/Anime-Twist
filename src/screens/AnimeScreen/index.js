@@ -16,7 +16,7 @@ import {
   markEpisodeAsComplete,
   markEpisodeAsCurrent,
   removeFromFavorites,
-  undoMarkEpisodeAsComplete,
+  unmarkEpisodeAsComplete,
 } from '../../store/actions';
 
 import CustomModal from '../../components/CustomModal';
@@ -40,7 +40,7 @@ const AnimeScreen = ({
   removeFromFavorites,
   route,
   settings,
-  undoMarkEpisodeAsComplete,
+  unmarkEpisodeAsComplete,
 }) => {
   const { anime } = route.params;
 
@@ -140,7 +140,7 @@ const AnimeScreen = ({
   };
 
   const handleEpisodeLongPress = (animeEpisode, isComplete) => {
-    if (isComplete) undoMarkEpisodeAsComplete(animeEpisode);
+    if (isComplete) unmarkEpisodeAsComplete(animeEpisode);
     else markEpisodeAsComplete(animeEpisode);
 
     Vibration.vibrate(25);
@@ -449,7 +449,7 @@ AnimeScreen.propTypes = {
     highlight: PropTypes.bool.isRequired,
     preferEnglish: PropTypes.bool.isRequired,
   }).isRequired,
-  undoMarkEpisodeAsComplete: PropTypes.func.isRequired,
+  unmarkEpisodeAsComplete: PropTypes.func.isRequired,
 };
 
 const mapDispatchToProps = {
@@ -457,7 +457,7 @@ const mapDispatchToProps = {
   markEpisodeAsComplete,
   markEpisodeAsCurrent,
   removeFromFavorites,
-  undoMarkEpisodeAsComplete,
+  unmarkEpisodeAsComplete,
 };
 
 const mapStateToProps = (state) => ({

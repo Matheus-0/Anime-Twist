@@ -87,7 +87,7 @@ export default (state = initialState, action) => {
           ...state.favorites.filter((item) => item.id !== action.anime.id),
         ],
       };
-    case Constants.UNDO_MARK_EPISODE_COMPLETE: {
+    case Constants.UNMARK_EPISODE_COMPLETE: {
       const animeID = action.episode.anime_id;
       const episodeNumber = action.episode.number;
 

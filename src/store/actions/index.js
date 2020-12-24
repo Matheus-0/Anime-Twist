@@ -22,8 +22,8 @@ export const unmarkEpisodeAsCurrent = (episode) => ({
   episode,
 });
 
-export const undoMarkEpisodeAsComplete = (episode) => ({
-  type: Constants.UNDO_MARK_EPISODE_COMPLETE,
+export const unmarkEpisodeAsComplete = (episode) => ({
+  type: Constants.UNMARK_EPISODE_COMPLETE,
   episode,
 });
 
