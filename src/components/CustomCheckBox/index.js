@@ -1,4 +1,4 @@
-import CheckBox from '@react-native-community/checkbox';
+import CheckBox from 'expo-checkbox';
 import PropTypes from 'prop-types';
 import React from 'react';
 import { Text, View } from 'react-native';
@@ -10,12 +10,9 @@ const CustomCheckBox = ({
 }) => (
   <View style={[styles.container, style]}>
     <CheckBox
-      value={value}
+      color="#e63232"
       onValueChange={onValueChange}
-      tintColors={{
-        true: '#e63232',
-        false: 'gray',
-      }}
+      value={value}
     />
 
     <Text style={styles.text}>{text}</Text>

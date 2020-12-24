@@ -16,7 +16,7 @@ const EpisodeItem = ({
 
   return (
     <TouchableOpacity
-      activeOpacity={0.75}
+      activeOpacity={0.875}
       onLongPress={onLongPress}
       onPress={onPress}
       style={[styles.item, extraStyles]}

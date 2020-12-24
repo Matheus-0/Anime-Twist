@@ -44,7 +44,7 @@ const AnimeItem = ({
 
         {anime.ongoing === 1 && (
           <View style={styles.ongoing}>
-            <Ionicons color="#e63232" name="md-tv" size={20} />
+            <Ionicons color="#e63232" name="md-tv-outline" size={20} />
           </View>
         )}
 
@@ -53,7 +53,7 @@ const AnimeItem = ({
             onPress={onRemovePress}
             style={styles.removeContainer}
           >
-            <Ionicons color="rgba(255, 255, 255, 0.75)" name="md-heart-dislike" size={20} />
+            <Ionicons color="rgba(255, 255, 255, 0.75)" name="md-heart-dislike-outline" size={20} />
           </RectButton>
         )}
       </RectButton>

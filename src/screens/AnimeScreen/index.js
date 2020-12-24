@@ -276,7 +276,7 @@ const AnimeScreen = ({
 
             {sourcesChunks.slice(0, sourcesChunks.length - 1).map((value, index) => (
               <TouchableOpacity
-                activeOpacity={0.75}
+                activeOpacity={0.875}
                 key={value}
                 onPress={() => handleRangeModalResponse(value)}
                 style={[styles.modalButton, value === chunkIndex ? styles.modalButtonRed : {}]}
@@ -374,12 +374,12 @@ const AnimeScreen = ({
         }]}
       >
         <RectButton
-          style={styles.floatingButton}
           onPress={handleFloatingButtonPress}
+          style={styles.floatingButton}
         >
           <AntDesign
-            name="plus"
             color="rgba(255, 255, 255, 0.75)"
+            name="plus"
             size={24}
           />
         </RectButton>
@@ -404,8 +404,8 @@ const AnimeScreen = ({
             onPress={handleFavoritePress}
           >
             <AntDesign
-              name={isFavorite ? 'heart' : 'hearto'}
               color="rgba(255, 255, 255, 0.75)"
+              name={isFavorite ? 'heart' : 'hearto'}
               size={20}
             />
           </RectButton>

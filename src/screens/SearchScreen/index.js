@@ -145,12 +145,12 @@ const SearchScreen = ({
         }]}
       >
         <RectButton
-          style={styles.settingsButton}
           onPress={handleSettingsPress}
+          style={styles.settingsButton}
         >
           <AntDesign
-            name="setting"
             color="rgba(255, 255, 255, 0.75)"
+            name="setting"
             size={24}
           />
         </RectButton>

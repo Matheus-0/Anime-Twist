@@ -21,7 +21,7 @@ const CustomModal = ({
 
       <View style={styles.buttonsContainer}>
         <TouchableOpacity
-          activeOpacity={0.75}
+          activeOpacity={0.875}
           onPress={onNegativeResponse}
           style={styles.button}
         >
@@ -29,7 +29,7 @@ const CustomModal = ({
         </TouchableOpacity>
 
         <TouchableOpacity
-          activeOpacity={0.75}
+          activeOpacity={0.875}
           onPress={onPositiveResponse}
           style={styles.button}
         >

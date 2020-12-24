@@ -254,7 +254,8 @@ const VideoScreen = ({
       setVideoIsLoading(false);
     }
 
-    if (videoCompletePosition.current
+    if (
+      videoCompletePosition.current
       && status.positionMillis > videoCompletePosition.current
     ) {
       if (episodePlaying.number < animeSources.length) {
@@ -302,7 +303,7 @@ const VideoScreen = ({
     setShowError(false);
     setVideoIsLoading(true);
 
-    loadVideo(episodePlaying.source, videoPositionMillis);
+    loadVideo(decryptSource(episodePlaying.source), videoPositionMillis);
   };
 
   const handleSliderValueChange = (value) => setVideoPositionMillisForText(value);
@@ -383,7 +384,7 @@ const VideoScreen = ({
           }]}
         >
           <TouchableOpacity
-            activeOpacity={0.75}
+            activeOpacity={0.875}
             onPress={handleBackArrowPress}
             style={styles.backButton}
           >
@@ -402,7 +403,7 @@ const VideoScreen = ({
         <ActivityIndicator
           animating={videoIsLoading}
           color="#e63232"
-          size={80}
+          size={75}
           style={styles.loading}
         />
 
@@ -413,7 +414,7 @@ const VideoScreen = ({
             </Text>
 
             <TouchableOpacity
-              activeOpacity={0.75}
+              activeOpacity={0.875}
               onPress={handleRetryPress}
               style={styles.errorButton}
             >
@@ -433,7 +434,7 @@ const VideoScreen = ({
             }]}
           >
             <TouchableOpacity
-              activeOpacity={0.75}
+              activeOpacity={0.875}
               onPress={() => handleSeeking(-SEEK_MILLIS)}
               style={styles.centerControlsButton}
             >
@@ -441,7 +442,7 @@ const VideoScreen = ({
             </TouchableOpacity>
 
             <TouchableOpacity
-              activeOpacity={0.75}
+              activeOpacity={0.875}
               onPress={handlePlayPausePress}
               style={styles.centerControlsButton}
             >
@@ -466,7 +467,7 @@ const VideoScreen = ({
             </TouchableOpacity>
 
             <TouchableOpacity
-              activeOpacity={0.75}
+              activeOpacity={0.875}
               onPress={() => handleSeeking(SEEK_MILLIS)}
               style={styles.centerControlsButton}
             >
@@ -493,7 +494,7 @@ const VideoScreen = ({
 
             <View style={styles.nextEpisodeButtons}>
               <TouchableOpacity
-                activeOpacity={0.75}
+                activeOpacity={0.875}
                 onPress={playNextEpisode}
                 style={styles.nextEpisodeButton}
               >
@@ -501,7 +502,7 @@ const VideoScreen = ({
               </TouchableOpacity>
 
               <TouchableOpacity
-                activeOpacity={0.75}
+                activeOpacity={0.875}
                 onPress={handleNextEpisodeCancel}
                 style={styles.nextEpisodeButton}
               >
@@ -531,6 +532,7 @@ const VideoScreen = ({
             onSlidingComplete={handleSlidingComplete}
             onSlidingStart={handleSlidingStart}
             onValueChange={handleSliderValueChange}
+            step={1}
             style={styles.slider}
             thumbTintColor="#e63232"
             value={videoPositionMillis}
