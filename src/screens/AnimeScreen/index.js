@@ -269,16 +269,18 @@ const AnimeScreen = ({
         </Text>
       </Animated.View>
 
-      <Animated.Text
-        style={[styles.tipText, {
-          opacity: fadeAnimation,
-          transform: [{
-            scale: fadeAnimation,
-          }],
-        }]}
-      >
-        Press and hold to mark/unmark as complete.
-      </Animated.Text>
+      {animeSources && animeSources.length !== 0 && (
+        <Animated.Text
+          style={[styles.tipText, {
+            opacity: scrollViewFadeAnimation,
+            transform: [{
+              scale: scrollViewFadeAnimation,
+            }],
+          }]}
+        >
+          Press and hold to mark/unmark as complete.
+        </Animated.Text>
+      )}
 
       {sourcesChunks && (
         <Modal
