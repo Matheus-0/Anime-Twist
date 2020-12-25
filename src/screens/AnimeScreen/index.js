@@ -340,7 +340,7 @@ const AnimeScreen = ({
                 }],
               }]}
             >
-              <AntDesign name="questioncircleo" size={80} color="white" />
+              <AntDesign color="white" name="questioncircleo" size={75} />
 
               <Text style={styles.episodesNotFoundText}>No episodes found.</Text>
             </Animated.View>
@@ -379,10 +379,7 @@ const AnimeScreen = ({
         style={[styles.floatingButtonView, {
           opacity: fadeAnimation,
           transform: [{
-            translateX: fadeAnimation.interpolate({
-              inputRange: [0, 1],
-              outputRange: [100, 0],
-            }),
+            scale: fadeAnimation,
           }, {
             rotate: rotateButtonAnimation.interpolate({
               inputRange: [0, 1],

@@ -26,6 +26,7 @@ const styles = StyleSheet.create({
   requestFailedButtonText: {
     color: 'white',
     fontFamily: 'Quicksand_400Regular',
+    fontSize: 13,
     textAlign: 'center',
   },
   requestFailedContainer: {
@@ -36,7 +37,7 @@ const styles = StyleSheet.create({
   requestFailedText: {
     color: 'white',
     fontFamily: 'Quicksand_400Regular',
-    fontSize: 18,
+    fontSize: 17,
   },
   search: {
     alignItems: 'center',

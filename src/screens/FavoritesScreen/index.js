@@ -156,7 +156,7 @@ const FavoritesScreen = ({
             }],
           }]}
         >
-          <AntDesign name="questioncircleo" size={80} color="white" />
+          <AntDesign color="white" name="questioncircleo" size={75} />
 
           <Text style={styles.noFavoritesText}>
             No favorite anime. Explore a bit!

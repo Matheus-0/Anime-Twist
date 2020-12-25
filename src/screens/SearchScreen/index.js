@@ -137,10 +137,7 @@ const SearchScreen = ({
         style={[styles.settingsButtonView, {
           opacity: fadeAnimation,
           transform: [{
-            translateX: fadeAnimation.interpolate({
-              inputRange: [0, 1],
-              outputRange: [100, 0],
-            }),
+            scale: fadeAnimation,
           }],
         }]}
       >

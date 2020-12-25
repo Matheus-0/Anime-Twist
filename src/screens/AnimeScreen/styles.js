@@ -112,6 +112,7 @@ const styles = StyleSheet.create({
   noConnectionButtonText: {
     color: 'white',
     fontFamily: 'Quicksand_400Regular',
+    fontSize: 13,
     textAlign: 'center',
   },
   noConnectionContainer: {
@@ -122,12 +123,13 @@ const styles = StyleSheet.create({
   noConnectionText: {
     color: 'white',
     fontFamily: 'Quicksand_400Regular',
-    fontSize: 18,
+    fontSize: 17,
     textAlign: 'center',
   },
   tipText: {
     color: 'white',
     fontFamily: 'Quicksand_400Regular',
+    fontSize: 13,
     marginBottom: 20,
     paddingHorizontal: 20,
     textAlign: 'center',
@@ -135,7 +137,7 @@ const styles = StyleSheet.create({
   title: {
     color: 'white',
     fontFamily: 'Quicksand_600SemiBold',
-    fontSize: 22,
+    fontSize: 20,
     textAlign: 'center',
   },
   titleContainer: {

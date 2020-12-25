@@ -15,10 +15,10 @@ import { customIncludes, replaceWithSpaces } from '../../utils';
 const MAX_RESULTS = 100;
 
 const SecondSearchScreen = ({ animeList, navigation, settings }) => {
-  const [downloadTextAnimation] = useState(new Animated.Value(-100));
   const [fadeAnimation] = useState(new Animated.Value(0));
   const [noResultsFadeAnimation] = useState(new Animated.Value(0));
   const [scrollFadeAnimation] = useState(new Animated.Value(0));
+  const [watchTextAnimation] = useState(new Animated.Value(-100));
 
   const [firstSearchDone, setFirstSearchDone] = useState(false);
   const [isSearching, setIsSearching] = useState(false);
@@ -32,7 +32,7 @@ const SecondSearchScreen = ({ animeList, navigation, settings }) => {
         toValue: 1,
         useNativeDriver: true,
       }),
-      Animated.spring(downloadTextAnimation, {
+      Animated.spring(watchTextAnimation, {
         toValue: 0,
         useNativeDriver: true,
       }),
@@ -162,7 +162,7 @@ const SecondSearchScreen = ({ animeList, navigation, settings }) => {
                     }],
                   }]}
                 >
-                  <AntDesign color="white" name="questioncircleo" size={80} />
+                  <AntDesign color="white" name="questioncircleo" size={75} />
 
                   <Text style={styles.noResultsText}>Oops! No results.</Text>
                 </Animated.View>
@@ -195,16 +195,16 @@ const SecondSearchScreen = ({ animeList, navigation, settings }) => {
           ) : (
             <Animated.View
               style={[styles.container, {
-                opacity: downloadTextAnimation.interpolate({
+                opacity: watchTextAnimation.interpolate({
                   inputRange: [-100, 0],
                   outputRange: [0, 1],
                 }),
                 transform: [{
-                  translateY: downloadTextAnimation,
+                  translateY: watchTextAnimation,
                 }],
               }]}
             >
-              <Text style={styles.downloadText}>Watch your favourite anime!</Text>
+              <Text style={styles.watchText}>Watch your favourite anime!</Text>
               <Text style={styles.lookForTitleText}>Look for English or Japanese titles.</Text>
             </Animated.View>
           )}

@@ -36,6 +36,7 @@ const styles = StyleSheet.create({
   episodeText: {
     color: 'white',
     fontFamily: 'Quicksand_400Regular',
+    fontSize: 13,
     marginLeft: 15,
   },
   errorButton: {
@@ -48,6 +49,7 @@ const styles = StyleSheet.create({
   errorText: {
     color: 'white',
     fontFamily: 'Quicksand_400Regular',
+    fontSize: 13,
     textAlign: 'center',
   },
   errorView: {
@@ -68,15 +70,6 @@ const styles = StyleSheet.create({
     position: 'absolute',
     zIndex: 2,
   },
-  lowerControls: {
-    alignItems: 'stretch',
-    bottom: 10,
-    flexDirection: 'row',
-    paddingHorizontal: 15,
-    position: 'absolute',
-    width: '100%',
-    zIndex: 2,
-  },
   nextEpisodeButton: {
     alignItems: 'center',
     backgroundColor: 'hsla(0, 0%, 100%, 0.1)',
@@ -88,13 +81,14 @@ const styles = StyleSheet.create({
   nextEpisodeButtons: {
     alignItems: 'center',
     flexDirection: 'row',
-    justifyContent: 'space-evenly',
+    justifyContent: 'space-between',
     marginTop: 10,
     width: '100%',
   },
   nextEpisodeText: {
     color: 'white',
     fontFamily: 'Quicksand_400Regular',
+    fontSize: 13,
     textAlign: 'center',
   },
   nextEpisodeView: {
@@ -102,21 +96,34 @@ const styles = StyleSheet.create({
     bottom: 45,
     position: 'absolute',
     right: 15,
-    width: 180,
+    width: 165,
     zIndex: 2,
   },
-  slider: {
-    flex: 1,
+  sliderView: {
+    alignItems: 'stretch',
+    bottom: 9.375,
+    position: 'absolute',
+    width: Dimensions.get('screen').height - 130,
+    zIndex: 2,
   },
   timeText: {
+    bottom: 10,
     color: 'white',
     fontFamily: 'Quicksand_400Regular',
-    textAlign: 'center',
-    width: 55,
+    fontSize: 13,
+    position: 'absolute',
+    zIndex: 2,
+  },
+  timeTextLeft: {
+    left: 15,
+  },
+  timeTextRight: {
+    right: 15,
   },
   titleText: {
     color: 'white',
     fontFamily: 'Quicksand_600SemiBold',
+    fontSize: 13,
     marginLeft: 15,
     maxWidth: Dimensions.get('screen').height * 0.625,
   },

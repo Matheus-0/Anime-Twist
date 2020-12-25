@@ -9,7 +9,7 @@ const styles = StyleSheet.create({
   favoritesTitle: {
     color: 'white',
     fontFamily: 'Quicksand_600SemiBold',
-    fontSize: 22,
+    fontSize: 20,
     textAlign: 'center',
   },
   favoritesTitleContainer: {
@@ -26,7 +26,7 @@ const styles = StyleSheet.create({
   noFavoritesText: {
     color: 'white',
     fontFamily: 'Quicksand_400Regular',
-    fontSize: 20,
+    fontSize: 18,
     marginTop: 25,
     textAlign: 'center',
   },

@@ -16,11 +16,6 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: 'center',
   },
-  downloadText: {
-    color: 'white',
-    fontFamily: 'Quicksand_600SemiBold',
-    fontSize: 18,
-  },
   loading: {
     flex: 1,
   },
@@ -32,7 +27,7 @@ const styles = StyleSheet.create({
   noResultsText: {
     color: 'white',
     fontFamily: 'Quicksand_400Regular',
-    fontSize: 20,
+    fontSize: 18,
     marginTop: 20,
   },
   screen: {
@@ -54,6 +49,11 @@ const styles = StyleSheet.create({
     alignItems: 'stretch',
     paddingHorizontal: 25,
     paddingTop: 70,
+  },
+  watchText: {
+    color: 'white',
+    fontFamily: 'Quicksand_600SemiBold',
+    fontSize: 18,
   },
 });
 

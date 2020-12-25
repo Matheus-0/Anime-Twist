@@ -16,6 +16,7 @@ const styles = StyleSheet.create({
   buttonText: {
     color: 'white',
     fontFamily: 'Quicksand_400Regular',
+    fontSize: 13,
   },
   container: {
     alignItems: 'center',
@@ -26,7 +27,6 @@ const styles = StyleSheet.create({
   text: {
     color: 'white',
     fontFamily: 'Quicksand_400Regular',
-    fontSize: 14,
     marginBottom: 20,
     marginHorizontal: 20,
     textAlign: 'center',

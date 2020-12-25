@@ -28,7 +28,7 @@ const styles = StyleSheet.create({
   sectionTitle: {
     color: 'white',
     fontFamily: 'Quicksand_600SemiBold',
-    fontSize: 18,
+    fontSize: 17,
     marginBottom: 10,
     marginLeft: 20,
     marginTop: 15,
@@ -39,7 +39,7 @@ const styles = StyleSheet.create({
   settingsTitle: {
     color: 'white',
     fontFamily: 'Quicksand_600SemiBold',
-    fontSize: 22,
+    fontSize: 20,
     textAlign: 'center',
   },
   settingsTitleContainer: {

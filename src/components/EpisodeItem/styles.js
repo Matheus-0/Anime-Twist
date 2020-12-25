@@ -7,7 +7,7 @@ const styles = StyleSheet.create({
   episodeText: {
     color: 'white',
     fontFamily: 'Quicksand_400Regular',
-    fontSize: 16,
+    fontSize: 15,
   },
   icon: {
     position: 'absolute',
@@ -18,7 +18,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     backgroundColor: '#282828',
     borderRadius: 10,
-    height: 50,
+    height: 47.5,
     flexGrow: 1,
     justifyContent: 'center',
     marginBottom: 10,

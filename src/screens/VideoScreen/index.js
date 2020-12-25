@@ -512,8 +512,8 @@ const VideoScreen = ({
           </Animated.View>
         )}
 
-        <Animated.View
-          style={[styles.lowerControls, {
+        <Animated.Text
+          style={[styles.timeText, styles.timeTextLeft, {
             opacity: controlsOpacityAnimation,
             transform: [{
               translateY: controlsOpacityAnimation.interpolate({
@@ -523,8 +523,20 @@ const VideoScreen = ({
             }],
           }]}
         >
-          <Text style={styles.timeText}>{millisToTime(videoPositionMillisForText)}</Text>
+          {millisToTime(videoPositionMillisForText)}
+        </Animated.Text>
 
+        <Animated.View
+          style={[styles.sliderView, {
+            opacity: controlsOpacityAnimation,
+            transform: [{
+              translateY: controlsOpacityAnimation.interpolate({
+                inputRange: [0, 0.005, 1],
+                outputRange: [500, 1, 0],
+              }),
+            }],
+          }]}
+        >
           <Slider
             maximumValue={videoDurationMillis}
             minimumTrackTintColor="#e63232"
@@ -533,13 +545,24 @@ const VideoScreen = ({
             onSlidingStart={handleSlidingStart}
             onValueChange={handleSliderValueChange}
             step={1}
-            style={styles.slider}
             thumbTintColor="#e63232"
             value={videoPositionMillis}
           />
-
-          <Text style={styles.timeText}>{millisToTime(videoDurationMillis)}</Text>
         </Animated.View>
+
+        <Animated.Text
+          style={[styles.timeText, styles.timeTextRight, {
+            opacity: controlsOpacityAnimation,
+            transform: [{
+              translateY: controlsOpacityAnimation.interpolate({
+                inputRange: [0, 0.005, 1],
+                outputRange: [500, 1, 0],
+              }),
+            }],
+          }]}
+        >
+          {millisToTime(videoDurationMillis)}
+        </Animated.Text>
       </Animated.View>
     </TouchableOpacity>
   );
