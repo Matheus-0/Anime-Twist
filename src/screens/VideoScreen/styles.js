@@ -95,7 +95,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     bottom: 45,
     position: 'absolute',
-    right: 15,
+    right: 17.5,
     width: 165,
     zIndex: 2,
   },
@@ -103,7 +103,7 @@ const styles = StyleSheet.create({
     alignItems: 'stretch',
     bottom: 9.375,
     position: 'absolute',
-    width: Dimensions.get('screen').height - 130,
+    width: Dimensions.get('screen').height - 135,
     zIndex: 2,
   },
   timeText: {
@@ -115,10 +115,10 @@ const styles = StyleSheet.create({
     zIndex: 2,
   },
   timeTextLeft: {
-    left: 15,
+    left: 17.5,
   },
   timeTextRight: {
-    right: 15,
+    right: 17.5,
   },
   titleText: {
     color: 'white',
