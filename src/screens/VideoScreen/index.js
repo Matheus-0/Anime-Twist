@@ -526,8 +526,8 @@ const VideoScreen = ({
           <Text style={styles.timeText}>{millisToTime(videoPositionMillisForText)}</Text>
 
           <Slider
-            minimumTrackTintColor="#e63232"
             maximumValue={videoDurationMillis}
+            minimumTrackTintColor="#e63232"
             minimumValue={0}
             onSlidingComplete={handleSlidingComplete}
             onSlidingStart={handleSlidingStart}

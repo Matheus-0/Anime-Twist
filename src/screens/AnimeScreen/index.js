@@ -17,6 +17,7 @@ import {
   markEpisodeAsCurrent,
   removeFromFavorites,
   unmarkEpisodeAsComplete,
+  unmarkEpisodeAsCurrent,
 } from '../../store/actions';
 
 import CustomModal from '../../components/CustomModal';
@@ -41,6 +42,7 @@ const AnimeScreen = ({
   route,
   settings,
   unmarkEpisodeAsComplete,
+  unmarkEpisodeAsCurrent,
 }) => {
   const { anime } = route.params;
 
@@ -109,7 +111,15 @@ const AnimeScreen = ({
 
       lastEpisodes.current = lastEpisodesResponse;
 
-      if (settings.askResume && anime.id in lastEpisodes.current) setResumeModalVisible(true);
+      if (settings.askResume && anime.id in lastEpisodes.current) {
+        if (floatingMenuOpen.current) {
+          playRotateAnimation(rotateButtonAnimation, 0);
+
+          floatingMenuOpen.current = false;
+        }
+
+        setResumeModalVisible(true);
+      }
     } else setNetworkAvailable(false);
 
     playFadeAnimation(scrollViewFadeAnimation);
@@ -183,6 +193,14 @@ const AnimeScreen = ({
   const handleRangeModalResponse = (value) => {
     setRangeModalVisible(false);
     setChunkIndex(value);
+  };
+
+  const handleRemoveCurrentItemPress = () => {
+    const currentEpisode = animeSources.find(
+      (episode) => episode.number === currentEpisodes[anime.id],
+    );
+
+    unmarkEpisodeAsCurrent(currentEpisode);
   };
 
   const handleRenderItem = (item) => {
@@ -400,8 +418,8 @@ const AnimeScreen = ({
           <Text style={styles.floatingMenuItemText}>Mark as a favorite!</Text>
 
           <RectButton
-            style={styles.floatingMenuItemButton}
             onPress={handleFavoritePress}
+            style={styles.floatingMenuItemButton}
           >
             <AntDesign
               color="rgba(255, 255, 255, 0.75)"
@@ -411,13 +429,30 @@ const AnimeScreen = ({
           </RectButton>
         </View>
 
+        {currentEpisodes[anime.id] !== undefined && (
+          <View style={styles.floatingMenuItem}>
+            <Text style={styles.floatingMenuItemText}>Remove highlighted episode!</Text>
+
+            <RectButton
+              onPress={handleRemoveCurrentItemPress}
+              style={styles.floatingMenuItemButton}
+            >
+              <AntDesign
+                color="rgba(255, 255, 255, 0.75)"
+                name="minus"
+                size={20}
+              />
+            </RectButton>
+          </View>
+        )}
+
         {sourcesChunks && sourcesChunks.length > 2 && (
           <View style={styles.floatingMenuItem}>
             <Text style={styles.floatingMenuItemText}>Select episodes range!</Text>
 
             <RectButton
-              style={styles.floatingMenuItemButton}
               onPress={handleRangeItemPress}
+              style={styles.floatingMenuItemButton}
             >
               <AntDesign
                 name="swap"
@@ -450,6 +485,7 @@ AnimeScreen.propTypes = {
     preferEnglish: PropTypes.bool.isRequired,
   }).isRequired,
   unmarkEpisodeAsComplete: PropTypes.func.isRequired,
+  unmarkEpisodeAsCurrent: PropTypes.func.isRequired,
 };
 
 const mapDispatchToProps = {
@@ -458,6 +494,7 @@ const mapDispatchToProps = {
   markEpisodeAsCurrent,
   removeFromFavorites,
   unmarkEpisodeAsComplete,
+  unmarkEpisodeAsCurrent,
 };
 
 const mapStateToProps = (state) => ({
