@@ -145,7 +145,11 @@ const SecondSearchScreen = ({ animeList, navigation, settings }) => {
       </Animated.View>
 
       {isSearching ? (
-        <ActivityIndicator color="#e63232" size="large" style={styles.loading} />
+        <ActivityIndicator
+          color="#e63232"
+          size="large"
+          style={styles.loading}
+        />
       ) : (
         <>
           {firstSearchDone ? (
@@ -162,7 +166,11 @@ const SecondSearchScreen = ({ animeList, navigation, settings }) => {
                     }],
                   }]}
                 >
-                  <AntDesign color="white" name="questioncircleo" size={75} />
+                  <AntDesign
+                    color="white"
+                    name="questioncircleo"
+                    size={75}
+                  />
 
                   <Text style={styles.noResultsText}>Oops! No results.</Text>
                 </Animated.View>

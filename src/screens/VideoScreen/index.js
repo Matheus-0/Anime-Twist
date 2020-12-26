@@ -388,7 +388,11 @@ const VideoScreen = ({
             onPress={handleBackArrowPress}
             style={styles.backButton}
           >
-            <SimpleLineIcons color="white" name="arrow-left" size={20} />
+            <SimpleLineIcons
+              color="white"
+              name="arrow-left"
+              size={20}
+            />
           </TouchableOpacity>
 
           <Text numberOfLines={1} style={styles.titleText}>
@@ -438,7 +442,11 @@ const VideoScreen = ({
               onPress={() => handleSeeking(-SEEK_MILLIS)}
               style={styles.centerControlsButton}
             >
-              <SimpleLineIcons color="white" name="control-rewind" size={24} />
+              <SimpleLineIcons
+                color="white"
+                name="control-rewind"
+                size={24}
+              />
             </TouchableOpacity>
 
             <TouchableOpacity
@@ -451,7 +459,11 @@ const VideoScreen = ({
                   opacity: iconOpacityAnimation,
                 }]}
               >
-                <SimpleLineIcons color="white" name="control-play" size={32} />
+                <SimpleLineIcons
+                  color="white"
+                  name="control-play"
+                  size={32}
+                />
               </Animated.View>
 
               <Animated.View
@@ -462,7 +474,11 @@ const VideoScreen = ({
                   }),
                 }]}
               >
-                <SimpleLineIcons color="white" name="control-pause" size={32} />
+                <SimpleLineIcons
+                  color="white"
+                  name="control-pause"
+                  size={32}
+                />
               </Animated.View>
             </TouchableOpacity>
 
@@ -471,7 +487,11 @@ const VideoScreen = ({
               onPress={() => handleSeeking(SEEK_MILLIS)}
               style={styles.centerControlsButton}
             >
-              <SimpleLineIcons color="white" name="control-forward" size={24} />
+              <SimpleLineIcons
+                color="white"
+                name="control-forward"
+                size={24}
+              />
             </TouchableOpacity>
           </Animated.View>
         )}

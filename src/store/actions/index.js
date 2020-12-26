@@ -7,23 +7,23 @@ export const loadAnimeList = (animeList) => ({
 });
 
 // Episodes actions
+export const markEpisodeAsComplete = (episode) => ({
+  type: Constants.MARK_EPISODE_AS_COMPLETE,
+  episode,
+});
+
 export const markEpisodeAsCurrent = (episode) => ({
   type: Constants.MARK_EPISODE_AS_CURRENT,
   episode,
 });
 
-export const markEpisodeAsComplete = (episode) => ({
-  type: Constants.MARK_EPISODE_COMPLETE,
+export const unmarkEpisodeAsComplete = (episode) => ({
+  type: Constants.UNMARK_EPISODE_AS_COMPLETE,
   episode,
 });
 
 export const unmarkEpisodeAsCurrent = (episode) => ({
   type: Constants.UNMARK_EPISODE_AS_CURRENT,
-  episode,
-});
-
-export const unmarkEpisodeAsComplete = (episode) => ({
-  type: Constants.UNMARK_EPISODE_COMPLETE,
   episode,
 });
 

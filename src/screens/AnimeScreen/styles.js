@@ -12,8 +12,8 @@ const styles = StyleSheet.create({
   },
   episodesNotFoundContainer: {
     alignItems: 'center',
-    justifyContent: 'center',
     flex: 1,
+    justifyContent: 'center',
   },
   episodesNotFoundText: {
     color: 'white',
@@ -43,8 +43,8 @@ const styles = StyleSheet.create({
     right: 25,
   },
   floatingMenuItem: {
-    flexDirection: 'row',
     alignItems: 'center',
+    flexDirection: 'row',
     marginTop: 10,
   },
   floatingMenuItemButton: {
@@ -69,8 +69,8 @@ const styles = StyleSheet.create({
   listContent: {
     flexDirection: 'row',
     flexWrap: 'wrap',
-    paddingHorizontal: 20,
     paddingBottom: 90,
+    paddingHorizontal: 20,
   },
   loading: {
     flex: 1,

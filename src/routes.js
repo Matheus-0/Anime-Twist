@@ -1,9 +1,9 @@
 /* eslint-disable react/prop-types */
-import React from 'react';
 import { AntDesign } from '@expo/vector-icons';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
+import React from 'react';
 
 import AnimeScreen from './screens/AnimeScreen';
 import FavoritesScreen from './screens/FavoritesScreen';
@@ -43,7 +43,11 @@ const BottomTabs = () => (
       name="Search"
       options={{
         tabBarIcon: ({ color, focused, size }) => (
-          <AntDesign color={focused ? '#e63232' : color} name="search1" size={size} />
+          <AntDesign
+            color={focused ? '#e63232' : color}
+            name="search1"
+            size={size}
+          />
         ),
       }}
     />
@@ -52,7 +56,11 @@ const BottomTabs = () => (
       name="Favorites"
       options={{
         tabBarIcon: ({ color, focused, size }) => (
-          <AntDesign color={focused ? '#e63232' : color} name="hearto" size={size} />
+          <AntDesign
+            color={focused ? '#e63232' : color}
+            name="hearto"
+            size={size}
+          />
         ),
       }}
     />

@@ -30,16 +30,16 @@ const styles = StyleSheet.create({
     marginTop: 25,
     textAlign: 'center',
   },
+  removeAllFavoritesButton: {
+    paddingHorizontal: 15,
+    paddingVertical: 5,
+  },
   removeAllFavoritesContainer: {
     alignSelf: 'flex-end',
     backgroundColor: '#e63232',
     borderRadius: 5,
     marginRight: 20,
     marginVertical: 15,
-  },
-  removeAllFavoritesButton: {
-    paddingVertical: 5,
-    paddingHorizontal: 15,
   },
   removeAllFavoritesText: {
     color: 'white',

@@ -66,16 +66,16 @@ const SearchScreen = ({
   };
 
   useEffect(() => {
-    loadResourcesAsync();
+    if (!failedRequest) loadResourcesAsync();
   }, [failedRequest]);
+
+  useFocusEffect(() => playFadeAnimation(fadeAnimation));
 
   const handleFailedRequestPress = () => setFailedRequest(false);
 
   const handleSearchPress = () => navigation.navigate('SecondSearch');
 
   const handleSettingsPress = () => navigation.navigate('Settings');
-
-  useFocusEffect(() => playFadeAnimation(fadeAnimation));
 
   return (
     <View style={styles.container}>
@@ -100,7 +100,12 @@ const SearchScreen = ({
             opacity: fadeAnimation,
           }]}
         >
-          <AntDesign color="white" name="search1" size={24} style={styles.icon} />
+          <AntDesign
+            color="white"
+            name="search1"
+            size={24}
+            style={styles.icon}
+          />
 
           <Text style={styles.searchText}>Search for an anime!</Text>
         </AnimatedTouchableOpacity>
@@ -128,7 +133,10 @@ const SearchScreen = ({
               </RectButton>
             </Animated.View>
           ) : (
-            <ActivityIndicator color="#e63232" size="large" />
+            <ActivityIndicator
+              color="#e63232"
+              size="large"
+            />
           )}
         </>
       )}

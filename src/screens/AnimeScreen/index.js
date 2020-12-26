@@ -50,12 +50,12 @@ const AnimeScreen = ({
   const lastEpisodes = useRef({});
 
   const [animeSources, setAnimeSources] = useState(null);
-  const [sourcesChunks, setSourcesChunks] = useState(null);
   const [chunkIndex, setChunkIndex] = useState(0);
   const [isFavorite, setIsFavorite] = useState(false);
   const [networkAvailable, setNetworkAvailable] = useState(true);
   const [rangeModalVisible, setRangeModalVisible] = useState(false);
   const [resumeModalVisible, setResumeModalVisible] = useState(false);
+  const [sourcesChunks, setSourcesChunks] = useState(null);
 
   const [fadeAnimation] = useState(new Animated.Value(0));
   const [rotateButtonAnimation] = useState(new Animated.Value(0));
@@ -342,7 +342,11 @@ const AnimeScreen = ({
                 }],
               }]}
             >
-              <AntDesign color="white" name="questioncircleo" size={75} />
+              <AntDesign
+                color="white"
+                name="questioncircleo"
+                size={75}
+              />
 
               <Text style={styles.episodesNotFoundText}>No episodes found.</Text>
             </Animated.View>
@@ -351,7 +355,11 @@ const AnimeScreen = ({
       ) : (
         <>
           {networkAvailable ? (
-            <ActivityIndicator color="#e63232" size="large" style={styles.loading} />
+            <ActivityIndicator
+              color="#e63232"
+              size="large"
+              style={styles.loading}
+            />
           ) : (
             <Animated.View
               style={[styles.noConnectionContainer, {

@@ -43,6 +43,7 @@ const SettingsScreen = ({
     setEraseSettingsModalVisible(false);
 
     eraseAllData();
+
     eraseTimeData();
   };
 
@@ -103,41 +104,41 @@ const SettingsScreen = ({
 
         <CustomCheckBox
           onValueChange={() => changeSetting('preferEnglish', !settings.preferEnglish)}
-          value={settings.preferEnglish}
           style={styles.customCheckBox}
           text="Prefer English titles."
+          value={settings.preferEnglish}
         />
 
         <Text style={styles.sectionTitle}>Player</Text>
 
         <CustomCheckBox
           onValueChange={() => changeSetting('autoplay', !settings.autoplay)}
-          value={settings.autoplay}
           style={styles.customCheckBox}
           text="Automatically play next episode."
+          value={settings.autoplay}
         />
 
         <Text style={styles.sectionTitle}>Tracking</Text>
 
         <CustomCheckBox
           onValueChange={() => changeSetting('askResume', !settings.askResume)}
-          value={settings.askResume}
           style={styles.customCheckBox}
           text="Always ask me to resume."
+          value={settings.askResume}
         />
 
         <CustomCheckBox
           onValueChange={() => changeSetting('autoMark', !settings.autoMark)}
-          value={settings.autoMark}
           style={styles.customCheckBox}
           text="Automatically mark episode as complete."
+          value={settings.autoMark}
         />
 
         <CustomCheckBox
           onValueChange={() => changeSetting('highlight', !settings.highlight)}
-          value={settings.highlight}
           style={styles.customCheckBox}
           text="Highlight last played episode."
+          value={settings.highlight}
         />
       </Animated.View>
     </View>

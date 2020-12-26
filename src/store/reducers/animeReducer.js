@@ -2,8 +2,8 @@ import * as Constants from '../constants';
 
 const initialState = {
   animeList: [],
-  animeObjectForEpisodes: {},
   animeObjectForCurrentEpisode: {},
+  animeObjectForEpisodes: {},
   favorites: [],
   settings: {
     askResume: true,
@@ -47,19 +47,7 @@ export default (state = initialState, action) => {
         ...state,
         animeList: action.animeList,
       };
-    case Constants.MARK_EPISODE_AS_CURRENT: {
-      const animeID = action.episode.anime_id;
-      const episodeNumber = action.episode.number;
-
-      return {
-        ...state,
-        animeObjectForCurrentEpisode: {
-          ...state.animeObjectForCurrentEpisode,
-          [animeID]: episodeNumber,
-        },
-      };
-    }
-    case Constants.MARK_EPISODE_COMPLETE: {
+    case Constants.MARK_EPISODE_AS_COMPLETE: {
       const animeID = action.episode.anime_id;
       const episodeNumber = action.episode.number;
 
@@ -75,6 +63,18 @@ export default (state = initialState, action) => {
         },
       };
     }
+    case Constants.MARK_EPISODE_AS_CURRENT: {
+      const animeID = action.episode.anime_id;
+      const episodeNumber = action.episode.number;
+
+      return {
+        ...state,
+        animeObjectForCurrentEpisode: {
+          ...state.animeObjectForCurrentEpisode,
+          [animeID]: episodeNumber,
+        },
+      };
+    }
     case Constants.REMOVE_ALL_FAVORITES:
       return {
         ...state,
@@ -87,7 +87,7 @@ export default (state = initialState, action) => {
           ...state.favorites.filter((item) => item.id !== action.anime.id),
         ],
       };
-    case Constants.UNMARK_EPISODE_COMPLETE: {
+    case Constants.UNMARK_EPISODE_AS_COMPLETE: {
       const animeID = action.episode.anime_id;
       const episodeNumber = action.episode.number;
 
