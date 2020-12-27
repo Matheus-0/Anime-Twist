@@ -414,7 +414,7 @@ const VideoScreen = ({
         {showError ? (
           <View style={styles.errorView}>
             <Text style={styles.errorText}>
-              {'Could not load video.\nRestart the app if retrying doesn\'t work.'}
+              {'Could not load video.\nCheck your internet connection or restart the app if retrying doesn\'t work.'}
             </Text>
 
             <TouchableOpacity
@@ -565,6 +565,7 @@ const VideoScreen = ({
             onSlidingStart={handleSlidingStart}
             onValueChange={handleSliderValueChange}
             step={1}
+            style={styles.slider}
             thumbTintColor="#e63232"
             value={videoPositionMillis}
           />

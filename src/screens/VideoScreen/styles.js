@@ -9,9 +9,9 @@ const styles = StyleSheet.create({
   centerControls: {
     alignItems: 'center',
     flexDirection: 'row',
-    justifyContent: 'space-evenly',
+    justifyContent: 'space-between',
     position: 'absolute',
-    width: '62.5%',
+    width: '50%',
     zIndex: 2,
   },
   centerControlsButton: {
@@ -99,11 +99,14 @@ const styles = StyleSheet.create({
     width: 165,
     zIndex: 2,
   },
+  slider: {
+    width: '100%',
+  },
   sliderView: {
-    alignItems: 'stretch',
     bottom: 9.375,
+    paddingHorizontal: 70,
     position: 'absolute',
-    width: Dimensions.get('screen').height - 135,
+    width: '100%',
     zIndex: 2,
   },
   timeText: {
@@ -115,10 +118,10 @@ const styles = StyleSheet.create({
     zIndex: 2,
   },
   timeTextLeft: {
-    left: 17.5,
+    left: 20,
   },
   timeTextRight: {
-    right: 17.5,
+    right: 20,
   },
   titleText: {
     color: 'white',
