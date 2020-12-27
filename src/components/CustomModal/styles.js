@@ -6,12 +6,12 @@ const styles = StyleSheet.create({
     backgroundColor: '#e63232',
     borderRadius: 10,
     paddingVertical: 7.5,
-    width: 100,
+    width: 87.5,
   },
   buttonsContainer: {
     flexDirection: 'row',
     justifyContent: 'space-evenly',
-    width: '100%',
+    width: '87.5%',
   },
   buttonText: {
     color: 'white',
