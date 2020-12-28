@@ -95,7 +95,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     bottom: 45,
     position: 'absolute',
-    right: 17.5,
+    right: 20,
     width: 165,
     zIndex: 2,
   },
