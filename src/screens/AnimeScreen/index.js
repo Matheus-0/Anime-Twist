@@ -259,7 +259,7 @@ const AnimeScreen = ({
           transform: [{
             translateY: fadeAnimation.interpolate({
               inputRange: [0, 1],
-              outputRange: [-100, 0],
+              outputRange: [-37.5, 0],
             }),
           }],
         }]}
@@ -320,7 +320,7 @@ const AnimeScreen = ({
                   transform: [{
                     translateY: scrollViewFadeAnimation.interpolate({
                       inputRange: [0, 1],
-                      outputRange: [200, 0],
+                      outputRange: [100, 0],
                     }),
                   }],
                 }}
@@ -337,7 +337,7 @@ const AnimeScreen = ({
                 transform: [{
                   translateY: scrollViewFadeAnimation.interpolate({
                     inputRange: [0, 1],
-                    outputRange: [100, 0],
+                    outputRange: [25, 0],
                   }),
                 }],
               }]}
@@ -367,7 +367,7 @@ const AnimeScreen = ({
                 transform: [{
                   translateY: scrollViewFadeAnimation.interpolate({
                     inputRange: [0, 1],
-                    outputRange: [100, 0],
+                    outputRange: [25, 0],
                   }),
                 }],
               }]}
@@ -415,8 +415,8 @@ const AnimeScreen = ({
           opacity: rotateButtonAnimation,
           transform: [{
             translateY: rotateButtonAnimation.interpolate({
-              inputRange: [0, 0.1, 1],
-              outputRange: [300, 10, 0],
+              inputRange: [0, 0.005, 1],
+              outputRange: [500, 10, 0],
             }),
           }],
         }]}

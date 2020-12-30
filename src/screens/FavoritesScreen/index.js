@@ -21,21 +21,13 @@ const FavoritesScreen = ({
   const [clearFavoritesModalVisible, setClearFavoritesModalVisible] = useState(false);
 
   const [fadeAnimation] = useState(new Animated.Value(0));
-  const [scrollViewAnimation] = useState(new Animated.Value(100));
 
   useFocusEffect(() => {
-    Animated.parallel([
-      Animated.spring(fadeAnimation, {
-        tension: 10,
-        toValue: 1,
-        useNativeDriver: true,
-      }),
-      Animated.spring(scrollViewAnimation, {
-        tension: 10,
-        toValue: 0,
-        useNativeDriver: true,
-      }),
-    ]).start();
+    Animated.spring(fadeAnimation, {
+      tension: 10,
+      toValue: 1,
+      useNativeDriver: true,
+    }).start();
   });
 
   const playLayoutAnimation = (duration) => {
@@ -85,7 +77,7 @@ const FavoritesScreen = ({
           transform: [{
             translateY: fadeAnimation.interpolate({
               inputRange: [0, 1],
-              outputRange: [-100, 0],
+              outputRange: [-37.5, 0],
             }),
           }],
         }]}
@@ -101,7 +93,7 @@ const FavoritesScreen = ({
               transform: [{
                 translateX: fadeAnimation.interpolate({
                   inputRange: [0, 1],
-                  outputRange: [100, 0],
+                  outputRange: [25, 0],
                 }),
               }],
             }]}
@@ -118,12 +110,12 @@ const FavoritesScreen = ({
             contentContainerStyle={styles.scrollViewContainer}
             overScrollMode="never"
             style={[styles.scrollView, {
-              opacity: scrollViewAnimation.interpolate({
-                inputRange: [0, 100],
-                outputRange: [1, 0],
-              }),
+              opacity: fadeAnimation,
               transform: [{
-                translateY: scrollViewAnimation,
+                translateY: fadeAnimation.interpolate({
+                  inputRange: [0, 1],
+                  outputRange: [50, 0],
+                }),
               }],
             }]}
           >
@@ -151,7 +143,7 @@ const FavoritesScreen = ({
             transform: [{
               translateY: fadeAnimation.interpolate({
                 inputRange: [0, 1],
-                outputRange: [100, 0],
+                outputRange: [25, 0],
               }),
             }],
           }]}

@@ -63,6 +63,7 @@ const styles = StyleSheet.create({
     borderRadius: 5,
     color: 'white',
     fontFamily: 'Quicksand_400Regular',
+    fontSize: 13,
     paddingHorizontal: 10,
     paddingVertical: 5,
   },

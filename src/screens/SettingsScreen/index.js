@@ -62,7 +62,7 @@ const SettingsScreen = ({
           transform: [{
             translateY: fadeAnimation.interpolate({
               inputRange: [0, 1],
-              outputRange: [-100, 0],
+              outputRange: [-37.5, 0],
             }),
           }],
         }]}
@@ -76,7 +76,7 @@ const SettingsScreen = ({
           transform: [{
             translateX: fadeAnimation.interpolate({
               inputRange: [0, 1],
-              outputRange: [100, 0],
+              outputRange: [25, 0],
             }),
           }],
         }]}
@@ -95,7 +95,7 @@ const SettingsScreen = ({
           transform: [{
             translateY: fadeAnimation.interpolate({
               inputRange: [0, 1],
-              outputRange: [100, 0],
+              outputRange: [50, 0],
             }),
           }],
         }]}

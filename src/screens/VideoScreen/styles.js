@@ -11,7 +11,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'space-between',
     position: 'absolute',
-    width: '50%',
+    width: '46.875%',
     zIndex: 2,
   },
   centerControlsButton: {

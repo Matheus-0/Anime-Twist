@@ -3,7 +3,7 @@ import { useFocusEffect } from '@react-navigation/native';
 import PropTypes from 'prop-types';
 import React, { useEffect, useState } from 'react';
 import {
-  ActivityIndicator, Animated, Text, TouchableOpacity, View,
+  ActivityIndicator, Animated, Text, View,
 } from 'react-native';
 import { RectButton } from 'react-native-gesture-handler';
 import { connect } from 'react-redux';
@@ -24,8 +24,7 @@ const SearchScreen = ({
 
   const [fadeAnimation] = useState(new Animated.Value(0));
   const [failedRequestFadeAnimation] = useState(new Animated.Value(0));
-
-  const AnimatedTouchableOpacity = Animated.createAnimatedComponent(TouchableOpacity);
+  const [searchFadeAnimation] = useState(new Animated.Value(0));
 
   const playFadeAnimation = (animation) => Animated.spring(animation, {
     tension: 10,
@@ -57,7 +56,7 @@ const SearchScreen = ({
 
       setIsReady(true);
 
-      playFadeAnimation(fadeAnimation);
+      playFadeAnimation(searchFadeAnimation);
     } else {
       setFailedRequest(true);
 
@@ -86,29 +85,32 @@ const SearchScreen = ({
           transform: [{
             translateY: fadeAnimation.interpolate({
               inputRange: [0, 1],
-              outputRange: [-100, 0],
+              outputRange: [-37.5, 0],
             }),
           }],
         }]}
       />
 
       {isReady ? (
-        <AnimatedTouchableOpacity
-          activeOpacity={1}
-          onPress={handleSearchPress}
-          style={[styles.search, {
-            opacity: fadeAnimation,
+        <Animated.View
+          style={[styles.searchView, {
+            opacity: searchFadeAnimation,
           }]}
         >
-          <AntDesign
-            color="white"
-            name="search1"
-            size={24}
-            style={styles.icon}
-          />
+          <RectButton
+            onPress={handleSearchPress}
+            style={styles.search}
+          >
+            <AntDesign
+              color="white"
+              name="search1"
+              size={24}
+              style={styles.icon}
+            />
 
-          <Text style={styles.searchText}>Search for an anime!</Text>
-        </AnimatedTouchableOpacity>
+            <Text style={styles.searchText}>Search for an anime!</Text>
+          </RectButton>
+        </Animated.View>
       ) : (
         <>
           {failedRequest ? (
@@ -118,7 +120,7 @@ const SearchScreen = ({
                 transform: [{
                   translateY: failedRequestFadeAnimation.interpolate({
                     inputRange: [0, 1],
-                    outputRange: [100, 0],
+                    outputRange: [25, 0],
                   }),
                 }],
               }]}

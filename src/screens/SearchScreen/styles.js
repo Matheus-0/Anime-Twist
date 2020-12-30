@@ -46,12 +46,16 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'center',
     paddingVertical: 15,
-    width: '90%',
+    width: '100%',
   },
   searchText: {
     color: 'white',
     fontFamily: 'Quicksand_400Regular',
     fontSize: 16,
+  },
+  searchView: {
+    alignSelf: 'stretch',
+    marginHorizontal: 25,
   },
   settingsButton: {
     alignItems: 'center',

@@ -1,4 +1,4 @@
-import { StyleSheet } from 'react-native';
+import { Dimensions, StyleSheet } from 'react-native';
 
 const styles = StyleSheet.create({
   animatedInput: {
@@ -8,7 +8,7 @@ const styles = StyleSheet.create({
     marginTop: 20,
     paddingVertical: 5,
     position: 'absolute',
-    width: '90%',
+    width: Dimensions.get('window').width - 50,
     zIndex: 1,
   },
   container: {
@@ -47,7 +47,7 @@ const styles = StyleSheet.create({
   },
   searchScrollContent: {
     alignItems: 'stretch',
-    paddingHorizontal: 25,
+    paddingHorizontal: 27.5,
     paddingTop: 70,
   },
   watchText: {

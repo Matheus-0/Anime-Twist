@@ -18,7 +18,7 @@ const SecondSearchScreen = ({ animeList, navigation, settings }) => {
   const [fadeAnimation] = useState(new Animated.Value(0));
   const [noResultsFadeAnimation] = useState(new Animated.Value(0));
   const [scrollFadeAnimation] = useState(new Animated.Value(0));
-  const [watchTextAnimation] = useState(new Animated.Value(-100));
+  const [watchTextAnimation] = useState(new Animated.Value(-25));
 
   const [firstSearchDone, setFirstSearchDone] = useState(false);
   const [isSearching, setIsSearching] = useState(false);
@@ -161,7 +161,7 @@ const SecondSearchScreen = ({ animeList, navigation, settings }) => {
                     transform: [{
                       translateY: noResultsFadeAnimation.interpolate({
                         inputRange: [0, 1],
-                        outputRange: [-100, 0],
+                        outputRange: [-25, 0],
                       }),
                     }],
                   }]}
@@ -184,7 +184,7 @@ const SecondSearchScreen = ({ animeList, navigation, settings }) => {
                     transform: [{
                       translateY: scrollFadeAnimation.interpolate({
                         inputRange: [0, 1],
-                        outputRange: [-100, 0],
+                        outputRange: [-50, 0],
                       }),
                     }],
                   }]}
@@ -204,7 +204,7 @@ const SecondSearchScreen = ({ animeList, navigation, settings }) => {
             <Animated.View
               style={[styles.container, {
                 opacity: watchTextAnimation.interpolate({
-                  inputRange: [-100, 0],
+                  inputRange: [-25, 0],
                   outputRange: [0, 1],
                 }),
                 transform: [{
