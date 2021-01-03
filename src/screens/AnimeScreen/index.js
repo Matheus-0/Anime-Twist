@@ -144,7 +144,7 @@ const AnimeScreen = ({
   const isEpisodeCurrent = (episode) => {
     const currentEpisodeNumber = currentEpisodes[episode.anime_id];
 
-    if (currentEpisodeNumber) return episode.number === currentEpisodeNumber;
+    if (currentEpisodeNumber !== undefined) return episode.number === currentEpisodeNumber;
 
     return false;
   };
