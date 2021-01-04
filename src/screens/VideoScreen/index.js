@@ -378,7 +378,7 @@ const VideoScreen = ({
             transform: [{
               translateY: controlsOpacityAnimation.interpolate({
                 inputRange: [0, 0.005, 1],
-                outputRange: [-500, -1, 0],
+                outputRange: [-500, 0, 0],
               }),
             }],
           }]}
@@ -432,7 +432,7 @@ const VideoScreen = ({
               transform: [{
                 translateY: controlsOpacityAnimation.interpolate({
                   inputRange: [0, 0.005, 1],
-                  outputRange: [500, 1, 0],
+                  outputRange: [500, 0, 0],
                 }),
               }],
             }]}
@@ -503,7 +503,7 @@ const VideoScreen = ({
               transform: [{
                 translateY: nextEpisodeViewOpacityAnimation.interpolate({
                   inputRange: [0, 0.005, 1],
-                  outputRange: [500, 1, 0],
+                  outputRange: [500, 0, 0],
                 }),
               }],
             }]}
@@ -538,7 +538,7 @@ const VideoScreen = ({
             transform: [{
               translateY: controlsOpacityAnimation.interpolate({
                 inputRange: [0, 0.005, 1],
-                outputRange: [500, 1, 0],
+                outputRange: [500, 0, 0],
               }),
             }],
           }]}
@@ -552,7 +552,7 @@ const VideoScreen = ({
             transform: [{
               translateY: controlsOpacityAnimation.interpolate({
                 inputRange: [0, 0.005, 1],
-                outputRange: [500, 1, 0],
+                outputRange: [500, 0, 0],
               }),
             }],
           }]}
@@ -577,7 +577,7 @@ const VideoScreen = ({
             transform: [{
               translateY: controlsOpacityAnimation.interpolate({
                 inputRange: [0, 0.005, 1],
-                outputRange: [500, 1, 0],
+                outputRange: [500, 0, 0],
               }),
             }],
           }]}

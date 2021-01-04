@@ -91,6 +91,7 @@ const styles = StyleSheet.create({
   modalButtonText: {
     color: 'white',
     fontFamily: 'Quicksand_400Regular',
+    fontSize: 13,
   },
   modalContainer: {
     alignItems: 'center',

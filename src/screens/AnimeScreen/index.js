@@ -149,6 +149,13 @@ const AnimeScreen = ({
     return false;
   };
 
+  const playEpisode = (animeEpisode, millis) => navigation.navigate('Video', {
+    anime,
+    animeSources,
+    firstEpisode: animeEpisode,
+    firstEpisodeTime: millis,
+  });
+
   const handleEpisodeLongPress = (animeEpisode, isComplete) => {
     if (isComplete) unmarkEpisodeAsComplete(animeEpisode);
     else markEpisodeAsComplete(animeEpisode);
@@ -157,12 +164,7 @@ const AnimeScreen = ({
   };
 
   const handleEpisodePress = (animeEpisode) => {
-    navigation.navigate('Video', {
-      anime,
-      animeSources,
-      firstEpisode: animeEpisode,
-      firstEpisodeTime: 0,
-    });
+    playEpisode(animeEpisode, 0);
 
     markEpisodeAsCurrent(animeEpisode);
   };
@@ -226,12 +228,7 @@ const AnimeScreen = ({
       (e) => e.number === lastEpisodes.current[anime.id].episode,
     );
 
-    navigation.navigate('Video', {
-      anime,
-      animeSources,
-      firstEpisode: episodeToPlay,
-      firstEpisodeTime: lastEpisodes.current[anime.id].millis - RESUME_SUBTRACT_VALUE,
-    });
+    playEpisode(episodeToPlay, lastEpisodes.current[anime.id].millis - RESUME_SUBTRACT_VALUE);
 
     setResumeModalVisible(false);
 
