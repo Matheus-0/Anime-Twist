@@ -9,8 +9,8 @@ import {
 const api = axios.create({
   baseURL,
   headers: {
-    'user-agent': userAgent,
-    'x-access-token': accessToken,
+    'User-Agent': userAgent,
+    'X-Access-Token': accessToken,
   },
   timeout: 10000,
 });

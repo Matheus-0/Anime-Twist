@@ -132,8 +132,8 @@ const VideoScreen = ({
 
     videoRef.current.loadAsync({
       headers: {
-        referer: baseURL,
-        'user-agent': userAgent,
+        Referer: baseURL,
+        'User-Agent': userAgent,
       },
       uri: source,
     }, {
