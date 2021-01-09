@@ -37,7 +37,8 @@ const styles = StyleSheet.create({
   requestFailedText: {
     color: 'white',
     fontFamily: 'Quicksand_400Regular',
-    fontSize: 17,
+    fontSize: 15,
+    textAlign: 'center',
   },
   search: {
     alignItems: 'center',

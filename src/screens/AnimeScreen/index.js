@@ -433,7 +433,7 @@ const AnimeScreen = ({
           </RectButton>
         </View>
 
-        {currentEpisodes[anime.id] !== undefined && (
+        {animeSources && currentEpisodes[anime.id] !== undefined && (
           <View style={styles.floatingMenuItem}>
             <Text style={styles.floatingMenuItemText}>Remove highlighted episode!</Text>
 

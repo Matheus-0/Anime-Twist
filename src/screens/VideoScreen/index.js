@@ -414,7 +414,7 @@ const VideoScreen = ({
         {showError ? (
           <View style={styles.errorView}>
             <Text style={styles.errorText}>
-              {'Could not load video.\nCheck your internet connection or restart the app if retrying doesn\'t work.'}
+              {'Could not load video.\nCheck your internet connection.'}
             </Text>
 
             <TouchableOpacity
