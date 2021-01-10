@@ -149,12 +149,18 @@ const AnimeScreen = ({
     return false;
   };
 
-  const playEpisode = (animeEpisode, millis) => navigation.navigate('Video', {
-    anime,
-    animeSources,
-    firstEpisode: animeEpisode,
-    firstEpisodeTime: millis,
-  });
+  const playEpisode = (animeEpisode, millis) => {
+    playRotateAnimation(rotateButtonAnimation, 0);
+
+    floatingMenuOpen.current = false;
+
+    navigation.navigate('Video', {
+      anime,
+      animeSources,
+      firstEpisode: animeEpisode,
+      firstEpisodeTime: millis,
+    });
+  };
 
   const handleEpisodeLongPress = (animeEpisode, isComplete) => {
     if (isComplete) unmarkEpisodeAsComplete(animeEpisode);
