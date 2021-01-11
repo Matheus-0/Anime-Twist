@@ -70,7 +70,7 @@ const styles = StyleSheet.create({
   listContent: {
     flexDirection: 'row',
     flexWrap: 'wrap',
-    paddingBottom: 90,
+    paddingBottom: 95,
     paddingHorizontal: 20,
   },
   loading: {
