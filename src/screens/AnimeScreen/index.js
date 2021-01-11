@@ -128,7 +128,7 @@ const AnimeScreen = ({
   useEffect(() => {
     playFadeAnimation(fadeAnimation);
 
-    fetchData();
+    if (networkAvailable) fetchData();
 
     setIsFavorite(isAnimeFavorite(anime));
   }, [networkAvailable]);
