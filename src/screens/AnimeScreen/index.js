@@ -1,5 +1,6 @@
 import { AntDesign } from '@expo/vector-icons';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import { useFocusEffect } from '@react-navigation/native';
 import PropTypes from 'prop-types';
 import React, { useEffect, useRef, useState } from 'react';
 import {
@@ -28,7 +29,6 @@ import { getAnimeSources } from '../../services/api';
 import { getAnimeTitle, millisToTime } from '../../utils';
 
 const CHUNK_SIZE = 100;
-const RESUME_SUBTRACT_VALUE = 5000; // Subtract 5 seconds when resuming because of small delay
 
 const AnimeScreen = ({
   addToFavorites,
@@ -125,6 +125,10 @@ const AnimeScreen = ({
     playFadeAnimation(scrollViewFadeAnimation);
   };
 
+  const focusEffectAsync = async () => {
+    lastEpisodes.current = await getLastEpisodes();
+  };
+
   useEffect(() => {
     playFadeAnimation(fadeAnimation);
 
@@ -132,6 +136,10 @@ const AnimeScreen = ({
 
     setIsFavorite(isAnimeFavorite(anime));
   }, [networkAvailable]);
+
+  useFocusEffect(() => {
+    focusEffectAsync();
+  });
 
   const isEpisodeComplete = (episode) => {
     const arrayOfEpisodes = completeEpisodes[episode.anime_id];
@@ -150,13 +158,24 @@ const AnimeScreen = ({
   };
 
   const playEpisode = (animeEpisode, millis) => {
+    let canResume = false;
+
     playRotateAnimation(rotateButtonAnimation, 0);
 
     floatingMenuOpen.current = false;
 
+    if (
+      millis === 0
+      && anime.id in lastEpisodes.current
+      && lastEpisodes.current[anime.id].episode === animeEpisode.number
+    ) {
+      canResume = true;
+    }
+
     navigation.navigate('Video', {
       anime,
       animeSources,
+      canResume,
       firstEpisode: animeEpisode,
       firstEpisodeTime: millis,
     });
@@ -234,7 +253,7 @@ const AnimeScreen = ({
       (e) => e.number === lastEpisodes.current[anime.id].episode,
     );
 
-    playEpisode(episodeToPlay, lastEpisodes.current[anime.id].millis - RESUME_SUBTRACT_VALUE);
+    playEpisode(episodeToPlay, lastEpisodes.current[anime.id].millis);
 
     setResumeModalVisible(false);
 
@@ -251,7 +270,7 @@ const AnimeScreen = ({
           onNegativeResponse={handleResumeModalNegativeResponse}
           onPositiveResponse={handleResumeModalPositiveResponse}
           text={
-            `Resume?\n\nEpisode ${lastEpisodes.current[anime.id].episode} (${millisToTime(lastEpisodes.current[anime.id].millis - RESUME_SUBTRACT_VALUE)})`
+            `Resume?\n\nEpisode ${lastEpisodes.current[anime.id].episode} (${millisToTime(lastEpisodes.current[anime.id].millis)})`
           }
         />
       )}

@@ -27,6 +27,7 @@ import { getAnimeTitle, millisToTime } from '../../utils';
 
 const MIN_VIDEO_RESUME_POSITION = 90000; // 1 minute and a half
 const PLAYER_HIDE_TIMEOUT = 5000; // 5 seconds
+const RESUME_SUBTRACT_VALUE = 5000; // Subtract 5 seconds when resuming because of small delay
 const SEEK_MILLIS = 5000; // 5 seconds
 
 let timeout = null;
@@ -40,7 +41,7 @@ const VideoScreen = ({
   settings,
 }) => {
   const {
-    anime, animeSources, firstEpisode, firstEpisodeTime,
+    anime, animeSources, canResume, firstEpisode, firstEpisodeTime,
   } = route.params;
 
   const videoRef = useRef(null);
@@ -48,6 +49,7 @@ const VideoScreen = ({
   const deleteTime = useRef(true);
   const lastEpisodes = useRef({});
   const nextEpisodeViewActive = useRef(false);
+  const resumeViewActive = useRef(true);
   const videoCompletePosition = useRef(null);
   const videoIsPaused = useRef(false);
   const videoPausedOnSlide = useRef(false);
@@ -63,6 +65,7 @@ const VideoScreen = ({
   const [controlsOpacityAnimation] = useState(new Animated.Value(1));
   const [iconOpacityAnimation] = useState(new Animated.Value(0));
   const [nextEpisodeViewOpacityAnimation] = useState(new Animated.Value(0));
+  const [resumeViewOpacityAnimation] = useState(new Animated.Value(1));
 
   const isEpisodeComplete = (episode) => {
     const arrayOfEpisodes = completeEpisodes[episode.anime_id];
@@ -118,6 +121,7 @@ const VideoScreen = ({
       timeout = setTimeout(() => {
         playOpacityAnimation(controlsOpacityAnimation, 0);
         playOpacityAnimation(nextEpisodeViewOpacityAnimation, 0);
+        playOpacityAnimation(resumeViewOpacityAnimation, 0);
 
         videoPlayerIsHidden.current = true;
       }, PLAYER_HIDE_TIMEOUT);
@@ -189,6 +193,10 @@ const VideoScreen = ({
       playOpacityAnimation(nextEpisodeViewOpacityAnimation, videoPlayerIsHidden.current ? 1 : 0);
     }
 
+    if (resumeViewActive.current) {
+      playOpacityAnimation(resumeViewOpacityAnimation, videoPlayerIsHidden.current ? 1 : 0);
+    }
+
     videoPlayerIsHidden.current = !videoPlayerIsHidden.current;
 
     handleHideTimeout();
@@ -196,6 +204,7 @@ const VideoScreen = ({
 
   const playNextEpisode = () => {
     playOpacityAnimation(nextEpisodeViewOpacityAnimation, 0);
+    playOpacityAnimation(resumeViewOpacityAnimation, 0);
 
     const nextEpisode = animeSources.find((item) => item.number === episodePlaying.number + 1);
 
@@ -203,6 +212,7 @@ const VideoScreen = ({
 
     deleteTime.current = true;
     nextEpisodeViewActive.current = false;
+    resumeViewActive.current = false;
     videoCompletePosition.current = null;
 
     setShowError(false);
@@ -219,7 +229,7 @@ const VideoScreen = ({
 
       if (status.positionMillis < videoCompletePosition.current) {
         if (status.positionMillis > MIN_VIDEO_RESUME_POSITION) {
-          saveEpisodeTime(episodePlaying, status.positionMillis);
+          saveEpisodeTime(episodePlaying, status.positionMillis - RESUME_SUBTRACT_VALUE);
         }
 
         if (nextEpisodeViewActive.current) {
@@ -243,6 +253,12 @@ const VideoScreen = ({
     if (status.error) {
       setShowError(true);
       setVideoIsLoading(false);
+    }
+
+    if (status.positionMillis > MIN_VIDEO_RESUME_POSITION) {
+      playOpacityAnimation(resumeViewOpacityAnimation, 0);
+
+      resumeViewActive.current = false;
     }
 
     if (
@@ -287,6 +303,12 @@ const VideoScreen = ({
     iconOpacityAnimation.setValue(videoIsPaused.current ? 1 : 0);
 
     handleHideTimeout();
+  };
+
+  const handleResumePress = () => {
+    playOpacityAnimation(resumeViewOpacityAnimation, 0);
+
+    videoRef.current.setPositionAsync(lastEpisodes.current[anime.id].millis);
   };
 
   const handleRetryPress = () => {
@@ -486,6 +508,35 @@ const VideoScreen = ({
           </Animated.View>
         )}
 
+        {canResume && (
+          <Animated.View
+            style={[styles.resumeView, {
+              opacity: resumeViewOpacityAnimation,
+              transform: [{
+                translateY: resumeViewOpacityAnimation.interpolate({
+                  inputRange: [0, 0.005, 1],
+                  outputRange: [500, 0, 0],
+                }),
+              }],
+            }]}
+          >
+            <TouchableOpacity
+              activeOpacity={0.875}
+              disabled={!videoDurationMillis}
+              onPress={handleResumePress}
+              style={styles.bottomButton}
+            >
+              <SimpleLineIcons
+                color="white"
+                name="control-play"
+                size={12}
+              />
+
+              <Text style={styles.bottomButtonText}>Resume from last time!</Text>
+            </TouchableOpacity>
+          </Animated.View>
+        )}
+
         <Animated.View
           style={[styles.nextEpisodeView, {
             opacity: nextEpisodeViewOpacityAnimation,
@@ -500,7 +551,7 @@ const VideoScreen = ({
           <TouchableOpacity
             activeOpacity={0.875}
             onPress={playNextEpisode}
-            style={styles.nextEpisodeButton}
+            style={styles.bottomButton}
           >
             <SimpleLineIcons
               color="white"
@@ -508,7 +559,7 @@ const VideoScreen = ({
               size={12}
             />
 
-            <Text style={styles.nextEpisodeText}>Play next episode!</Text>
+            <Text style={styles.bottomButtonText}>Play next episode!</Text>
           </TouchableOpacity>
         </Animated.View>
 
