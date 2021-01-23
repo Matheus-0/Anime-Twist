@@ -215,9 +215,12 @@ const VideoScreen = ({
     resumeViewActive.current = false;
     videoCompletePosition.current = null;
 
-    setShowError(false);
-    setVideoIsLoading(true);
     setEpisodePlaying(nextEpisode);
+    setShowError(false);
+    setVideoDurationMillis(0);
+    setVideoIsLoading(true);
+    setVideoPositionMillis(0);
+    setVideoPositionMillisForText(0);
 
     loadVideo(decryptSource(nextEpisode.source));
   };
