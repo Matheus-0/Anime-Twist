@@ -47,7 +47,6 @@ const VideoScreen = ({
 
   const deleteTime = useRef(true);
   const lastEpisodes = useRef({});
-  const nextEpisodeCanceled = useRef(false);
   const nextEpisodeViewActive = useRef(false);
   const videoCompletePosition = useRef(null);
   const videoIsPaused = useRef(false);
@@ -186,20 +185,13 @@ const VideoScreen = ({
   const handleMainTouchablePress = () => {
     playOpacityAnimation(controlsOpacityAnimation, videoPlayerIsHidden.current ? 1 : 0);
 
-    if (nextEpisodeViewActive.current && !nextEpisodeCanceled.current) {
+    if (nextEpisodeViewActive.current) {
       playOpacityAnimation(nextEpisodeViewOpacityAnimation, videoPlayerIsHidden.current ? 1 : 0);
     }
 
     videoPlayerIsHidden.current = !videoPlayerIsHidden.current;
 
     handleHideTimeout();
-  };
-
-  const handleNextEpisodeCancel = () => {
-    playOpacityAnimation(nextEpisodeViewOpacityAnimation, 0);
-
-    nextEpisodeCanceled.current = true;
-    nextEpisodeViewActive.current = false;
   };
 
   const playNextEpisode = () => {
@@ -210,7 +202,6 @@ const VideoScreen = ({
     markEpisodeAsCurrent(nextEpisode);
 
     deleteTime.current = true;
-    nextEpisodeCanceled.current = false;
     nextEpisodeViewActive.current = false;
     videoCompletePosition.current = null;
 
@@ -280,7 +271,6 @@ const VideoScreen = ({
 
       if (
         settings.autoplay
-        && !nextEpisodeCanceled.current
         && episodePlaying.number < animeSources.length
       ) {
         playNextEpisode();
@@ -496,41 +486,31 @@ const VideoScreen = ({
           </Animated.View>
         )}
 
-        {settings.autoplay && (
-          <Animated.View
-            style={[styles.nextEpisodeView, {
-              opacity: nextEpisodeViewOpacityAnimation,
-              transform: [{
-                translateY: nextEpisodeViewOpacityAnimation.interpolate({
-                  inputRange: [0, 0.005, 1],
-                  outputRange: [500, 0, 0],
-                }),
-              }],
-            }]}
+        <Animated.View
+          style={[styles.nextEpisodeView, {
+            opacity: nextEpisodeViewOpacityAnimation,
+            transform: [{
+              translateY: nextEpisodeViewOpacityAnimation.interpolate({
+                inputRange: [0, 0.005, 1],
+                outputRange: [500, 0, 0],
+              }),
+            }],
+          }]}
+        >
+          <TouchableOpacity
+            activeOpacity={0.875}
+            onPress={playNextEpisode}
+            style={styles.nextEpisodeButton}
           >
-            <Text style={styles.nextEpisodeText}>
-              {`Next episode in: ${millisToTime(videoDurationMillis - videoPositionMillisForText)}`}
-            </Text>
+            <SimpleLineIcons
+              color="white"
+              name="control-play"
+              size={12}
+            />
 
-            <View style={styles.nextEpisodeButtons}>
-              <TouchableOpacity
-                activeOpacity={0.875}
-                onPress={playNextEpisode}
-                style={styles.nextEpisodeButton}
-              >
-                <Text style={styles.nextEpisodeText}>Next</Text>
-              </TouchableOpacity>
-
-              <TouchableOpacity
-                activeOpacity={0.875}
-                onPress={handleNextEpisodeCancel}
-                style={styles.nextEpisodeButton}
-              >
-                <Text style={styles.nextEpisodeText}>Cancel</Text>
-              </TouchableOpacity>
-            </View>
-          </Animated.View>
-        )}
+            <Text style={styles.nextEpisodeText}>Play next episode!</Text>
+          </TouchableOpacity>
+        </Animated.View>
 
         <Animated.Text
           style={[styles.timeText, styles.timeTextLeft, {
