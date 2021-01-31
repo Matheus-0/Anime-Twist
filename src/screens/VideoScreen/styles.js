@@ -73,15 +73,6 @@ const styles = StyleSheet.create({
     position: 'absolute',
     zIndex: 2,
   },
-  gradient: {
-    flex: 1,
-  },
-  gradientView: {
-    height: '100%',
-    position: 'absolute',
-    width: '100%',
-    zIndex: 1,
-  },
   loading: {
     position: 'absolute',
     zIndex: 2,
@@ -128,6 +119,13 @@ const styles = StyleSheet.create({
     fontSize: 13,
     marginLeft: 15,
     maxWidth: Dimensions.get('screen').height * 0.625,
+  },
+  transparentView: {
+    backgroundColor: 'rgba(0, 0, 0, 0.5)',
+    height: '100%',
+    position: 'absolute',
+    width: '100%',
+    zIndex: 1,
   },
   upperLeftView: {
     alignItems: 'center',

@@ -437,8 +437,8 @@ const AnimeScreen = ({
           opacity: rotateButtonAnimation,
           transform: [{
             translateY: rotateButtonAnimation.interpolate({
-              inputRange: [0, 0.005, 1],
-              outputRange: [500, 10, 0],
+              inputRange: [0, 0, 1],
+              outputRange: [500, 5, 0],
             }),
           }],
         }]}

@@ -14,6 +14,7 @@ const CustomModal = ({
     isVisible={isVisible}
     onBackButtonPress={onNegativeResponse}
     onBackdropPress={onNegativeResponse}
+    style={styles.modal}
     useNativeDriver
   >
     <View style={styles.container}>

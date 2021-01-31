@@ -24,6 +24,9 @@ const styles = StyleSheet.create({
     borderRadius: 10,
     paddingVertical: 20,
   },
+  modal: {
+    marginHorizontal: 20,
+  },
   text: {
     color: 'white',
     fontFamily: 'Quicksand_400Regular',

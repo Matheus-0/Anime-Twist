@@ -2,7 +2,6 @@ import { SimpleLineIcons } from '@expo/vector-icons';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import Slider from '@react-native-community/slider';
 import { Video } from 'expo-av';
-import { LinearGradient } from 'expo-linear-gradient';
 import { lockAsync, OrientationLock } from 'expo-screen-orientation';
 import { setStatusBarHidden } from 'expo-status-bar';
 import PropTypes from 'prop-types';
@@ -21,7 +20,7 @@ import {
 
 import { decryptSource } from '../../services/api';
 
-import { baseURL, userAgent } from '../../constants';
+import { referer, userAgent } from '../../constants';
 
 import { getAnimeTitle, millisToTime } from '../../utils';
 
@@ -135,7 +134,7 @@ const VideoScreen = ({
 
     videoRef.current.loadAsync({
       headers: {
-        Referer: baseURL,
+        Referer: referer,
         'User-Agent': userAgent,
       },
       uri: source,
@@ -248,7 +247,7 @@ const VideoScreen = ({
         if (status.isBuffering && !status.isPlaying && !videoIsPaused.current) {
           setVideoIsLoading(true);
         }
-      } else if (videoCompletePosition.current && videoIsLoading && status.isPlaying) {
+      } else if (status.isPlaying && videoCompletePosition.current) {
         setVideoIsLoading(false);
       }
     }
@@ -368,16 +367,10 @@ const VideoScreen = ({
     >
       <Animated.View style={styles.container}>
         <Animated.View
-          style={[styles.gradientView, {
+          style={[styles.transparentView, {
             opacity: controlsOpacityAnimation,
           }]}
-        >
-          <LinearGradient
-            colors={['rgba(0, 0, 0, 0.5)', 'rgba(0, 0, 0, 0.375)', 'rgba(0, 0, 0, 0.5)']}
-            locations={[0.005, 0.5, 0.995]}
-            style={styles.gradient}
-          />
-        </Animated.View>
+        />
 
         <Video
           onLoad={handleLoad}
@@ -392,7 +385,7 @@ const VideoScreen = ({
             opacity: controlsOpacityAnimation,
             transform: [{
               translateY: controlsOpacityAnimation.interpolate({
-                inputRange: [0, 0.005, 1],
+                inputRange: [0, 0, 1],
                 outputRange: [-500, 0, 0],
               }),
             }],
@@ -446,7 +439,7 @@ const VideoScreen = ({
               opacity: controlsOpacityAnimation,
               transform: [{
                 translateY: controlsOpacityAnimation.interpolate({
-                  inputRange: [0, 0.005, 1],
+                  inputRange: [0, 0, 1],
                   outputRange: [500, 0, 0],
                 }),
               }],
@@ -517,7 +510,7 @@ const VideoScreen = ({
               opacity: resumeViewOpacityAnimation,
               transform: [{
                 translateY: resumeViewOpacityAnimation.interpolate({
-                  inputRange: [0, 0.005, 1],
+                  inputRange: [0, 0, 1],
                   outputRange: [500, 0, 0],
                 }),
               }],
@@ -545,7 +538,7 @@ const VideoScreen = ({
             opacity: nextEpisodeViewOpacityAnimation,
             transform: [{
               translateY: nextEpisodeViewOpacityAnimation.interpolate({
-                inputRange: [0, 0.005, 1],
+                inputRange: [0, 0, 1],
                 outputRange: [500, 0, 0],
               }),
             }],
@@ -571,7 +564,7 @@ const VideoScreen = ({
             opacity: controlsOpacityAnimation,
             transform: [{
               translateY: controlsOpacityAnimation.interpolate({
-                inputRange: [0, 0.005, 1],
+                inputRange: [0, 0, 1],
                 outputRange: [500, 0, 0],
               }),
             }],
@@ -585,7 +578,7 @@ const VideoScreen = ({
             opacity: controlsOpacityAnimation,
             transform: [{
               translateY: controlsOpacityAnimation.interpolate({
-                inputRange: [0, 0.005, 1],
+                inputRange: [0, 0, 1],
                 outputRange: [500, 0, 0],
               }),
             }],
@@ -610,7 +603,7 @@ const VideoScreen = ({
             opacity: controlsOpacityAnimation,
             transform: [{
               translateY: controlsOpacityAnimation.interpolate({
-                inputRange: [0, 0.005, 1],
+                inputRange: [0, 0, 1],
                 outputRange: [500, 0, 0],
               }),
             }],

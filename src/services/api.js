@@ -3,14 +3,14 @@ import CryptoJS from 'crypto-js';
 import AES from 'crypto-js/aes';
 
 import {
-  accessToken, baseURL, CDN, key, userAgent,
+  baseURL, CDN, key, token, userAgent,
 } from '../constants';
 
 const api = axios.create({
   baseURL,
   headers: {
     'User-Agent': userAgent,
-    'X-Access-Token': accessToken,
+    'X-Access-Token': token,
   },
   timeout: 10000,
 });
