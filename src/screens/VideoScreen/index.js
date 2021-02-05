@@ -108,7 +108,6 @@ const VideoScreen = ({
   };
 
   const playOpacityAnimation = (animation, toValue) => Animated.spring(animation, {
-    friction: 10,
     toValue,
     useNativeDriver: true,
   }).start();
@@ -244,12 +243,8 @@ const VideoScreen = ({
 
     if (status.isLoaded) {
       if (!videoIsLoading) {
-        if (status.isBuffering && !status.isPlaying && !videoIsPaused.current) {
-          setVideoIsLoading(true);
-        }
-      } else if (status.isPlaying && videoCompletePosition.current) {
-        setVideoIsLoading(false);
-      }
+        if (status.playableDurationMillis === status.positionMillis) setVideoIsLoading(true);
+      } else if (!status.isBuffering || status.isPlaying) setVideoIsLoading(false);
     }
 
     if (status.error) {
