@@ -10,7 +10,10 @@ import { RectButton } from 'react-native-gesture-handler';
 import Modal from 'react-native-modal';
 import { connect } from 'react-redux';
 
-import styles from './styles';
+import CustomModal from '../../components/CustomModal';
+import EpisodeItem from '../../components/EpisodeItem';
+
+import { getAnimeSources } from '../../services/api';
 
 import {
   addToFavorites,
@@ -21,12 +24,9 @@ import {
   unmarkEpisodeAsCurrent,
 } from '../../store/actions';
 
-import CustomModal from '../../components/CustomModal';
-import EpisodeItem from '../../components/EpisodeItem';
-
-import { getAnimeSources } from '../../services/api';
-
 import { getAnimeTitle, millisToTime } from '../../utils';
+
+import styles from './styles';
 
 const CHUNK_SIZE = 100;
 

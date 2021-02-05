@@ -11,18 +11,18 @@ import {
 } from 'react-native';
 import { connect } from 'react-redux';
 
-import styles from './styles';
+import { referer, userAgent } from '../../constants';
+
+import { decryptSource } from '../../services/api';
 
 import {
   markEpisodeAsComplete,
   markEpisodeAsCurrent,
 } from '../../store/actions';
 
-import { decryptSource } from '../../services/api';
-
-import { referer, userAgent } from '../../constants';
-
 import { getAnimeTitle, millisToTime } from '../../utils';
+
+import styles from './styles';
 
 const MIN_VIDEO_RESUME_POSITION = 90000; // 1 minute and a half
 const PLAYER_HIDE_TIMEOUT = 5000; // 5 seconds

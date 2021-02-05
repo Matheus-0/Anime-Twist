@@ -7,9 +7,9 @@ import { PersistGate } from 'redux-persist/integration/react';
 
 import { Quicksand_400Regular, Quicksand_600SemiBold, useFonts } from '@expo-google-fonts/quicksand';
 
-import { persistedStore, store } from './src/store';
-
 import Routes from './src/routes';
+
+import { persistedStore, store } from './src/store';
 
 if (Platform.OS === 'android' && UIManager.setLayoutAnimationEnabledExperimental) {
   UIManager.setLayoutAnimationEnabledExperimental(true);

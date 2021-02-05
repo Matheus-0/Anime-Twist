@@ -8,13 +8,13 @@ import {
 import { RectButton } from 'react-native-gesture-handler';
 import { connect } from 'react-redux';
 
-import styles from './styles';
-
-import { loadAnimeList, updateFavorites } from '../../store/actions';
+import logo from '../../assets/images/logo.png';
 
 import { getAnimeList } from '../../services/api';
 
-import logo from '../../assets/images/logo.png';
+import { loadAnimeList, updateFavorites } from '../../store/actions';
+
+import styles from './styles';
 
 const SearchScreen = ({
   favorites, loadAnimeList, navigation, updateFavorites,

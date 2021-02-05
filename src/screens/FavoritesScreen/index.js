@@ -8,12 +8,12 @@ import {
 import { RectButton } from 'react-native-gesture-handler';
 import { connect } from 'react-redux';
 
-import styles from './styles';
-
 import AnimeItem from '../../components/AnimeItem';
 import CustomModal from '../../components/CustomModal';
 
 import { removeAllFavorites, removeFromFavorites } from '../../store/actions';
+
+import styles from './styles';
 
 const FavoritesScreen = ({
   favorites, navigation, removeAllFavorites, removeFromFavorites, settings,

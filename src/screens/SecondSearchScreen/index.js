@@ -6,11 +6,11 @@ import {
 } from 'react-native';
 import { connect } from 'react-redux';
 
-import styles from './styles';
-
 import AnimeItem from '../../components/AnimeItem';
 
 import { customIncludes, replaceWithSpaces } from '../../utils';
+
+import styles from './styles';
 
 const MAX_RESULTS = 100;
 

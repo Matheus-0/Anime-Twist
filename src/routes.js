@@ -18,10 +18,11 @@ const AppStack = createStackNavigator();
 const SearchStack = createStackNavigator();
 
 const SearchStackScreen = () => (
-  <SearchStack.Navigator screenOptions={() => ({
-    animationEnabled: false,
-    headerShown: false,
-  })}
+  <SearchStack.Navigator
+    screenOptions={() => ({
+      animationEnabled: false,
+      headerShown: false,
+    })}
   >
     <SearchStack.Screen component={SearchScreen} name="Search" />
     <SearchStack.Screen component={SecondSearchScreen} name="SecondSearch" />
@@ -69,12 +70,13 @@ const BottomTabs = () => (
 
 export default () => (
   <NavigationContainer>
-    <AppStack.Navigator screenOptions={() => ({
-      cardStyle: {
-        backgroundColor: 'transparent',
-      },
-      headerShown: false,
-    })}
+    <AppStack.Navigator
+      screenOptions={() => ({
+        cardStyle: {
+          backgroundColor: 'transparent',
+        },
+        headerShown: false,
+      })}
     >
       <AppStack.Screen component={BottomTabs} name="BottomTabs" />
       <AppStack.Screen component={AnimeScreen} name="Anime" />
