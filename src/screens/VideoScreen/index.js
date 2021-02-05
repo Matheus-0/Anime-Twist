@@ -380,8 +380,8 @@ const VideoScreen = ({
             opacity: controlsOpacityAnimation,
             transform: [{
               translateY: controlsOpacityAnimation.interpolate({
-                inputRange: [0, 0, 1],
-                outputRange: [-500, 0, 0],
+                inputRange: [0, 0.005, 1],
+                outputRange: [-500, -0.005, 0],
               }),
             }],
           }]}
@@ -434,8 +434,8 @@ const VideoScreen = ({
               opacity: controlsOpacityAnimation,
               transform: [{
                 translateY: controlsOpacityAnimation.interpolate({
-                  inputRange: [0, 0, 1],
-                  outputRange: [500, 0, 0],
+                  inputRange: [0, 0.005, 1],
+                  outputRange: [500, 0.005, 0],
                 }),
               }],
             }]}
@@ -505,8 +505,8 @@ const VideoScreen = ({
               opacity: resumeViewOpacityAnimation,
               transform: [{
                 translateY: resumeViewOpacityAnimation.interpolate({
-                  inputRange: [0, 0, 1],
-                  outputRange: [500, 0, 0],
+                  inputRange: [0, 0.005, 1],
+                  outputRange: [500, 0.005, 0],
                 }),
               }],
             }]}
@@ -533,8 +533,8 @@ const VideoScreen = ({
             opacity: nextEpisodeViewOpacityAnimation,
             transform: [{
               translateY: nextEpisodeViewOpacityAnimation.interpolate({
-                inputRange: [0, 0, 1],
-                outputRange: [500, 0, 0],
+                inputRange: [0, 0.005, 1],
+                outputRange: [500, 0.005, 0],
               }),
             }],
           }]}
@@ -559,8 +559,8 @@ const VideoScreen = ({
             opacity: controlsOpacityAnimation,
             transform: [{
               translateY: controlsOpacityAnimation.interpolate({
-                inputRange: [0, 0, 1],
-                outputRange: [500, 0, 0],
+                inputRange: [0, 0.005, 1],
+                outputRange: [500, 0.005, 0],
               }),
             }],
           }]}
@@ -573,8 +573,8 @@ const VideoScreen = ({
             opacity: controlsOpacityAnimation,
             transform: [{
               translateY: controlsOpacityAnimation.interpolate({
-                inputRange: [0, 0, 1],
-                outputRange: [500, 0, 0],
+                inputRange: [0, 0.005, 1],
+                outputRange: [500, 0.005, 0],
               }),
             }],
           }]}
@@ -598,8 +598,8 @@ const VideoScreen = ({
             opacity: controlsOpacityAnimation,
             transform: [{
               translateY: controlsOpacityAnimation.interpolate({
-                inputRange: [0, 0, 1],
-                outputRange: [500, 0, 0],
+                inputRange: [0, 0.005, 1],
+                outputRange: [500, 0.005, 0],
               }),
             }],
           }]}
