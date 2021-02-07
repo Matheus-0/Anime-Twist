@@ -243,8 +243,15 @@ const VideoScreen = ({
 
     if (status.isLoaded) {
       if (!videoIsLoading) {
-        if (status.playableDurationMillis === status.positionMillis) setVideoIsLoading(true);
-      } else if (!status.isBuffering || status.isPlaying) setVideoIsLoading(false);
+        if (
+          status.playableDurationMillis === status.positionMillis
+          && status.positionMillis < status.durationMillis
+        ) {
+          setVideoIsLoading(true);
+        }
+      } else if (!status.isBuffering || status.isPlaying) {
+        if (videoCompletePosition.current) setVideoIsLoading(false);
+      }
     }
 
     if (status.error) {
