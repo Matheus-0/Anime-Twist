@@ -2,6 +2,7 @@ import { SimpleLineIcons } from '@expo/vector-icons';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import Slider from '@react-native-community/slider';
 import { Video } from 'expo-av';
+import { useKeepAwake } from 'expo-keep-awake';
 import { lockAsync, OrientationLock } from 'expo-screen-orientation';
 import { setStatusBarHidden } from 'expo-status-bar';
 import PropTypes from 'prop-types';
@@ -65,6 +66,8 @@ const VideoScreen = ({
   const [iconOpacityAnimation] = useState(new Animated.Value(0));
   const [nextEpisodeViewOpacityAnimation] = useState(new Animated.Value(0));
   const [resumeViewOpacityAnimation] = useState(new Animated.Value(1));
+
+  useKeepAwake();
 
   const isEpisodeComplete = (episode) => {
     const arrayOfEpisodes = completeEpisodes[episode.anime_id];
