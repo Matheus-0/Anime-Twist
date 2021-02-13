@@ -1,7 +1,7 @@
 import AppLoading from 'expo-app-loading';
 import { StatusBar } from 'expo-status-bar';
 import React from 'react';
-import { Platform, UIManager } from 'react-native';
+import { Platform, UIManager, View } from 'react-native';
 import { Provider } from 'react-redux';
 import { PersistGate } from 'redux-persist/integration/react';
 
@@ -26,13 +26,15 @@ export default function App() {
   return (
     <Provider store={store}>
       <PersistGate loading={<AppLoading />} persistor={persistedStore}>
-        <Routes />
+        <View style={{ backgroundColor: '#191919', flex: 1 }}>
+          <Routes />
 
-        <StatusBar
-          animated
-          style="light"
-          translucent={false}
-        />
+          <StatusBar
+            animated
+            style="light"
+            translucent={false}
+          />
+        </View>
       </PersistGate>
     </Provider>
   );

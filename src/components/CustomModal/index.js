@@ -11,6 +11,7 @@ const CustomModal = ({
   <Modal
     animationIn="fadeIn"
     animationOut="fadeOut"
+    coverScreen={false}
     isVisible={isVisible}
     onBackButtonPress={onNegativeResponse}
     onBackdropPress={onNegativeResponse}
