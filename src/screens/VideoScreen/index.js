@@ -128,6 +128,8 @@ const VideoScreen = ({
   };
 
   const loadVideo = (source, positionMillis = 0) => {
+    activateKeepAwake();
+
     videoRef.current.unloadAsync();
 
     handleHideTimeout();
@@ -163,8 +165,6 @@ const VideoScreen = ({
 
   useEffect(() => {
     const { LANDSCAPE, PORTRAIT } = OrientationLock;
-
-    activateKeepAwake();
 
     setStatusBarHidden(true);
 
@@ -260,6 +260,8 @@ const VideoScreen = ({
     }
 
     if (status.error) {
+      deactivateKeepAwake();
+
       setShowError(true);
       setVideoIsLoading(false);
     }
@@ -290,6 +292,8 @@ const VideoScreen = ({
     }
 
     if (status.didJustFinish) {
+      deactivateKeepAwake();
+
       videoIsPaused.current = true;
 
       iconOpacityAnimation.setValue(1);
