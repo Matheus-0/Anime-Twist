@@ -4,7 +4,6 @@ const styles = StyleSheet.create({
   backButton: {
     borderRadius: 10,
     padding: 15,
-    zIndex: 2,
   },
   bottomButton: {
     alignItems: 'center',
@@ -130,9 +129,9 @@ const styles = StyleSheet.create({
   upperLeftView: {
     alignItems: 'center',
     flexDirection: 'row',
+    left: 0,
     position: 'absolute',
     top: 0,
-    left: 0,
     zIndex: 2,
   },
   video: {
