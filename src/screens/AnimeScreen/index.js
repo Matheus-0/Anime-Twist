@@ -308,9 +308,11 @@ const AnimeScreen = ({
         <Modal
           animationIn="fadeIn"
           animationOut="fadeOut"
+          coverScreen={false}
           isVisible={rangeModalVisible}
           onBackButtonPress={handleRangeModalNegativeResponse}
           onBackdropPress={handleRangeModalNegativeResponse}
+          style={styles.modal}
           useNativeDriver
         >
           <View style={styles.modalContainer}>

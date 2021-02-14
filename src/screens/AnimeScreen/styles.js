@@ -76,6 +76,9 @@ const styles = StyleSheet.create({
   loading: {
     flex: 1,
   },
+  modal: {
+    marginHorizontal: 20,
+  },
   modalButton: {
     alignItems: 'center',
     borderColor: '#e63232',
