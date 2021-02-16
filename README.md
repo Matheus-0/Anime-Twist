@@ -3,13 +3,13 @@
 </p>
 
 <p align="center">
-  <img src="https://raw.githubusercontent.com/Matheus-0/Anime-Twist/master/.github/1.png" width="225" />
-  <img src="https://raw.githubusercontent.com/Matheus-0/Anime-Twist/master/.github/2.png" width="225" />
-  <img src="https://raw.githubusercontent.com/Matheus-0/Anime-Twist/master/.github/3.png" width="225" />
+  <img src="https://raw.githubusercontent.com/Matheus-0/Anime-Twist/master/.github/1.jpg" width="225" />
+  <img src="https://raw.githubusercontent.com/Matheus-0/Anime-Twist/master/.github/2.jpg" width="225" />
+  <img src="https://raw.githubusercontent.com/Matheus-0/Anime-Twist/master/.github/3.jpg" width="225" />
 </p>
 
 <p align="center">
-  <img src="https://raw.githubusercontent.com/Matheus-0/Anime-Twist/master/.github/4.png" width="550" />
+  <img src="https://raw.githubusercontent.com/Matheus-0/Anime-Twist/master/.github/4.jpg" width="550" />
 </p>
 
 <p align="center">Unofficial Anime Twist application.</p>
