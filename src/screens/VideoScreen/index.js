@@ -190,7 +190,11 @@ const VideoScreen = ({
     setVideoDurationMillis(status.durationMillis);
   };
 
-  const handleLockButtonPress = () => setPlayerIsLocked(!playerIsLocked);
+  const handleLockButtonPress = () => {
+    setPlayerIsLocked(!playerIsLocked);
+
+    handleHideTimeout();
+  };
 
   const handleMainTouchablePress = () => {
     playOpacityAnimation(controlsOpacityAnimation, videoPlayerIsHidden.current ? 1 : 0);
