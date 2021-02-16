@@ -56,6 +56,7 @@ const VideoScreen = ({
   const videoPlayerIsHidden = useRef(false);
 
   const [episodePlaying, setEpisodePlaying] = useState({});
+  const [playerIsLocked, setPlayerIsLocked] = useState(false);
   const [showError, setShowError] = useState(false);
   const [videoDurationMillis, setVideoDurationMillis] = useState(0);
   const [videoIsLoading, setVideoIsLoading] = useState(true);
@@ -181,13 +182,15 @@ const VideoScreen = ({
     };
   }, []);
 
-  const handleBackArrowPress = () => navigation.goBack();
+  const handleBackButtonPress = () => navigation.goBack();
 
   const handleLoad = (status) => {
     videoCompletePosition.current = status.durationMillis * 0.9;
 
     setVideoDurationMillis(status.durationMillis);
   };
+
+  const handleLockButtonPress = () => setPlayerIsLocked(!playerIsLocked);
 
   const handleMainTouchablePress = () => {
     playOpacityAnimation(controlsOpacityAnimation, videoPlayerIsHidden.current ? 1 : 0);
@@ -398,8 +401,42 @@ const VideoScreen = ({
           style={styles.video}
         />
 
+        {!playerIsLocked && (
+          <Animated.View
+            style={[styles.upperLeftView, {
+              opacity: controlsOpacityAnimation,
+              transform: [{
+                translateY: controlsOpacityAnimation.interpolate({
+                  inputRange: [0, 0.005, 1],
+                  outputRange: [-500, -0.005, 0],
+                }),
+              }],
+            }]}
+          >
+            <TouchableOpacity
+              activeOpacity={0.875}
+              onPress={handleBackButtonPress}
+              style={styles.backButton}
+            >
+              <SimpleLineIcons
+                color="white"
+                name="arrow-left"
+                size={20}
+              />
+            </TouchableOpacity>
+
+            <Text numberOfLines={1} style={styles.titleText}>
+              {getAnimeTitle(anime, settings.preferEnglish)}
+            </Text>
+
+            <Text style={styles.episodeText}>
+              {`Episode ${episodePlaying.number}`}
+            </Text>
+          </Animated.View>
+        )}
+
         <Animated.View
-          style={[styles.upperLeftView, {
+          style={[styles.upperRightView, {
             opacity: controlsOpacityAnimation,
             transform: [{
               translateY: controlsOpacityAnimation.interpolate({
@@ -411,23 +448,15 @@ const VideoScreen = ({
         >
           <TouchableOpacity
             activeOpacity={0.875}
-            onPress={handleBackArrowPress}
-            style={styles.backButton}
+            onPress={handleLockButtonPress}
+            style={styles.lockButton}
           >
             <SimpleLineIcons
               color="white"
-              name="arrow-left"
+              name={playerIsLocked ? 'lock' : 'lock-open'}
               size={20}
             />
           </TouchableOpacity>
-
-          <Text numberOfLines={1} style={styles.titleText}>
-            {getAnimeTitle(anime, settings.preferEnglish)}
-          </Text>
-
-          <Text style={styles.episodeText}>
-            {`Episode ${episodePlaying.number}`}
-          </Text>
         </Animated.View>
 
         <ActivityIndicator
@@ -452,183 +481,191 @@ const VideoScreen = ({
             </TouchableOpacity>
           </View>
         ) : (
-          <Animated.View
-            style={[styles.centerControls, {
-              opacity: controlsOpacityAnimation,
-              transform: [{
-                translateY: controlsOpacityAnimation.interpolate({
-                  inputRange: [0, 0.005, 1],
-                  outputRange: [500, 0.005, 0],
-                }),
-              }],
-            }]}
-          >
-            <TouchableOpacity
-              activeOpacity={0.875}
-              onPress={() => handleSeeking(-SEEK_MILLIS)}
-              style={styles.centerControlsButton}
-            >
-              <SimpleLineIcons
-                color="white"
-                name="control-rewind"
-                size={24}
-              />
-            </TouchableOpacity>
-
-            <TouchableOpacity
-              activeOpacity={0.875}
-              onPress={handlePlayPausePress}
-              style={styles.centerControlsButton}
-            >
+          <>
+            {!playerIsLocked && (
               <Animated.View
-                style={[styles.centerControlsPlayPauseIcon, {
-                  opacity: iconOpacityAnimation,
+                style={[styles.centerControls, {
+                  opacity: controlsOpacityAnimation,
+                  transform: [{
+                    translateY: controlsOpacityAnimation.interpolate({
+                      inputRange: [0, 0.005, 1],
+                      outputRange: [500, 0.005, 0],
+                    }),
+                  }],
                 }]}
+              >
+                <TouchableOpacity
+                  activeOpacity={0.875}
+                  onPress={() => handleSeeking(-SEEK_MILLIS)}
+                  style={styles.centerControlsButton}
+                >
+                  <SimpleLineIcons
+                    color="white"
+                    name="control-rewind"
+                    size={24}
+                  />
+                </TouchableOpacity>
+
+                <TouchableOpacity
+                  activeOpacity={0.875}
+                  onPress={handlePlayPausePress}
+                  style={styles.centerControlsButton}
+                >
+                  <Animated.View
+                    style={[styles.centerControlsPlayPauseIcon, {
+                      opacity: iconOpacityAnimation,
+                    }]}
+                  >
+                    <SimpleLineIcons
+                      color="white"
+                      name="control-play"
+                      size={32}
+                    />
+                  </Animated.View>
+
+                  <Animated.View
+                    style={[styles.centerControlsPlayPauseIcon, {
+                      opacity: iconOpacityAnimation.interpolate({
+                        inputRange: [0, 1],
+                        outputRange: [1, 0],
+                      }),
+                    }]}
+                  >
+                    <SimpleLineIcons
+                      color="white"
+                      name="control-pause"
+                      size={32}
+                    />
+                  </Animated.View>
+                </TouchableOpacity>
+
+                <TouchableOpacity
+                  activeOpacity={0.875}
+                  onPress={() => handleSeeking(SEEK_MILLIS)}
+                  style={styles.centerControlsButton}
+                >
+                  <SimpleLineIcons
+                    color="white"
+                    name="control-forward"
+                    size={24}
+                  />
+                </TouchableOpacity>
+              </Animated.View>
+            )}
+          </>
+        )}
+
+        {!playerIsLocked && (
+          <>
+            {canResume && (
+              <Animated.View
+                style={[styles.resumeView, {
+                  opacity: resumeViewOpacityAnimation,
+                  transform: [{
+                    translateY: resumeViewOpacityAnimation.interpolate({
+                      inputRange: [0, 0.005, 1],
+                      outputRange: [500, 0.005, 0],
+                    }),
+                  }],
+                }]}
+              >
+                <TouchableOpacity
+                  activeOpacity={0.875}
+                  disabled={!videoDurationMillis}
+                  onPress={handleResumePress}
+                  style={styles.bottomButton}
+                >
+                  <SimpleLineIcons
+                    color="white"
+                    name="control-play"
+                    size={12}
+                  />
+
+                  <Text style={styles.bottomButtonText}>Resume from last time!</Text>
+                </TouchableOpacity>
+              </Animated.View>
+            )}
+
+            <Animated.View
+              style={[styles.nextEpisodeView, {
+                opacity: nextEpisodeViewOpacityAnimation,
+                transform: [{
+                  translateY: nextEpisodeViewOpacityAnimation.interpolate({
+                    inputRange: [0, 0.005, 1],
+                    outputRange: [500, 0.005, 0],
+                  }),
+                }],
+              }]}
+            >
+              <TouchableOpacity
+                activeOpacity={0.875}
+                onPress={playNextEpisode}
+                style={styles.bottomButton}
               >
                 <SimpleLineIcons
                   color="white"
                   name="control-play"
-                  size={32}
+                  size={12}
                 />
-              </Animated.View>
 
-              <Animated.View
-                style={[styles.centerControlsPlayPauseIcon, {
-                  opacity: iconOpacityAnimation.interpolate({
-                    inputRange: [0, 1],
-                    outputRange: [1, 0],
+                <Text style={styles.bottomButtonText}>Play next episode!</Text>
+              </TouchableOpacity>
+            </Animated.View>
+
+            <Animated.Text
+              style={[styles.timeText, styles.timeTextLeft, {
+                opacity: controlsOpacityAnimation,
+                transform: [{
+                  translateY: controlsOpacityAnimation.interpolate({
+                    inputRange: [0, 0.005, 1],
+                    outputRange: [500, 0.005, 0],
                   }),
-                }]}
-              >
-                <SimpleLineIcons
-                  color="white"
-                  name="control-pause"
-                  size={32}
-                />
-              </Animated.View>
-            </TouchableOpacity>
-
-            <TouchableOpacity
-              activeOpacity={0.875}
-              onPress={() => handleSeeking(SEEK_MILLIS)}
-              style={styles.centerControlsButton}
+                }],
+              }]}
             >
-              <SimpleLineIcons
-                color="white"
-                name="control-forward"
-                size={24}
-              />
-            </TouchableOpacity>
-          </Animated.View>
-        )}
+              {millisToTime(videoPositionMillisForText)}
+            </Animated.Text>
 
-        {canResume && (
-          <Animated.View
-            style={[styles.resumeView, {
-              opacity: resumeViewOpacityAnimation,
-              transform: [{
-                translateY: resumeViewOpacityAnimation.interpolate({
-                  inputRange: [0, 0.005, 1],
-                  outputRange: [500, 0.005, 0],
-                }),
-              }],
-            }]}
-          >
-            <TouchableOpacity
-              activeOpacity={0.875}
-              disabled={!videoDurationMillis}
-              onPress={handleResumePress}
-              style={styles.bottomButton}
+            <Animated.View
+              style={[styles.sliderView, {
+                opacity: controlsOpacityAnimation,
+                transform: [{
+                  translateY: controlsOpacityAnimation.interpolate({
+                    inputRange: [0, 0.005, 1],
+                    outputRange: [500, 0.005, 0],
+                  }),
+                }],
+              }]}
             >
-              <SimpleLineIcons
-                color="white"
-                name="control-play"
-                size={12}
+              <Slider
+                maximumValue={videoDurationMillis}
+                minimumTrackTintColor="#e63232"
+                minimumValue={0}
+                onSlidingComplete={handleSlidingComplete}
+                onSlidingStart={handleSlidingStart}
+                onValueChange={handleSliderValueChange}
+                step={1}
+                style={styles.slider}
+                thumbTintColor="#e63232"
+                value={videoPositionMillis}
               />
+            </Animated.View>
 
-              <Text style={styles.bottomButtonText}>Resume from last time!</Text>
-            </TouchableOpacity>
-          </Animated.View>
+            <Animated.Text
+              style={[styles.timeText, styles.timeTextRight, {
+                opacity: controlsOpacityAnimation,
+                transform: [{
+                  translateY: controlsOpacityAnimation.interpolate({
+                    inputRange: [0, 0.005, 1],
+                    outputRange: [500, 0.005, 0],
+                  }),
+                }],
+              }]}
+            >
+              {millisToTime(videoDurationMillis)}
+            </Animated.Text>
+          </>
         )}
-
-        <Animated.View
-          style={[styles.nextEpisodeView, {
-            opacity: nextEpisodeViewOpacityAnimation,
-            transform: [{
-              translateY: nextEpisodeViewOpacityAnimation.interpolate({
-                inputRange: [0, 0.005, 1],
-                outputRange: [500, 0.005, 0],
-              }),
-            }],
-          }]}
-        >
-          <TouchableOpacity
-            activeOpacity={0.875}
-            onPress={playNextEpisode}
-            style={styles.bottomButton}
-          >
-            <SimpleLineIcons
-              color="white"
-              name="control-play"
-              size={12}
-            />
-
-            <Text style={styles.bottomButtonText}>Play next episode!</Text>
-          </TouchableOpacity>
-        </Animated.View>
-
-        <Animated.Text
-          style={[styles.timeText, styles.timeTextLeft, {
-            opacity: controlsOpacityAnimation,
-            transform: [{
-              translateY: controlsOpacityAnimation.interpolate({
-                inputRange: [0, 0.005, 1],
-                outputRange: [500, 0.005, 0],
-              }),
-            }],
-          }]}
-        >
-          {millisToTime(videoPositionMillisForText)}
-        </Animated.Text>
-
-        <Animated.View
-          style={[styles.sliderView, {
-            opacity: controlsOpacityAnimation,
-            transform: [{
-              translateY: controlsOpacityAnimation.interpolate({
-                inputRange: [0, 0.005, 1],
-                outputRange: [500, 0.005, 0],
-              }),
-            }],
-          }]}
-        >
-          <Slider
-            maximumValue={videoDurationMillis}
-            minimumTrackTintColor="#e63232"
-            minimumValue={0}
-            onSlidingComplete={handleSlidingComplete}
-            onSlidingStart={handleSlidingStart}
-            onValueChange={handleSliderValueChange}
-            step={1}
-            style={styles.slider}
-            thumbTintColor="#e63232"
-            value={videoPositionMillis}
-          />
-        </Animated.View>
-
-        <Animated.Text
-          style={[styles.timeText, styles.timeTextRight, {
-            opacity: controlsOpacityAnimation,
-            transform: [{
-              translateY: controlsOpacityAnimation.interpolate({
-                inputRange: [0, 0.005, 1],
-                outputRange: [500, 0.005, 0],
-              }),
-            }],
-          }]}
-        >
-          {millisToTime(videoDurationMillis)}
-        </Animated.Text>
       </Animated.View>
     </TouchableOpacity>
   );

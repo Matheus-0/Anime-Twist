@@ -76,6 +76,11 @@ const styles = StyleSheet.create({
     position: 'absolute',
     zIndex: 2,
   },
+  lockButton: {
+    borderRadius: 10,
+    paddingHorizontal: 20,
+    paddingVertical: 15,
+  },
   nextEpisodeView: {
     bottom: 45,
     position: 'absolute',
@@ -131,6 +136,12 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     left: 0,
     position: 'absolute',
+    top: 0,
+    zIndex: 2,
+  },
+  upperRightView: {
+    position: 'absolute',
+    right: 0,
     top: 0,
     zIndex: 2,
   },
