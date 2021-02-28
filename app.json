@@ -2,7 +2,7 @@
   "expo": {
     "name": "Anime Twist",
     "slug": "Anime-Twist",
-    "version": "1.8.1",
+    "version": "1.8.2",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
     "androidStatusBar": {
@@ -11,9 +11,9 @@
     },
     "primaryColor": "#191919",
     "splash": {
+      "backgroundColor": "#191919",
       "image": "./assets/splash.png",
-      "resizeMode": "contain",
-      "backgroundColor": "#191919"
+      "resizeMode": "contain"
     },
     "updates": {
       "fallbackToCacheTimeout": 10000
@@ -28,11 +28,11 @@
       },
       "icon": "./assets/icon.png",
       "package": "com.twist.anime",
-      "versionCode": 31
+      "versionCode": 32
     },
     "ios": {
+      "buildNumber": "1.8.2",
       "bundleIdentifier": "com.twist.anime",
-      "buildNumber": "1.8.1",
       "supportsTablet": true
     }
   }

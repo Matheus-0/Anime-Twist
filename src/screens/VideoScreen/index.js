@@ -191,6 +191,9 @@ const VideoScreen = ({
   };
 
   const handleLockButtonPress = () => {
+    // This value resets, so making sure it stays the same
+    if (!resumeViewActive.current) resumeViewOpacityAnimation.setValue(0);
+
     setPlayerIsLocked(!playerIsLocked);
 
     handleHideTimeout();
