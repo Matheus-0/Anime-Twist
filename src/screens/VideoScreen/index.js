@@ -160,6 +160,7 @@ const VideoScreen = ({
     }
 
     setEpisodePlaying(firstEpisode);
+    setVideoPositionMillis(firstEpisodeTime);
 
     if (videoRef.current) loadVideo(decryptSource(firstEpisode.source), firstEpisodeTime);
   };
