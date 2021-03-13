@@ -2,7 +2,7 @@
   "expo": {
     "name": "Anime Twist",
     "slug": "Anime-Twist",
-    "version": "1.8.2",
+    "version": "1.8.3",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
     "androidStatusBar": {
@@ -28,10 +28,10 @@
       },
       "icon": "./assets/icon.png",
       "package": "com.twist.anime",
-      "versionCode": 32
+      "versionCode": 33
     },
     "ios": {
-      "buildNumber": "1.8.2",
+      "buildNumber": "1.8.3",
       "bundleIdentifier": "com.twist.anime",
       "supportsTablet": true
     }
